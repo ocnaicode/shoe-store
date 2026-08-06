@@ -1,0 +1,37 @@
+[
+  {
+    "code": "WELCOME10",
+    "discountType": "percent",
+    "discountValue": 10,
+    "minOrder": 1000,
+    "maxDiscount": 500,
+    "expiry": "2026-09-05T13:39:09.132Z",
+    "usageLimit": 100,
+    "usedCount": 12,
+    "isActive": true,
+    "description": "New user 10% off"
+  },
+  {
+    "code": "EID2026",
+    "discountType": "percent",
+    "discountValue": 15,
+    "minOrder": 3000,
+    "maxDiscount": 1000,
+    "expiry": "2026-08-21T13:39:09.132Z",
+    "usageLimit": 50,
+    "usedCount": 8,
+    "isActive": true,
+    "description": "Eid Special 15% off"
+  },
+  {
+    "code": "FLAT500",
+    "discountType": "fixed",
+    "discountValue": 500,
+    "minOrder": 5000,
+    "expiry": "2026-08-13T13:39:09.132Z",
+    "usageLimit": 30,
+    "usedCount": 3,
+    "isActive": true,
+    "description": "Flat 500tk off on 5000+"
+  }
+]
