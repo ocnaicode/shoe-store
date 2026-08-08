@@ -1,8 +1,68 @@
 import { NextResponse } from "next/server";
-import { getSettings, saveSettings } from "@/lib/db";
+import { getSettings, saveSettings, connectDB } from "@/lib/db";
+import Settings from "@/models/Settings";
+
+async function getSettingsFromDB() {
+  try {
+    const conn = await connectDB();
+    if (conn) {
+      let doc = await (Settings as any).findOne();
+      if (doc) {
+        // Merge with defaults to ensure all fields exist
+        const defaults = getSettings();
+        return {
+          ...defaults,
+          ...doc.toObject(),
+          cloudinary: { ...defaults.cloudinary, ...(doc.cloudinary || {}) },
+          siteSettings: { ...defaults.siteSettings, ...(doc.siteSettings || {}) },
+          socialLogin: { ...defaults.socialLogin, ...(doc.socialLogin || {}) },
+          whatsapp: { ...defaults.whatsapp, ...(doc.whatsapp || {}) },
+          abandonedCart: { ...defaults.abandonedCart, ...(doc.abandonedCart || {}) },
+          steadfast: { ...defaults.steadfast, ...(doc.steadfast || {}) },
+          flashSale: { ...defaults.flashSale, ...(doc.flashSale || {}) },
+          delivery: { ...defaults.delivery, ...(doc.delivery || {}) },
+          payment: { ...defaults.payment, ...(doc.payment || {}) },
+          siteName: doc.siteName || defaults.siteName,
+          currency: doc.currency || defaults.currency,
+        };
+      }
+    }
+  } catch (e) {
+    console.log("Settings DB fetch failed, using file fallback", e);
+  }
+  return getSettings();
+}
+
+async function saveSettingsToDB(settings: any) {
+  try {
+    const conn = await connectDB();
+    if (conn) {
+      let doc = await (Settings as any).findOne();
+      if (doc) {
+        Object.assign(doc, settings);
+        await doc.save();
+      } else {
+        await (Settings as any).create(settings);
+      }
+      return true;
+    }
+  } catch (e) {
+    console.log("Settings DB save failed", e);
+  }
+  try {
+    saveSettings(settings);
+  } catch (e: any) {
+    if (e.code === "EROFS" || e.message?.includes("read-only")) {
+      console.log("File system read-only, skipping file save (Vercel)");
+    } else {
+      throw e;
+    }
+  }
+  return false;
+}
 
 export async function GET() {
-  const settings = getSettings();
+  const settings = await getSettingsFromDB();
   const safe = {
     ...settings,
     cloudinary: {
@@ -26,7 +86,7 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const current = getSettings();
+    const current = await getSettingsFromDB();
     const updated: any = { ...current };
 
     if (body.socialLogin) {
@@ -70,10 +130,16 @@ export async function POST(req: Request) {
     }
     if (body.siteName) updated.siteName = body.siteName;
     if (body.currency) updated.currency = body.currency;
+    if (body.heroSlides || body.sections) {
+      // For home settings passed via settings route (fallback)
+      if (body.heroSlides) updated.heroSlides = body.heroSlides;
+      if (body.sections) updated.sections = body.sections;
+    }
 
-    saveSettings(updated);
+    await saveSettingsToDB(updated);
     return NextResponse.json({ success: true, settings: updated });
   } catch (e: any) {
+    console.error(e);
     return NextResponse.json({ error: e.message }, { status: 500 });
   }
 }

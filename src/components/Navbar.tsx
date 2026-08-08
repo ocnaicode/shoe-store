@@ -42,6 +42,18 @@ export default function Navbar() {
     { href: "/#categories", label: "Categories" },
     { href: "/track-order", label: "Track Order" },
   ];
+  const [searchQuery, setSearchQuery] = useState("");
+  const [mobileSearch, setMobileSearch] = useState("");
+
+  const handleSearch = (query: string) => {
+    const q = query.trim();
+    if (q) {
+      router.push(`/shop?search=${encodeURIComponent(q)}`);
+      setSearchQuery("");
+      setMobileSearch("");
+      setMobileOpen(false);
+    }
+  };
 
   const announcement = siteSettings?.announcement?.enabled ? siteSettings.announcement.text : "Free Delivery on Orders over ৳3000";
   const phone = siteSettings?.contact?.phone || "+880 1700-000000";
@@ -91,12 +103,17 @@ export default function Navbar() {
             <div className="hidden md:flex items-center gap-1.5">
               <div className="relative hidden xl:flex mr-2">
                 <input
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleSearch(searchQuery)}
                   placeholder="Search..."
                   className="w-[200px] bg-gray-50 dark:bg-zinc-900 rounded-full py-2 pl-9 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-black/10 dark:focus:ring-white/10 focus:bg-white dark:focus:bg-black border border-gray-200 dark:border-zinc-800 transition placeholder:text-gray-400"
                 />
-                <svg className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
+                <button onClick={() => handleSearch(searchQuery)} className="absolute left-3 top-1/2 -translate-y-1/2">
+                  <svg className="w-4 h-4 text-gray-400 hover:text-black dark:hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </button>
               </div>
 
               <ThemeToggle />
@@ -162,8 +179,16 @@ export default function Navbar() {
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="lg:hidden border-t border-gray-100 dark:border-zinc-800 bg-white dark:bg-black overflow-hidden">
             <div className="px-4 py-5 space-y-1">
               <div className="relative mb-4">
-                <input placeholder="Search shoes..." className="w-full bg-gray-50 dark:bg-zinc-900 rounded-full py-3 pl-11 pr-4 text-sm focus:outline-none border border-transparent focus:border-gray-200 dark:focus:border-zinc-700 text-black dark:text-white" />
-                <svg className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                <input
+                  value={mobileSearch}
+                  onChange={(e) => setMobileSearch(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleSearch(mobileSearch)}
+                  placeholder="Search shoes..."
+                  className="w-full bg-gray-50 dark:bg-zinc-900 rounded-full py-3 pl-11 pr-4 text-sm focus:outline-none border border-transparent focus:border-gray-200 dark:focus:border-zinc-700 text-black dark:text-white"
+                />
+                <button onClick={() => handleSearch(mobileSearch)} className="absolute left-4 top-1/2 -translate-y-1/2">
+                  <svg className="w-5 h-5 text-gray-400 hover:text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                </button>
               </div>
               {navLinks.map((l) => (
                 <Link key={l.href} href={l.href} onClick={() => setMobileOpen(false)} className={`block py-3 text-sm font-medium border-b border-gray-50 dark:border-zinc-900 last:border-0 ${pathname === l.href ? "text-black dark:text-white" : "text-gray-600 dark:text-zinc-400"}`}>

@@ -45,7 +45,14 @@ const HOME_SETTINGS_FILE = path.join(DATA_DIR, "homeSettings.json");
 const BRANDS_FILE = path.join(DATA_DIR, "brands.json");
 
 export function ensureDataDir() {
-  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+  try {
+    if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+  } catch (e: any) {
+    if (e.code === "EROFS" || e.message?.includes("read-only")) {
+      return;
+    }
+    throw e;
+  }
 }
 
 export function getFallbackProducts() {
@@ -58,7 +65,15 @@ export function getFallbackProducts() {
 
 export function saveFallbackProducts(products: any) {
   ensureDataDir();
-  fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(products, null, 2));
+  try {
+    fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(products, null, 2));
+  } catch (e: any) {
+    if (e.code === "EROFS" || e.message?.includes("read-only")) {
+      console.log("⚠️ File system read-only, skipping saveFallbackProducts");
+      return;
+    }
+    throw e;
+  }
 }
 
 export function getSettings() {
@@ -184,7 +199,15 @@ export function getSettings() {
 
 export function saveSettings(settings: any) {
   ensureDataDir();
-  fs.writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2));
+  try {
+    fs.writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2));
+  } catch (e: any) {
+    if (e.code === "EROFS" || e.message?.includes("read-only")) {
+      console.log("⚠️ File system read-only (Vercel), skipping file save");
+      return;
+    }
+    throw e;
+  }
 }
 
 export function getFallbackOrders() {
@@ -197,7 +220,15 @@ export function getFallbackOrders() {
 
 export function saveFallbackOrders(orders: any) {
   ensureDataDir();
-  fs.writeFileSync(ORDERS_FILE, JSON.stringify(orders, null, 2));
+  try {
+    fs.writeFileSync(ORDERS_FILE, JSON.stringify(orders, null, 2));
+  } catch (e: any) {
+    if (e.code === "EROFS" || e.message?.includes("read-only")) {
+      console.log("⚠️ File system read-only, skipping saveFallbackProducts");
+      return;
+    }
+    throw e;
+  }
 }
 
 // Users
@@ -210,7 +241,15 @@ export function getFallbackUsers() {
 }
 export function saveFallbackUsers(users: any) {
   ensureDataDir();
-  fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
+  try {
+    fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
+  } catch (e: any) {
+    if (e.code === "EROFS" || e.message?.includes("read-only")) {
+      console.log("⚠️ File system read-only, skipping saveFallbackProducts");
+      return;
+    }
+    throw e;
+  }
 }
 
 // Reviews
@@ -223,7 +262,15 @@ export function getFallbackReviews() {
 }
 export function saveFallbackReviews(reviews: any) {
   ensureDataDir();
-  fs.writeFileSync(REVIEWS_FILE, JSON.stringify(reviews, null, 2));
+  try {
+    fs.writeFileSync(REVIEWS_FILE, JSON.stringify(reviews, null, 2));
+  } catch (e: any) {
+    if (e.code === "EROFS" || e.message?.includes("read-only")) {
+      console.log("⚠️ File system read-only, skipping saveFallbackProducts");
+      return;
+    }
+    throw e;
+  }
 }
 
 // Coupons
@@ -243,7 +290,15 @@ export function getFallbackCoupons() {
 }
 export function saveFallbackCoupons(coupons: any) {
   ensureDataDir();
-  fs.writeFileSync(COUPONS_FILE, JSON.stringify(coupons, null, 2));
+  try {
+    fs.writeFileSync(COUPONS_FILE, JSON.stringify(coupons, null, 2));
+  } catch (e: any) {
+    if (e.code === "EROFS" || e.message?.includes("read-only")) {
+      console.log("⚠️ File system read-only, skipping saveFallbackProducts");
+      return;
+    }
+    throw e;
+  }
 }
 
 // Promotions (Popup)
@@ -256,7 +311,15 @@ export function getFallbackPromotions() {
 }
 export function saveFallbackPromotions(promotions: any) {
   ensureDataDir();
-  fs.writeFileSync(PROMOTIONS_FILE, JSON.stringify(promotions, null, 2));
+  try {
+    fs.writeFileSync(PROMOTIONS_FILE, JSON.stringify(promotions, null, 2));
+  } catch (e: any) {
+    if (e.code === "EROFS" || e.message?.includes("read-only")) {
+      console.log("⚠️ File system read-only, skipping saveFallbackProducts");
+      return;
+    }
+    throw e;
+  }
 }
 
 // Categories
@@ -278,7 +341,15 @@ export function getFallbackCategories() {
 }
 export function saveFallbackCategories(categories: any) {
   ensureDataDir();
-  fs.writeFileSync(CATEGORIES_FILE, JSON.stringify(categories, null, 2));
+  try {
+    fs.writeFileSync(CATEGORIES_FILE, JSON.stringify(categories, null, 2));
+  } catch (e: any) {
+    if (e.code === "EROFS" || e.message?.includes("read-only")) {
+      console.log("⚠️ File system read-only, skipping saveFallbackProducts");
+      return;
+    }
+    throw e;
+  }
 }
 
 // Home Settings
@@ -352,7 +423,15 @@ export function getFallbackHomeSettings() {
 }
 export function saveFallbackHomeSettings(settings: any) {
   ensureDataDir();
-  fs.writeFileSync(HOME_SETTINGS_FILE, JSON.stringify(settings, null, 2));
+  try {
+    fs.writeFileSync(HOME_SETTINGS_FILE, JSON.stringify(settings, null, 2));
+  } catch (e: any) {
+    if (e.code === "EROFS" || e.message?.includes("read-only")) {
+      console.log("⚠️ File system read-only, skipping saveFallbackProducts");
+      return;
+    }
+    throw e;
+  }
 }
 
 // Brands
@@ -376,5 +455,13 @@ export function getFallbackBrands() {
 }
 export function saveFallbackBrands(brands: any) {
   ensureDataDir();
-  fs.writeFileSync(BRANDS_FILE, JSON.stringify(brands, null, 2));
+  try {
+    fs.writeFileSync(BRANDS_FILE, JSON.stringify(brands, null, 2));
+  } catch (e: any) {
+    if (e.code === "EROFS" || e.message?.includes("read-only")) {
+      console.log("⚠️ File system read-only, skipping saveFallbackProducts");
+      return;
+    }
+    throw e;
+  }
 }

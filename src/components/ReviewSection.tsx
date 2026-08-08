@@ -56,6 +56,7 @@ export default function ReviewSection({ productId, productSlug }: { productId: s
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) return alert("Please login to submit review");
     if (!form.comment.trim()) return alert("Please write a review");
     setSubmitting(true);
     try {
@@ -65,8 +66,8 @@ export default function ReviewSection({ productId, productSlug }: { productId: s
         body: JSON.stringify({
           productId,
           productSlug,
-          userName: user?.name || "Guest User",
-          userEmail: user?.email || `guest${Date.now()}@example.com`,
+          userName: user.name,
+          userEmail: user.email,
           rating: form.rating,
           comment: form.comment,
           images: form.images,
@@ -128,42 +129,56 @@ export default function ReviewSection({ productId, productSlug }: { productId: s
       </div>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="mt-6 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-2xl p-6">
-          <h4 className="font-medium text-black dark:text-white">Write Your Review + Photo</h4>
-          <div className="flex gap-1 mt-3">
-            {[1, 2, 3, 4, 5].map((n) => (
-              <button key={n} type="button" onClick={() => setForm({ ...form, rating: n })} className={`text-2xl ${n <= form.rating ? "text-amber-500" : "text-gray-300 dark:text-zinc-600"}`}>
-                ★
-              </button>
-            ))}
-            <span className="ml-2 text-sm font-medium text-black dark:text-white">{form.rating}.0</span>
-          </div>
-          <textarea value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })} placeholder="Jutar quality kemon? Size thik ache? Chobi soho review din..." rows={4} className="w-full mt-4 border border-gray-200 dark:border-zinc-700 rounded-xl p-4 text-sm focus:outline-none focus:border-black dark:focus:border-white bg-white dark:bg-zinc-800 text-black dark:text-white placeholder:text-gray-400" required />
-          <div className="mt-4">
-            <label className="text-xs font-medium text-black dark:text-white">Upload Photos (Cloudinary - max 3)</label>
-            <div className="mt-2 flex gap-3 flex-wrap">
-              {form.images.map((img, i) => (
-                <div key={i} className="relative">
-                  <img src={img} alt="" className="w-20 h-20 rounded-xl object-cover border border-gray-200 dark:border-zinc-700" />
-                  <button type="button" onClick={() => setForm({ ...form, images: form.images.filter((_, idx) => idx !== i) })} className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full text-xs flex items-center justify-center">
-                    ×
-                  </button>
-                </div>
-              ))}
-              {form.images.length < 3 && (
-                <label className="w-20 h-20 border-2 border-dashed border-gray-200 dark:border-zinc-700 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-zinc-800 text-xs font-medium text-gray-600 dark:text-zinc-400">
-                  {uploading ? "..." : "+"}
-                  <span className="text-[10px]">{uploading ? "Uploading" : "Add Photo"}</span>
-                  <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageUpload} disabled={uploading} />
-                </label>
-              )}
+        !user ? (
+          <div className="mt-6 bg-amber-50 dark:bg-amber-950/20 border-2 border-amber-200 dark:border-amber-900/30 rounded-2xl p-8 text-center">
+            <div className="w-16 h-16 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center mx-auto text-2xl">🔒</div>
+            <h4 className="font-semibold text-black dark:text-white mt-4">Login Required</h4>
+            <p className="text-sm text-gray-600 dark:text-zinc-400 mt-2">Review dite hole age login korte hobe. Verified buyer reviews only.</p>
+            <div className="flex gap-3 justify-center mt-4">
+              <a href="/auth/login" className="bg-black dark:bg-white text-white dark:text-black font-medium px-6 py-2.5 rounded-full hover:bg-zinc-800">Login</a>
+              <a href="/auth/register" className="border border-gray-200 dark:border-zinc-700 font-medium px-6 py-2.5 rounded-full hover:bg-gray-50 dark:hover:bg-zinc-800 text-black dark:text-white">Create Account</a>
             </div>
+            <button onClick={() => setShowForm(false)} className="text-xs text-gray-500 hover:text-black dark:hover:text-white mt-3">Cancel</button>
           </div>
-          <button disabled={submitting || uploading} type="submit" className="mt-4 w-full bg-black dark:bg-white text-white dark:text-black font-medium py-3 rounded-full hover:bg-zinc-800 dark:hover:bg-zinc-200 disabled:opacity-50">
-            {submitting ? "Submitting..." : "Submit Review for Approval"}
-          </button>
-          <p className="text-xs text-gray-500 dark:text-zinc-400 text-center mt-2">Admin approve korar por review show hobe</p>
-        </form>
+        ) : (
+          <form onSubmit={handleSubmit} className="mt-6 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-2xl p-6">
+            <h4 className="font-medium text-black dark:text-white">Write Your Review + Photo</h4>
+            <p className="text-xs text-gray-500 dark:text-zinc-400 mt-1">Logged in as <span className="font-medium text-black dark:text-white">{user.name}</span> • {user.email}</p>
+            <div className="flex gap-1 mt-3">
+              {[1, 2, 3, 4, 5].map((n) => (
+                <button key={n} type="button" onClick={() => setForm({ ...form, rating: n })} className={`text-2xl ${n <= form.rating ? "text-amber-500" : "text-gray-300 dark:text-zinc-600"}`}>
+                  ★
+                </button>
+              ))}
+              <span className="ml-2 text-sm font-medium text-black dark:text-white">{form.rating}.0</span>
+            </div>
+            <textarea value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })} placeholder="Jutar quality kemon? Size thik ache? Chobi soho review din..." rows={4} className="w-full mt-4 border border-gray-200 dark:border-zinc-700 rounded-xl p-4 text-sm focus:outline-none focus:border-black dark:focus:border-white bg-white dark:bg-zinc-800 text-black dark:text-white placeholder:text-gray-400" required />
+            <div className="mt-4">
+              <label className="text-xs font-medium text-black dark:text-white">Upload Photos (Cloudinary - max 3)</label>
+              <div className="mt-2 flex gap-3 flex-wrap">
+                {form.images.map((img, i) => (
+                  <div key={i} className="relative">
+                    <img src={img} alt="" className="w-20 h-20 rounded-xl object-cover border border-gray-200 dark:border-zinc-700" />
+                    <button type="button" onClick={() => setForm({ ...form, images: form.images.filter((_, idx) => idx !== i) })} className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full text-xs flex items-center justify-center">
+                      ×
+                    </button>
+                  </div>
+                ))}
+                {form.images.length < 3 && (
+                  <label className="w-20 h-20 border-2 border-dashed border-gray-200 dark:border-zinc-700 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-zinc-800 text-xs font-medium text-gray-600 dark:text-zinc-400">
+                    {uploading ? "..." : "+"}
+                    <span className="text-[10px]">{uploading ? "Uploading" : "Add Photo"}</span>
+                    <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageUpload} disabled={uploading} />
+                  </label>
+                )}
+              </div>
+            </div>
+            <button disabled={submitting || uploading} type="submit" className="mt-4 w-full bg-black dark:bg-white text-white dark:text-black font-medium py-3 rounded-full hover:bg-zinc-800 dark:hover:bg-zinc-200 disabled:opacity-50">
+              {submitting ? "Submitting..." : "Submit Review for Approval"}
+            </button>
+            <p className="text-xs text-gray-500 dark:text-zinc-400 text-center mt-2">Admin approve korar por review show hobe</p>
+          </form>
+        )
       )}
 
       <div className="mt-8 space-y-4">

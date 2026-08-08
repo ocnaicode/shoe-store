@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 function ShopContent() {
   const searchParams = useSearchParams();
   const initialCategory = searchParams.get("category") || "all";
+  const searchQuery = searchParams.get("search") || "";
 
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
@@ -18,16 +19,20 @@ function ShopContent() {
 
   const filtered = useMemo(() => {
     let res = [...products];
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      res = res.filter((p) => p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
+    }
     if (selectedCategory !== "all") res = res.filter((p) => p.category === selectedCategory);
     if (selectedBrands.length) res = res.filter((p) => selectedBrands.includes(p.brand));
     res = res.filter((p) => p.price >= priceRange[0] && p.price <= priceRange[1]);
-    if (selectedSizes.length) res = res.filter((p) => p.sizes?.some((s) => selectedSizes.includes(s)) || p.variants?.some((v:any)=> selectedSizes.includes(v.size)));
+    if (selectedSizes.length) res = res.filter((p) => p.sizes?.some((s) => selectedSizes.includes(s)) || (p as any).variants?.some((v:any)=> selectedSizes.includes(v.size)));
     if (sortBy === "price-low") res.sort((a, b) => a.price - b.price);
     if (sortBy === "price-high") res.sort((a, b) => b.price - a.price);
     if (sortBy === "rating") res.sort((a, b) => b.rating - a.rating);
     if (sortBy === "newest") res.sort((a, b) => (a.isNew ? -1 : 1));
     return res;
-  }, [selectedCategory, selectedBrands, priceRange, selectedSizes, sortBy]);
+  }, [selectedCategory, selectedBrands, priceRange, selectedSizes, sortBy, searchQuery]);
 
   const toggleBrand = (b: string) => setSelectedBrands((prev) => (prev.includes(b) ? prev.filter((x) => x !== b) : [...prev, b]));
   const toggleSize = (s: number) => setSelectedSizes((prev) => (prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]));
@@ -36,11 +41,11 @@ function ShopContent() {
     <>
       <div className="bg-white dark:bg-black border-b border-gray-100 dark:border-zinc-800">
         <div className="max-w-[1400px] mx-auto px-4 lg:px-6 py-6">
-          <div className="text-xs text-gray-400">Home / Shop {selectedCategory !== "all" && `/ ${selectedCategory}`}</div>
+          <div className="text-xs text-gray-400">Home / Shop {selectedCategory !== "all" && `/ ${selectedCategory}`} {searchQuery && `• Search: "${searchQuery}"`}</div>
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mt-2">
             <div>
-              <h1 className="text-2xl lg:text-3xl font-semibold tracking-tight capitalize text-black dark:text-white">{selectedCategory === "all" ? "All Shoes" : selectedCategory}</h1>
-              <p className="text-sm text-gray-500 dark:text-zinc-400 mt-1">{filtered.length} products • Curated for you</p>
+              <h1 className="text-2xl lg:text-3xl font-semibold tracking-tight capitalize text-black dark:text-white">{searchQuery ? `Search: "${searchQuery}"` : selectedCategory === "all" ? "All Shoes" : selectedCategory}</h1>
+              <p className="text-sm text-gray-500 dark:text-zinc-400 mt-1">{filtered.length} products {searchQuery && `for "${searchQuery}"`} • Curated for you</p>
             </div>
             <div className="flex items-center gap-2">
               <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="border border-gray-200 dark:border-zinc-800 rounded-full px-4 py-2 text-sm bg-white dark:bg-zinc-900 font-medium text-black dark:text-white">
