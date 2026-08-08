@@ -42,6 +42,7 @@ const COUPONS_FILE = path.join(DATA_DIR, "coupons.json");
 const PROMOTIONS_FILE = path.join(DATA_DIR, "promotions.json");
 const CATEGORIES_FILE = path.join(DATA_DIR, "categories.json");
 const HOME_SETTINGS_FILE = path.join(DATA_DIR, "homeSettings.json");
+const BRANDS_FILE = path.join(DATA_DIR, "brands.json");
 
 export function ensureDataDir() {
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -352,4 +353,28 @@ export function getFallbackHomeSettings() {
 export function saveFallbackHomeSettings(settings: any) {
   ensureDataDir();
   fs.writeFileSync(HOME_SETTINGS_FILE, JSON.stringify(settings, null, 2));
+}
+
+// Brands
+export function getFallbackBrands() {
+  ensureDataDir();
+  if (fs.existsSync(BRANDS_FILE)) {
+    try { return JSON.parse(fs.readFileSync(BRANDS_FILE, "utf-8")); } catch {}
+  }
+  const defaults = [
+    { _id: "1", name: "HOKO", slug: "hoko", logo: "", description: "House brand", isActive: true },
+    { _id: "2", name: "Nike", slug: "nike", logo: "", description: "Nike brand", isActive: true },
+    { _id: "3", name: "Adidas", slug: "adidas", logo: "", description: "Adidas brand", isActive: true },
+    { _id: "4", name: "Puma", slug: "puma", logo: "", description: "Puma brand", isActive: true },
+    { _id: "5", name: "Bata", slug: "bata", logo: "", description: "Bata brand", isActive: true },
+    { _id: "6", name: "Apex", slug: "apex", logo: "", description: "Apex brand", isActive: true },
+    { _id: "7", name: "Lotto", slug: "lotto", logo: "", description: "Lotto brand", isActive: true },
+    { _id: "8", name: "Woodland", slug: "woodland", logo: "", description: "Woodland brand", isActive: true },
+  ];
+  saveFallbackBrands(defaults);
+  return defaults;
+}
+export function saveFallbackBrands(brands: any) {
+  ensureDataDir();
+  fs.writeFileSync(BRANDS_FILE, JSON.stringify(brands, null, 2));
 }

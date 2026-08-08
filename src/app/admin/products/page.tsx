@@ -11,6 +11,7 @@ type Color = { name: string; hex: string };
 export default function AdminProducts() {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [categories, setCategories] = useState<any[]>([]);
+  const [brands, setBrands] = useState<any[]>([]);
   const [showAdd, setShowAdd] = useState(false);
   const [editing, setEditing] = useState<Product | null>(null);
   const [form, setForm] = useState({
@@ -39,6 +40,7 @@ export default function AdminProducts() {
   useEffect(() => {
     fetch("/api/products").then(r=>r.json()).then(d=> { if(d.products?.length) setProducts(d.products); });
     fetch("/api/categories").then(r=>r.json()).then(d=> { if(d.categories?.length) setCategories(d.categories); });
+    fetch("/api/brands").then(r=>r.json()).then(d=> { if(d.brands?.length) setBrands(d.brands); });
   }, []);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -194,9 +196,9 @@ export default function AdminProducts() {
                 <input value={form.name} onChange={e=>setForm({...form,name:e.target.value})} placeholder="HOKO Air Runner Pro" className="w-full border border-gray-200 dark:border-zinc-700 rounded-lg px-3 py-2.5 text-sm bg-white dark:bg-zinc-900 focus:outline-none focus:border-black dark:focus:border-white" />
               </label>
               <label className="space-y-1.5">
-                <span className="text-xs font-medium">Brand</span>
+                <span className="text-xs font-medium flex items-center gap-2">Brand <Link href="/admin/brands" className="text-blue-600 text-xs font-normal hover:underline">Manage →</Link></span>
                 <select value={form.brand} onChange={e=>setForm({...form,brand:e.target.value})} className="w-full border border-gray-200 dark:border-zinc-700 rounded-lg px-3 py-2.5 text-sm bg-white dark:bg-zinc-900">
-                  <option>HOKO</option><option>Nike</option><option>Adidas</option><option>Puma</option><option>Bata</option><option>Apex</option><option>Lotto</option><option>Woodland</option>
+                  {brands.length ? brands.filter(b=>b.isActive).map((b:any)=> <option key={b._id} value={b.name}>{b.name}</option>) : ["HOKO","Nike","Adidas","Puma","Bata","Apex","Lotto","Woodland"].map(b=> <option key={b} value={b}>{b}</option>)}
                 </select>
               </label>
               <label className="space-y-1.5">

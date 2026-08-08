@@ -6,7 +6,16 @@ export async function GET() {
   try {
     const conn = await connectDB();
     if (conn) {
-      const categories = await (Category as any).find().sort({ createdAt: -1 });
+      let categories = await (Category as any).find().sort({ createdAt: -1 });
+      if (categories.length === 0) {
+        // Seed defaults if empty
+        const defaults = getFallbackCategories();
+        // Insert into DB
+        for (const cat of defaults) {
+          await (Category as any).create({ name: cat.name, slug: cat.slug, image: cat.image, description: cat.description, count: cat.count, isActive: cat.isActive });
+        }
+        categories = await (Category as any).find().sort({ createdAt: -1 });
+      }
       return NextResponse.json({ categories });
     }
   } catch (e) {

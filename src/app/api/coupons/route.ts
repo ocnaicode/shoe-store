@@ -6,7 +6,14 @@ export async function GET() {
   try {
     const conn = await connectDB();
     if (conn) {
-      const coupons = await (Coupon as any).find().sort({ createdAt: -1 });
+      let coupons = await (Coupon as any).find().sort({ createdAt: -1 });
+      if (coupons.length === 0) {
+        const defaults = getFallbackCoupons();
+        for (const c of defaults) {
+          await (Coupon as any).create({ code: c.code, discountType: c.discountType, discountValue: c.discountValue, minOrder: c.minOrder, maxDiscount: c.maxDiscount, expiry: c.expiry, usageLimit: c.usageLimit, usedCount: c.usedCount, isActive: c.isActive, description: c.description });
+        }
+        coupons = await (Coupon as any).find().sort({ createdAt: -1 });
+      }
       return NextResponse.json({ coupons });
     }
   } catch (e) {
@@ -22,7 +29,7 @@ export async function POST(req: Request) {
     const { code, discountType, discountValue, minOrder, maxDiscount, expiry, usageLimit, isActive, description } = body;
     if (!code || !discountType || !discountValue || !expiry) return NextResponse.json({ error: "Missing fields" }, { status: 400 });
 
-    const couponData = {
+    const couponData: any = {
       code: code.toUpperCase().trim(),
       discountType,
       discountValue: Number(discountValue),
@@ -33,12 +40,12 @@ export async function POST(req: Request) {
       usedCount: 0,
       isActive: isActive !== false,
       description,
-      createdAt: new Date().toISOString(),
-      _id: Date.now().toString(),
     };
 
     const conn = await connectDB();
     if (conn) {
+      const existing = await (Coupon as any).findOne({ code: couponData.code });
+      if (existing) return NextResponse.json({ error: "Coupon code already exists" }, { status: 400 });
       const coupon = await (Coupon as any).create(couponData);
       return NextResponse.json({ coupon }, { status: 201 });
     }
@@ -47,9 +54,10 @@ export async function POST(req: Request) {
     if (coupons.find((c: any) => c.code === couponData.code)) {
       return NextResponse.json({ error: "Coupon code already exists" }, { status: 400 });
     }
-    coupons.unshift(couponData);
+    const fallbackCoupon = { ...couponData, _id: Date.now().toString(), createdAt: new Date().toISOString() };
+    coupons.unshift(fallbackCoupon);
     saveFallbackCoupons(coupons);
-    return NextResponse.json({ coupon: couponData }, { status: 201 });
+    return NextResponse.json({ coupon: fallbackCoupon }, { status: 201 });
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 500 });
   }
