@@ -91,20 +91,22 @@ export default function DashboardPage() {
                 <button
                   key={item.id}
                   onClick={() => setTab(item.id as any)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-left ${tab === item.id ? "bg-black text-white" : "hover:bg-gray-100"}`}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-left ${tab === item.id ? "bg-black dark:bg-white text-white dark:text-black" : "hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-600 dark:text-zinc-400"}`}
                 >
                   <span>{item.icon}</span> {item.label}
-                  {item.count !== undefined && <span className={`ml-auto text-xs px-2 py-0.5 rounded-full ${tab === item.id ? "bg-white text-black" : "bg-gray-100"}`}>{item.count}</span>}
+                  {item.count !== undefined && <span className={`ml-auto text-xs px-2 py-0.5 rounded-full ${tab === item.id ? "bg-white dark:bg-black text-black dark:text-white" : "bg-gray-100 dark:bg-zinc-800"}`}>{item.count}</span>}
                 </button>
               ))}
-              <Link href="/auth/change-password" className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold hover:bg-amber-50 text-amber-700 border border-amber-200 mt-2">
-                🔑 Change Password
+              <Link href="/auth/change-password" className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium hover:bg-gray-50 dark:hover:bg-zinc-800 border border-gray-200 dark:border-zinc-700 mt-3 text-black dark:text-white">
+                Change Password
               </Link>
-              <Link href="/admin" className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold border mt-2 ${user.role === "admin" ? "hover:bg-amber-50 text-amber-700 border-amber-200" : "opacity-50 cursor-not-allowed border-gray-200 text-gray-400"}`}>
-                🛠️ Admin Panel {user.role !== "admin" && "(Admin Only)"}
-              </Link>
-              <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold hover:bg-red-50 text-red-600 border border-red-200 mt-2">
-                🚪 Logout
+              {user.role === "admin" && (
+                <Link href="/admin" className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium bg-black dark:bg-white text-white dark:text-black mt-2">
+                  Admin Panel
+                </Link>
+              )}
+              <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 border border-red-100 dark:border-red-900/30 mt-2">
+                Logout
               </button>
             </nav>
           </div>

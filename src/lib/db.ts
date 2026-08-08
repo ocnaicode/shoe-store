@@ -40,6 +40,7 @@ const USERS_FILE = path.join(DATA_DIR, "users.json");
 const REVIEWS_FILE = path.join(DATA_DIR, "reviews.json");
 const COUPONS_FILE = path.join(DATA_DIR, "coupons.json");
 const PROMOTIONS_FILE = path.join(DATA_DIR, "promotions.json");
+const CATEGORIES_FILE = path.join(DATA_DIR, "categories.json");
 
 export function ensureDataDir() {
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -238,4 +239,26 @@ export function getFallbackPromotions() {
 export function saveFallbackPromotions(promotions: any) {
   ensureDataDir();
   fs.writeFileSync(PROMOTIONS_FILE, JSON.stringify(promotions, null, 2));
+}
+
+// Categories
+export function getFallbackCategories() {
+  ensureDataDir();
+  if (fs.existsSync(CATEGORIES_FILE)) {
+    try { return JSON.parse(fs.readFileSync(CATEGORIES_FILE, "utf-8")); } catch {}
+  }
+  const defaults = [
+    { _id: "1", name: "Sneakers", slug: "sneakers", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80", description: "Comfortable sneakers for daily wear", count: 124, isActive: true },
+    { _id: "2", name: "Formal", slug: "formal", image: "https://images.unsplash.com/photo-1614252369475-531eba835eb1?w=600&q=80", description: "Elegant formal shoes", count: 86, isActive: true },
+    { _id: "3", name: "Boots", slug: "boots", image: "https://images.unsplash.com/photo-1608256246200-53e635b5b65f?w=600&q=80", description: "Rugged boots for adventure", count: 64, isActive: true },
+    { _id: "4", name: "Sports", slug: "sports", image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&q=80", description: "High performance sports shoes", count: 92, isActive: true },
+    { _id: "5", name: "Casual", slug: "casual", image: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=600&q=80", description: "Casual everyday shoes", count: 110, isActive: true },
+    { _id: "6", name: "Loafers", slug: "loafers", image: "https://images.unsplash.com/photo-1617137968427-85924c800a22?w=600&q=80", description: "Premium loafers", count: 45, isActive: true },
+  ];
+  saveFallbackCategories(defaults);
+  return defaults;
+}
+export function saveFallbackCategories(categories: any) {
+  ensureDataDir();
+  fs.writeFileSync(CATEGORIES_FILE, JSON.stringify(categories, null, 2));
 }

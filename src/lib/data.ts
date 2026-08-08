@@ -16,6 +16,9 @@ export type Product = {
   isFeatured?: boolean;
   isNew?: boolean;
   isBestSeller?: boolean;
+  variants?: { size: number; stock: number; price?: number; sku?: string }[];
+  sku?: string;
+  material?: string;
 };
 
 export const categories = [
