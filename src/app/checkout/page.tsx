@@ -159,7 +159,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="bg-[#fbfbfb] min-h-screen">
+    <div className="bg-[#fbfbfb] dark:bg-zinc-950 min-h-screen">
       <div className="max-w-[1400px] mx-auto px-4 lg:px-6 py-8">
         <h1 className="text-3xl font-black">CHECKOUT</h1>
         {user && <p className="text-sm text-green-600 mt-1">✅ Logged in as {user.name} ({user.email})</p>}
@@ -169,14 +169,14 @@ export default function CheckoutPage() {
         <div className="flex items-center gap-2 mt-3 text-xs">
           <span className="w-7 h-7 bg-black text-white rounded-full flex items-center justify-center font-bold">1</span> <span className="font-bold">Information</span>
           <span className="w-8 h-px bg-gray-300"></span>
-          <span className="w-7 h-7 border rounded-full flex items-center justify-center">2</span> <span className="text-gray-500">Payment</span>
+          <span className="w-7 h-7 border rounded-full flex items-center justify-center">2</span> <span className="text-gray-500 dark:text-zinc-400">Payment</span>
           <span className="w-8 h-px bg-gray-300"></span>
-          <span className="w-7 h-7 border rounded-full flex items-center justify-center">3</span> <span className="text-gray-500">Review</span>
+          <span className="w-7 h-7 border rounded-full flex items-center justify-center">3</span> <span className="text-gray-500 dark:text-zinc-400">Review</span>
         </div>
 
         <form onSubmit={handlePlace} className="grid lg:grid-cols-3 gap-6 mt-8">
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white rounded-2xl p-6 border">
+            <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border">
               <h3 className="font-black mb-4">CONTACT INFORMATION {user && <span className="text-green-600 text-xs">• Auto-filled</span>}</h3>
               <div className="grid sm:grid-cols-2 gap-4">
                 <label className="sm:col-span-2">
@@ -188,7 +188,7 @@ export default function CheckoutPage() {
                   <input required value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="01XXXXXXXXX" className="w-full mt-1 border rounded-xl px-4 py-3 text-sm" />
                 </label>
                 <label>
-                  <span className="text-xs font-bold">Email * <span className="font-normal text-gray-500">(for auto account)</span></span>
+                  <span className="text-xs font-bold">Email * <span className="font-normal text-gray-500 dark:text-zinc-400">(for auto account)</span></span>
                   <input type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="you@example.com" className="w-full mt-1 border rounded-xl px-4 py-3 text-sm" />
                 </label>
                 <label className="sm:col-span-2">
@@ -197,7 +197,7 @@ export default function CheckoutPage() {
                 </label>
                 <label>
                   <span className="text-xs font-bold">City</span>
-                  <select value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} className="w-full mt-1 border rounded-xl px-4 py-3 text-sm bg-white">
+                  <select value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} className="w-full mt-1 border rounded-xl px-4 py-3 text-sm bg-white dark:bg-zinc-900">
                     <option>Dhaka</option>
                     <option>Chittagong</option>
                     <option>Sylhet</option>
@@ -215,13 +215,13 @@ export default function CheckoutPage() {
                 </label>
               </div>
               {!user && (
-                <div className="mt-4 bg-gray-50 rounded-xl p-3 text-xs">
+                <div className="mt-4 bg-gray-50 dark:bg-zinc-800 rounded-xl p-3 text-xs">
                   Already have account? <Link href="/auth/login" className="font-bold underline">Login</Link> • New here? No worries, account auto-create hobe!
                 </div>
               )}
             </div>
 
-            <div className="bg-white rounded-2xl p-6 border">
+            <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border">
               <h3 className="font-black mb-4">PAYMENT METHOD</h3>
               <div className="space-y-3">
                 {[
@@ -230,14 +230,14 @@ export default function CheckoutPage() {
                   { id: "nagad", title: "Nagad", desc: "Pay via Nagad", icon: "💳" },
                   { id: "card", title: "Credit / Debit Card", desc: "Visa, Mastercard, Amex via SSLCommerz", icon: "💳" },
                 ].map((m) => (
-                  <label key={m.id} className={`flex items-center gap-4 border rounded-2xl p-4 cursor-pointer ${form.payment === m.id ? "border-black bg-gray-50 ring-1 ring-black" : "hover:border-gray-300"}`}>
+                  <label key={m.id} className={`flex items-center gap-4 border rounded-2xl p-4 cursor-pointer ${form.payment === m.id ? "border-black bg-gray-50 dark:bg-zinc-800 ring-1 ring-black" : "hover:border-gray-300"}`}>
                     <input type="radio" name="payment" checked={form.payment === m.id} onChange={() => setForm({ ...form, payment: m.id })} className="accent-black" />
                     <span className="text-2xl">{m.icon}</span>
                     <div className="flex-1">
                       <div className="font-bold text-sm flex items-center gap-2">
-                        {m.title} {m.badge && <span className="bg-amber-500 text-black text-[10px] px-2 py-0.5 rounded-full">{m.badge}</span>}
+                        {m.title} {m.badge && <span className="bg-amber-500 text-black dark:text-white text-[10px] px-2 py-0.5 rounded-full">{m.badge}</span>}
                       </div>
-                      <div className="text-xs text-gray-500">{m.desc}</div>
+                      <div className="text-xs text-gray-500 dark:text-zinc-400">{m.desc}</div>
                     </div>
                   </label>
                 ))}
@@ -246,15 +246,15 @@ export default function CheckoutPage() {
           </div>
 
           <div>
-            <div className="bg-white rounded-2xl p-6 border sticky top-[90px]">
+            <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border sticky top-[90px]">
               <h3 className="font-black">ORDER SUMMARY</h3>
               <div className="space-y-3 mt-4 max-h-[220px] overflow-auto pr-2">
                 {items.map((i) => (
                   <div key={`${i.id}-${i.size}`} className="flex gap-3 text-sm">
-                    <img src={i.image} alt="" className="w-14 h-14 rounded-lg object-cover bg-gray-50" />
+                    <img src={i.image} alt="" className="w-14 h-14 rounded-lg object-cover bg-gray-50 dark:bg-zinc-800" />
                     <div className="flex-1">
                       <div className="font-medium line-clamp-1">{i.name}</div>
-                      <div className="text-xs text-gray-500">Size {i.size} • Qty {i.quantity}</div>
+                      <div className="text-xs text-gray-500 dark:text-zinc-400">Size {i.size} • Qty {i.quantity}</div>
                     </div>
                     <div className="font-bold">{formatPrice(i.price * i.quantity)}</div>
                   </div>
@@ -269,11 +269,11 @@ export default function CheckoutPage() {
 
               <div className="border-t mt-4 pt-4 space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Subtotal</span>
+                  <span className="text-gray-600 dark:text-zinc-300">Subtotal</span>
                   <span className="font-bold">{formatPrice(total)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Shipping ({form.city})</span>
+                  <span className="text-gray-600 dark:text-zinc-300">Shipping ({form.city})</span>
                   <span className={`font-bold ${shipping === 0 ? "text-green-600" : ""}`}>{shipping === 0 ? "FREE" : formatPrice(shipping)}</span>
                 </div>
                 {discount > 0 && (
@@ -292,8 +292,8 @@ export default function CheckoutPage() {
                 {placing ? "Placing Order..." : `PLACE ORDER • ${formatPrice(grandTotal)}`}
               </button>
 
-              <p className="text-xs text-center text-gray-500 mt-3">By placing order you agree to Terms & Conditions</p>
-              <div className="mt-4 bg-gray-50 rounded-xl p-3 text-xs flex items-start gap-2">
+              <p className="text-xs text-center text-gray-500 dark:text-zinc-400 mt-3">By placing order you agree to Terms & Conditions</p>
+              <div className="mt-4 bg-gray-50 dark:bg-zinc-800 rounded-xl p-3 text-xs flex items-start gap-2">
                 <span>🔒</span>
                 <span>Steadfast Courier e pathano hobe • Need help? Call <strong>01700-000000</strong></span>
               </div>

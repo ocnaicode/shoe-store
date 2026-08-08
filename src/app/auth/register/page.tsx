@@ -59,28 +59,28 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center bg-[#fbfbfb] px-4 py-12">
-      <div className="w-full max-w-md bg-white rounded-3xl p-8 border shadow-sm">
+    <div className="min-h-[80vh] flex items-center justify-center bg-[#fbfbfb] dark:bg-zinc-950 px-4 py-12">
+      <div className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-3xl p-8 border shadow-sm">
         <div className="text-center">
           <h1 className="text-2xl font-black">Create Account</h1>
-          <p className="text-sm text-gray-500 mt-1">Join HOKO Lifestyle BD</p>
+          <p className="text-sm text-gray-500 dark:text-zinc-400 mt-1">Join HOKO Lifestyle BD</p>
         </div>
 
         {socialConfig?.enabled !== false && (socialConfig?.googleEnabled || socialConfig?.facebookEnabled) && (
           <div className="mt-6 space-y-3">
             {socialConfig?.googleEnabled && (
-              <button onClick={() => handleSocial("google")} className="w-full border-2 border-gray-200 rounded-full py-3 flex items-center justify-center gap-2 font-bold hover:bg-gray-50 transition">
+              <button onClick={() => handleSocial("google")} className="w-full border-2 border-gray-200 dark:border-zinc-700 rounded-full py-3 flex items-center justify-center gap-2 font-bold hover:bg-gray-50 dark:bg-zinc-800 transition">
                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="" className="w-5 h-5" /> Continue with Google
               </button>
             )}
             {socialConfig?.facebookEnabled && (
               <button onClick={() => handleSocial("facebook")} className="w-full bg-[#1877F2] text-white rounded-full py-3 flex items-center justify-center gap-2 font-bold">
-                <span className="w-5 h-5 bg-white text-[#1877F2] rounded-full flex items-center justify-center text-xs font-black">f</span> Continue with Facebook
+                <span className="w-5 h-5 bg-white dark:bg-zinc-900 text-[#1877F2] rounded-full flex items-center justify-center text-xs font-black">f</span> Continue with Facebook
               </button>
             )}
             <div className="flex items-center gap-3">
               <span className="flex-1 h-px bg-gray-200"></span>
-              <span className="text-xs text-gray-500 font-bold">OR</span>
+              <span className="text-xs text-gray-500 dark:text-zinc-400 font-bold">OR</span>
               <span className="flex-1 h-px bg-gray-200"></span>
             </div>
           </div>

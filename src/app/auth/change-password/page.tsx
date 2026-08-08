@@ -37,10 +37,10 @@ export default function ChangePasswordPage() {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center bg-[#fbfbfb] px-4 py-12">
-      <div className="w-full max-w-md bg-white rounded-3xl p-8 border">
+    <div className="min-h-[80vh] flex items-center justify-center bg-[#fbfbfb] dark:bg-zinc-950 px-4 py-12">
+      <div className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-3xl p-8 border">
         <h1 className="text-2xl font-black text-center">Set / Change Password</h1>
-        <p className="text-sm text-gray-500 text-center mt-1">Checkout e auto-create account er password ekhane set korun</p>
+        <p className="text-sm text-gray-500 dark:text-zinc-400 text-center mt-1">Checkout e auto-create account er password ekhane set korun</p>
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-6">
           <label>

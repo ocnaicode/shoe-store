@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function ShopPage() {
   return (
-    <div className="bg-[#fbfbfb] min-h-screen">
+    <div className="bg-[#fbfbfb] dark:bg-zinc-950 min-h-screen">
       <ShopClient />
     </div>
   );

@@ -39,7 +39,14 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`} suppressHydrationWarning>
-      <body className="min-h-full flex flex-col bg-white dark:bg-[#0a0a0a] text-[#0a0a0a] dark:text-[#ededed] transition-colors">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('hoko-theme');var m=window.matchMedia('(prefers-color-scheme: dark)').matches;var th=t||(m?'dark':'light');if(th==='dark')document.documentElement.classList.add('dark');else document.documentElement.classList.remove('dark');}catch(e){}})();`,
+          }}
+        />
+      </head>
+      <body className="min-h-full flex flex-col bg-white dark:bg-[#0a0a0a] text-[#0a0a0a] dark:text-[#ededed] transition-colors duration-300">
         <ThemeProvider>
           <FlashSaleTimer />
           <Navbar />
