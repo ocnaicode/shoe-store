@@ -67,6 +67,19 @@ export default function AdminSettings() {
   if(loading) return <div className="text-center py-12">Loading settings...</div>;
   if(!settings) return <div>Failed to load</div>;
 
+  const toLocalInput = (iso: string) => {
+    if(!iso) return "";
+    const d = new Date(iso);
+    const pad = (n:number)=> String(n).padStart(2,'0');
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  };
+  const fromLocalInput = (val: string) => {
+    if(!val) return "";
+    // val is local datetime-local string, create date in local timezone
+    const d = new Date(val);
+    return d.toISOString();
+  };
+
   const tabs: {id: Tab, label: string, icon: string}[] = [
     {id: "cloudinary", label: "Media", icon: "☁️"},
     {id: "social", label: "Social Login", icon: "🔑"},
@@ -81,10 +94,10 @@ export default function AdminSettings() {
     <div className="max-w-5xl space-y-6">
       <div>
         <h2 className="text-2xl font-black">Settings - Full Control Panel</h2>
-        <p className="text-sm text-gray-500 dark:text-zinc-400"> sob kichu ekhan theke control koren - Media, Social Login, WhatsApp, Abandoned Cart, Steadfast, Flash Sale sob</p>
+        <p className="text-sm text-gray-500 dark:text-zinc-400 leading-relaxed">sob kichu ekhan theke control koren - Media, Social Login, WhatsApp, Abandoned Cart, Steadfast, Delivery, Payment, General sob</p>
       </div>
 
-      <div className="flex gap-2 overflow-auto pb-2">
+      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin flex-nowrap md:flex-wrap">
         {tabs.map(t=> (
           <button key={t.id} onClick={()=> setActiveTab(t.id)} className={`px-5 py-2.5 rounded-full text-sm font-bold whitespace-nowrap flex items-center gap-2 ${activeTab===t.id ? "bg-black text-white" : "bg-white dark:bg-zinc-900 border hover:bg-gray-50"}`}>
             <span>{t.icon}</span> {t.label}

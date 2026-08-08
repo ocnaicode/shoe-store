@@ -3,11 +3,17 @@ import { useEffect, useState } from "react";
 import { formatPrice } from "@/lib/utils";
 
 export default function AdminCoupons() {
+  const toLocalInput = (iso: string) => {
+    if(!iso) return "";
+    const d = new Date(iso);
+    const pad = (n:number)=> String(n).padStart(2,'0');
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  };
   const [coupons, setCoupons] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
-  const [flashSale, setFlashSale] = useState<any>({ enabled: false, title: "⚡ FLASH SALE - 30% OFF!", discountPercent: 30, endTime: new Date(Date.now() + 86400000).toISOString().slice(0,16), productIds: [] as string[] });
+  const [flashSale, setFlashSale] = useState<any>({ enabled: false, title: "⚡ FLASH SALE - 30% OFF!", discountPercent: 30, endTime: toLocalInput(new Date(Date.now() + 86400000).toISOString()), productIds: [] as string[] });
   const [search, setSearch] = useState("");
-  const [form, setForm] = useState({ code: "", discountType: "percent", discountValue: "", minOrder: "", maxDiscount: "", expiry: new Date(Date.now() + 7*86400000).toISOString().slice(0,16), description: "" });
+  const [form, setForm] = useState({ code: "", discountType: "percent", discountValue: "", minOrder: "", maxDiscount: "", expiry: toLocalInput(new Date(Date.now() + 7*86400000).toISOString()), description: "" });
   const [loading, setLoading] = useState(false);
 
   const fetchCoupons = () => {
@@ -18,7 +24,7 @@ export default function AdminCoupons() {
         enabled: d.flashSale.enabled,
         title: d.flashSale.title,
         discountPercent: d.flashSale.discountPercent,
-        endTime: d.flashSale.endTime ? new Date(d.flashSale.endTime).toISOString().slice(0,16) : new Date(Date.now() + 86400000).toISOString().slice(0,16),
+        endTime: d.flashSale.endTime ? toLocalInput(d.flashSale.endTime) : toLocalInput(new Date(Date.now() + 86400000).toISOString()),
         productIds: d.flashSale.productIds||[],
       });
     });
@@ -37,7 +43,7 @@ export default function AdminCoupons() {
       });
       const data = await res.json();
       if(!res.ok) throw new Error(data.error);
-      setForm({ code: "", discountType: "percent", discountValue: "", minOrder: "", maxDiscount: "", expiry: new Date(Date.now() + 7*86400000).toISOString().slice(0,16), description: "" });
+      setForm({ code: "", discountType: "percent", discountValue: "", minOrder: "", maxDiscount: "", expiry: toLocalInput(new Date(Date.now() + 7*86400000).toISOString()), description: "" });
       fetchCoupons();
       alert("✅ Coupon created!");
     } catch(err:any) { alert("❌ "+err.message); }
