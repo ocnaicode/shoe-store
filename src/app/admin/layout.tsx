@@ -71,6 +71,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const nav = [
     { href: "/admin", label: "Dashboard", icon: "📊" },
+    { href: "/admin/home", label: "Home Page", icon: "🏠" },
     { href: "/admin/products", label: "Products", icon: "👟" },
     { href: "/admin/categories", label: "Categories", icon: "📁" },
     { href: "/admin/orders", label: "Orders", icon: "📦" },
@@ -105,7 +106,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               key={n.href}
               href={n.href}
               onClick={() => setSidebarOpen(false)}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium ${pathname === n.href ? "bg-white text-black dark:text-white" : "hover:bg-white/10 text-white/80"}`}
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium ${pathname === n.href ? "bg-white text-black" : "hover:bg-white/10 text-white/80"}`}
             >
               <span>{n.icon}</span> {n.label}
             </Link>

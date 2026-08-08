@@ -3,11 +3,12 @@ import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-const slides = [
+const defaultSlides = [
   {
     badge: "NEW COLLECTION 2026 • UP TO 40% OFF",
     title: "STEP INTO",
@@ -17,8 +18,11 @@ const slides = [
     image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=800&q=80",
     bg: "from-amber-100 to-orange-50",
     accent: "from-amber-500 to-orange-600",
-    product: { name: "HOKO Air Max", price: "৳4,590", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200&q=80" },
+    productName: "HOKO Air Max",
+    productPrice: "৳4,590",
+    productImage: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200&q=80",
     cta: "/shop",
+    isActive: true,
   },
   {
     badge: "LIMITED EDITION • AIR MAX COLLECTION",
@@ -29,8 +33,11 @@ const slides = [
     image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&q=80",
     bg: "from-blue-100 to-indigo-50",
     accent: "from-blue-600 to-indigo-600",
-    product: { name: "Air Max Pro", price: "৳5,990", image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=200&q=80" },
+    productName: "Air Max Pro",
+    productPrice: "৳5,990",
+    productImage: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=200&q=80",
     cta: "/shop?category=sneakers",
+    isActive: true,
   },
   {
     badge: "FORMAL ELEGANCE • UP TO 30% OFF",
@@ -41,12 +48,26 @@ const slides = [
     image: "https://images.unsplash.com/photo-1614252369475-531eba835eb1?w=800&q=80",
     bg: "from-stone-100 to-neutral-50",
     accent: "from-stone-700 to-zinc-900",
-    product: { name: "Oxford Classic", price: "৳6,890", image: "https://images.unsplash.com/photo-1614253429381-573710ca9e2a?w=200&q=80" },
+    productName: "Oxford Classic",
+    productPrice: "৳6,890",
+    productImage: "https://images.unsplash.com/photo-1614253429381-573710ca9e2a?w=200&q=80",
     cta: "/shop?category=formal",
+    isActive: true,
   },
 ];
 
 export default function Hero() {
+  const [slides, setSlides] = useState(defaultSlides);
+
+  useEffect(() => {
+    fetch("/api/home-settings").then(r=>r.json()).then(d=>{
+      if(d.heroSlides && d.heroSlides.length > 0){
+        const active = d.heroSlides.filter((s:any)=> s.isActive !== false);
+        if(active.length > 0) setSlides(active);
+      }
+    }).catch(()=>{});
+  }, []);
+
   return (
     <section className="relative bg-[#f7f7f5] dark:bg-zinc-900 overflow-hidden">
       <Swiper
@@ -54,10 +75,10 @@ export default function Hero() {
         autoplay={{ delay: 4000, disableOnInteraction: false }}
         pagination={{ clickable: true }}
         navigation
-        loop
+        loop={slides.length > 1}
         className="hero-swiper"
       >
-        {slides.map((slide, idx) => (
+        {slides.map((slide: any, idx: number) => (
           <SwiperSlide key={idx}>
             <div className="max-w-[1400px] mx-auto px-4 lg:px-6">
               <div className="grid lg:grid-cols-2 gap-8 items-center py-8 lg:py-12 min-h-[560px]">
@@ -82,7 +103,7 @@ export default function Hero() {
                     {slide.desc}
                   </motion.p>
                   <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="flex flex-wrap gap-3 mt-8">
-                    <Link href={slide.cta} className="bg-black dark:bg-white text-white dark:text-black font-bold px-8 py-4 rounded-full hover:bg-zinc-800 dark:hover:bg-zinc-200 transition flex items-center gap-2 group">
+                    <Link href={slide.cta || "/shop"} className="bg-black dark:bg-white text-white dark:text-black font-bold px-8 py-4 rounded-full hover:bg-zinc-800 dark:hover:bg-zinc-200 transition flex items-center gap-2 group">
                       SHOP NOW <span className="bg-white dark:bg-black text-black dark:text-white rounded-full w-6 h-6 flex items-center justify-center text-sm group-hover:translate-x-1 transition">→</span>
                     </Link>
                     <Link href="/shop?filter=new" className="bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 font-bold px-8 py-4 rounded-full hover:bg-gray-50 dark:hover:bg-zinc-700 transition text-black dark:text-white">
@@ -107,11 +128,11 @@ export default function Hero() {
                 <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.2 }} className="relative lg:h-[560px] flex items-center justify-center">
                   <div className={`absolute inset-0 bg-gradient-to-br ${slide.bg} dark:from-zinc-800 dark:to-zinc-900 rounded-[32px] lg:rounded-[40px]`}></div>
                   <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.8 }} className="absolute top-6 right-6 bg-white dark:bg-zinc-800 rounded-2xl p-4 shadow-xl flex items-center gap-3 z-20 dark:border dark:border-zinc-700">
-                    <img src={slide.product.image} alt="" className="w-14 h-14 rounded-xl object-cover" />
+                    <img src={slide.productImage || slide.product?.image} alt="" className="w-14 h-14 rounded-xl object-cover" />
                     <div>
-                      <div className="text-xs font-bold text-black dark:text-white">{slide.product.name}</div>
+                      <div className="text-xs font-bold text-black dark:text-white">{slide.productName || slide.product?.name}</div>
                       <div className="text-xs text-gray-500 dark:text-zinc-400">Best Seller</div>
-                      <div className="text-sm font-black text-black dark:text-white">{slide.product.price}</div>
+                      <div className="text-sm font-black text-black dark:text-white">{slide.productPrice || slide.product?.price}</div>
                     </div>
                     <div className="w-8 h-8 bg-black dark:bg-white text-white dark:text-black rounded-full flex items-center justify-center">+</div>
                   </motion.div>

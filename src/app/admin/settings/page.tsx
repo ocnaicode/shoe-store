@@ -97,14 +97,6 @@ export default function AdminSettings() {
             <p className="text-sm opacity-90">Sob image ekhane upload hobe - CDN e fast deliver</p>
           </div>
           <div className="p-6 space-y-5">
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm">
-              <div className="font-bold">📌 Cloudinary kivabe paben?</div>
-              <ol className="list-decimal ml-5 mt-2 space-y-1">
-                <li><a href="https://cloudinary.com" target="_blank" className="underline text-blue-600 font-bold">cloudinary.com</a> e free account korun</li>
-                <li>Dashboard e giye Cloud Name, API Key, API Secret copy korun</li>
-                <li>Niche paste kore Save korun</li>
-              </ol>
-            </div>
             <div className="grid md:grid-cols-2 gap-4">
               <label><span className="text-xs font-bold">Cloud Name *</span><input value={settings.cloudinary.cloudName} onChange={e=> updateField("cloudinary","cloudName",e.target.value)} placeholder="my-cloud" className="w-full mt-1 border rounded-xl px-4 py-3 text-sm" /></label>
               <label><span className="text-xs font-bold">API Key *</span><input value={settings.cloudinary.apiKey} onChange={e=> updateField("cloudinary","apiKey",e.target.value)} placeholder="123..." className="w-full mt-1 border rounded-xl px-4 py-3 text-sm" /></label>

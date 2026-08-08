@@ -41,6 +41,7 @@ const REVIEWS_FILE = path.join(DATA_DIR, "reviews.json");
 const COUPONS_FILE = path.join(DATA_DIR, "coupons.json");
 const PROMOTIONS_FILE = path.join(DATA_DIR, "promotions.json");
 const CATEGORIES_FILE = path.join(DATA_DIR, "categories.json");
+const HOME_SETTINGS_FILE = path.join(DATA_DIR, "homeSettings.json");
 
 export function ensureDataDir() {
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -261,4 +262,78 @@ export function getFallbackCategories() {
 export function saveFallbackCategories(categories: any) {
   ensureDataDir();
   fs.writeFileSync(CATEGORIES_FILE, JSON.stringify(categories, null, 2));
+}
+
+// Home Settings
+export function getFallbackHomeSettings() {
+  ensureDataDir();
+  if (fs.existsSync(HOME_SETTINGS_FILE)) {
+    try { return JSON.parse(fs.readFileSync(HOME_SETTINGS_FILE, "utf-8")); } catch {}
+  }
+  const defaults = {
+    heroSlides: [
+      {
+        badge: "NEW COLLECTION 2026 • UP TO 40% OFF",
+        title: "STEP INTO",
+        highlight: "COMFORT",
+        subtitle: "& STYLE",
+        desc: "বাংলাদেশের #১ প্রিমিয়াম শু স্টোর। Discover the latest sneakers, formal & sports shoes.",
+        image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=800&q=80",
+        bg: "from-amber-100 to-orange-50",
+        accent: "from-amber-500 to-orange-600",
+        productName: "HOKO Air Max",
+        productPrice: "৳4,590",
+        productImage: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200&q=80",
+        cta: "/shop",
+        isActive: true,
+      },
+      {
+        badge: "LIMITED EDITION • AIR MAX COLLECTION",
+        title: "AIR MAX",
+        highlight: "REVOLUTION",
+        subtitle: "IS HERE",
+        desc: "Revolutionary air cushioning with premium comfort for everyday wear.",
+        image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&q=80",
+        bg: "from-blue-100 to-indigo-50",
+        accent: "from-blue-600 to-indigo-600",
+        productName: "Air Max Pro",
+        productPrice: "৳5,990",
+        productImage: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=200&q=80",
+        cta: "/shop?category=sneakers",
+        isActive: true,
+      },
+      {
+        badge: "FORMAL ELEGANCE • UP TO 30% OFF",
+        title: "FORMAL",
+        highlight: "ELEGANCE",
+        subtitle: "REDEFINED",
+        desc: "Handcrafted leather shoes for the modern gentleman. Office to party.",
+        image: "https://images.unsplash.com/photo-1614252369475-531eba835eb1?w=800&q=80",
+        bg: "from-stone-100 to-neutral-50",
+        accent: "from-stone-700 to-zinc-900",
+        productName: "Oxford Classic",
+        productPrice: "৳6,890",
+        productImage: "https://images.unsplash.com/photo-1614253429381-573710ca9e2a?w=200&q=80",
+        cta: "/shop?category=formal",
+        isActive: true,
+      },
+    ],
+    sections: {
+      categories: { enabled: true, title: "FIND YOUR PERFECT PAIR", subtitle: "SHOP BY CATEGORY" },
+      featured: { enabled: true, title: "TRENDING NOW", subtitle: "FEATURED PRODUCTS" },
+      promo: { enabled: true },
+      bestSellers: { enabled: true, title: "BEST SELLERS 🔥" },
+      newArrivals: { enabled: true, title: "FRESH DROPS THIS WEEK", subtitle: "NEW ARRIVALS" },
+      brands: { enabled: true, title: "TRUSTED BRANDS" },
+      whyChooseUs: { enabled: true, title: "" },
+      instagram: { enabled: true, title: "FOLLOW US ON INSTAGRAM @hokolifestylebd" },
+      testimonials: { enabled: true, title: "WHAT OUR CUSTOMERS SAY", subtitle: "TESTIMONIALS" },
+    },
+  };
+  saveFallbackHomeSettings(defaults);
+  return defaults;
+}
+export function saveFallbackHomeSettings(settings: any) {
+  ensureDataDir();
+  fs.writeFileSync(HOME_SETTINGS_FILE, JSON.stringify(settings, null, 2));
 }
