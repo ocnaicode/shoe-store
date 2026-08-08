@@ -29,11 +29,42 @@ export default function AdminHomePage() {
   const [uploading, setUploading] = useState<{field: string} | null>(null);
 
   const fetchHome = () => {
-    fetch("/api/home-settings").then(r=>r.json()).then(d=>{
-      setSlides(d.heroSlides || []);
-      setSections(d.sections || {});
-      setLoading(false);
-    });
+    fetch("/api/home-settings")
+      .then(r=>{
+        if(!r.ok) throw new Error("Failed");
+        return r.json();
+      })
+      .then(d=>{
+        setSlides(d.heroSlides || []);
+        setSections(d.sections || {
+          categories: { enabled: true, title: "FIND YOUR PERFECT PAIR", subtitle: "SHOP BY CATEGORY" },
+          featured: { enabled: true, title: "TRENDING NOW", subtitle: "FEATURED PRODUCTS" },
+          promo: { enabled: true },
+          bestSellers: { enabled: true, title: "BEST SELLERS 🔥" },
+          newArrivals: { enabled: true, title: "FRESH DROPS THIS WEEK", subtitle: "NEW ARRIVALS" },
+          brands: { enabled: true, title: "TRUSTED BRANDS" },
+          whyChooseUs: { enabled: true, title: "" },
+          instagram: { enabled: true, title: "FOLLOW US ON INSTAGRAM @hokolifestylebd" },
+          testimonials: { enabled: true, title: "WHAT OUR CUSTOMERS SAY", subtitle: "TESTIMONIALS" },
+        });
+        setLoading(false);
+      })
+      .catch(()=>{
+        // Fallback defaults if API fails
+        setSlides([]);
+        setSections({
+          categories: { enabled: true, title: "FIND YOUR PERFECT PAIR", subtitle: "SHOP BY CATEGORY" },
+          featured: { enabled: true, title: "TRENDING NOW", subtitle: "FEATURED PRODUCTS" },
+          promo: { enabled: true },
+          bestSellers: { enabled: true, title: "BEST SELLERS 🔥" },
+          newArrivals: { enabled: true, title: "FRESH DROPS THIS WEEK", subtitle: "NEW ARRIVALS" },
+          brands: { enabled: true, title: "TRUSTED BRANDS" },
+          whyChooseUs: { enabled: true, title: "" },
+          instagram: { enabled: true, title: "FOLLOW US ON INSTAGRAM @hokolifestylebd" },
+          testimonials: { enabled: true, title: "WHAT OUR CUSTOMERS SAY", subtitle: "TESTIMONIALS" },
+        });
+        setLoading(false);
+      });
   };
   useEffect(()=>{ fetchHome(); }, []);
 
@@ -69,11 +100,31 @@ export default function AdminHomePage() {
     const u=[...slides]; u[idx].isActive=!u[idx].isActive; setSlides(u);
   };
 
+  const handleSaveSlides = async()=>{
+    setSaving(true);
+    try{
+      const res=await fetch("/api/home-settings",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({heroSlides:slides, sections})});
+      const data=await res.json();
+      if(data.error) alert(data.error); else alert("✅ Hero slides saved!");
+    }catch(e:any){ alert(e.message); }
+    setSaving(false);
+  };
+  const handleSaveSections = async()=>{
+    setSaving(true);
+    try{
+      const res=await fetch("/api/home-settings",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({heroSlides:slides, sections})});
+      const data=await res.json();
+      if(data.error) alert(data.error); else alert("✅ Sections saved!");
+    }catch(e:any){ alert(e.message); }
+    setSaving(false);
+  };
   const handleSaveAll = async()=>{
     setSaving(true);
-    const res=await fetch("/api/home-settings",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({heroSlides:slides, sections})});
-    const data=await res.json();
-    if(data.error) alert(data.error); else alert("✅ Home page updated! Refresh home to see changes.");
+    try{
+      const res=await fetch("/api/home-settings",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({heroSlides:slides, sections})});
+      const data=await res.json();
+      if(data.error) alert(data.error); else alert("✅ Home page updated! Refresh home to see changes.");
+    }catch(e:any){ alert(e.message); }
     setSaving(false);
   };
 
@@ -110,6 +161,11 @@ export default function AdminHomePage() {
               </div>
             </div>
           ))}
+        </div>
+
+        <div className="mt-4 flex gap-2">
+          <button onClick={handleSaveSlides} disabled={saving} className="bg-black dark:bg-white text-white dark:text-black font-medium px-5 py-2 rounded-full text-sm disabled:opacity-50">💾 Save Slides Section</button>
+          <span className="text-xs text-gray-500 self-center">Slides auto-save with Sections on global save too</span>
         </div>
 
         <div className="mt-6 border-2 border-dashed border-gray-200 dark:border-zinc-700 rounded-xl p-5 bg-gray-50/50 dark:bg-zinc-800/30">
@@ -174,6 +230,7 @@ export default function AdminHomePage() {
             </div>
           ))}
         </div>
+        <button onClick={handleSaveSections} disabled={saving} className="mt-4 bg-black dark:bg-white text-white dark:text-black font-medium px-5 py-2 rounded-full text-sm disabled:opacity-50">💾 Save Sections Only</button>
       </div>
 
       <button onClick={handleSaveAll} disabled={saving} className="w-full bg-black dark:bg-white text-white dark:text-black font-medium py-3 rounded-full hover:bg-zinc-800 disabled:opacity-50">

@@ -96,7 +96,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="mt-4 bg-white/10 rounded-xl p-3 text-xs">
             <div className="text-white/60">Logged in as</div>
             <div className="font-bold truncate">{user.name} • {user.email}</div>
-            <div className="mt-1 inline-block bg-amber-500 text-black dark:text-white px-2 py-0.5 rounded-full text-[10px] font-black">{user.role.toUpperCase()} • MongoDB Atlas ✅</div>
           </div>
         </div>
 
@@ -141,10 +140,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               ☰
             </button>
             <h1 className="font-semibold tracking-tight text-black dark:text-white">Admin Panel</h1>
-            <span className="hidden md:inline-flex bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border border-green-100 dark:border-green-900/30 text-xs font-medium px-2.5 py-1 rounded-full">● Atlas Live</span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-xs text-gray-500 dark:text-zinc-400 hidden sm:inline">MongoDB: Atlas Connected ✅</span>
             <img src={user.avatar || `https://i.pravatar.cc/100?u=${user.email}`} alt="" className="w-9 h-9 rounded-full object-cover ring-1 ring-gray-200 dark:ring-zinc-700" />
             <span className="hidden md:inline font-medium text-sm text-black dark:text-white">{user.name}</span>
           </div>
