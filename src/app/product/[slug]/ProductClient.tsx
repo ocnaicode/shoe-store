@@ -65,7 +65,7 @@ export default function ProductClient({ product, related }: { product: any; rela
         <div className="max-w-[1400px] mx-auto px-4 lg:px-6">
           <div className="bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 animate-pulse">
             <div className="flex items-center gap-3">
-              <span className="bg-white text-red-600 font-black px-3 py-1 rounded-full text-xs">⚡ FLASH SALE</span>
+              <span className="bg-white dark:bg-zinc-900 text-red-600 font-black px-3 py-1 rounded-full text-xs">⚡ FLASH SALE</span>
               <span className="font-bold">{flashSale.title}</span>
               <span className="bg-black text-white px-3 py-1 rounded-full text-sm font-black">{flashSale.discountPercent}% OFF</span>
             </div>
@@ -150,7 +150,7 @@ export default function ProductClient({ product, related }: { product: any; rela
               <div className="flex gap-2 mt-3">
                 {(product.colors || []).map((c:any) => (
                   <button key={c.name} onClick={() => setSelectedColor(c.name)} className={`w-10 h-10 rounded-full border-2 flex items-center justify-center ${selectedColor === c.name ? "border-black dark:border-white scale-110" : "border-white dark:border-zinc-800 ring-1 ring-gray-200 dark:ring-zinc-700"}`} style={{ background: c.hex }} title={c.name}>
-                    {selectedColor === c.name && <span className="w-2 h-2 bg-white rounded-full ring-1 ring-black/20"></span>}
+                    {selectedColor === c.name && <span className="w-2 h-2 bg-white dark:bg-zinc-900 rounded-full ring-1 ring-black/20"></span>}
                   </button>
                 ))}
               </div>
@@ -193,7 +193,7 @@ export default function ProductClient({ product, related }: { product: any; rela
                 {variantStock === 0 ? "OUT OF STOCK" : `ADD TO CART • ${formatPrice(displayPrice * qty)}`}
               </button>
             </div>
-            <Link href="/checkout" onClick={handleAdd} className={`mt-3 w-full font-black rounded-full py-4 flex items-center justify-center gap-2 transition ${variantStock === 0 ? "bg-gray-300 dark:bg-zinc-700 text-gray-500 cursor-not-allowed pointer-events-none" : "bg-amber-500 hover:bg-amber-600 text-black"}`}>
+            <Link href="/checkout" onClick={handleAdd} className={`mt-3 w-full font-black rounded-full py-4 flex items-center justify-center gap-2 transition ${variantStock === 0 ? "bg-gray-300 dark:bg-zinc-700 text-gray-500 cursor-not-allowed pointer-events-none" : "bg-amber-500 hover:bg-amber-600 text-black dark:text-white"}`}>
               BUY NOW ⚡
             </Link>
 

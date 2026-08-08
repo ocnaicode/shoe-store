@@ -82,13 +82,13 @@ function ShopContent() {
                 <h3 className="font-medium text-sm mb-3 text-black dark:text-white">Price</h3>
                 <div className="space-y-3">
                   <input type="range" min={0} max={10000} step={500} value={priceRange[1]} onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])} className="w-full accent-black dark:accent-white" />
-                  <div className="flex justify-between text-xs text-gray-500">
+                  <div className="flex justify-between text-xs text-gray-500 dark:text-zinc-400">
                     <span>৳{priceRange[0]}</span>
                     <span>৳{priceRange[1]}</span>
                   </div>
                   <div className="grid grid-cols-2 gap-2 text-xs">
                     {[[0, 3000],[3000, 5000],[5000, 7000],[7000, 10000]].map((r) => (
-                      <button key={r.join("-")} onClick={() => setPriceRange(r as [number, number])} className="border border-gray-200 dark:border-zinc-700 rounded-full py-1.5 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition text-gray-600 dark:text-zinc-400">
+                      <button key={r.join("-")} onClick={() => setPriceRange(r as [number, number])} className="border border-gray-200 dark:border-zinc-700 rounded-full py-1.5 hover:bg-black hover:text-white dark:hover:bg-white dark:bg-zinc-900 dark:hover:text-black transition text-gray-600 dark:text-zinc-400">
                         ৳{r[0]} - ৳{r[1]}
                       </button>
                     ))}
@@ -126,7 +126,7 @@ function ShopContent() {
                   setPriceRange([0, 10000]);
                   setSelectedSizes([]);
                 }}
-                className="w-full border border-gray-200 dark:border-zinc-700 rounded-full py-2.5 text-sm font-medium hover:bg-gray-50 dark:hover:bg-zinc-800 transition text-black dark:text-white"
+                className="w-full border border-gray-200 dark:border-zinc-700 rounded-full py-2.5 text-sm font-medium hover:bg-gray-50 dark:bg-zinc-800 dark:hover:bg-zinc-800 transition text-black dark:text-white"
               >
                 Clear Filters
               </button>
@@ -147,9 +147,9 @@ function ShopContent() {
                     <div>
                       <h4 className="font-medium text-sm mb-2 text-black dark:text-white">Category</h4>
                       <div className="space-y-1">
-                        <button onClick={() => { setSelectedCategory("all"); setShowFilters(false); }} className={`w-full text-left px-3 py-2 rounded-lg text-sm ${selectedCategory === "all" ? "bg-black text-white" : "hover:bg-gray-50 dark:hover:bg-zinc-800"}`}>All Shoes</button>
+                        <button onClick={() => { setSelectedCategory("all"); setShowFilters(false); }} className={`w-full text-left px-3 py-2 rounded-lg text-sm ${selectedCategory === "all" ? "bg-black text-white" : "hover:bg-gray-50 dark:bg-zinc-800 dark:hover:bg-zinc-800"}`}>All Shoes</button>
                         {categories.map((c) => (
-                          <button key={c.slug} onClick={() => { setSelectedCategory(c.slug); setShowFilters(false); }} className={`w-full text-left px-3 py-2 rounded-lg text-sm capitalize ${selectedCategory === c.slug ? "bg-black text-white" : "hover:bg-gray-50 dark:hover:bg-zinc-800"}`}>{c.name}</button>
+                          <button key={c.slug} onClick={() => { setSelectedCategory(c.slug); setShowFilters(false); }} className={`w-full text-left px-3 py-2 rounded-lg text-sm capitalize ${selectedCategory === c.slug ? "bg-black text-white" : "hover:bg-gray-50 dark:bg-zinc-800 dark:hover:bg-zinc-800"}`}>{c.name}</button>
                         ))}
                       </div>
                     </div>
@@ -193,7 +193,7 @@ function ShopContent() {
 
 export default function ShopClientWrapper() {
   return (
-    <Suspense fallback={<div className="p-12 text-center text-gray-500">Loading shop...</div>}>
+    <Suspense fallback={<div className="p-12 text-center text-gray-500 dark:text-zinc-400">Loading shop...</div>}>
       <ShopContent />
     </Suspense>
   );

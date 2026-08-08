@@ -56,22 +56,22 @@ export default function Footer() {
           <div>
             <h4 className="font-medium text-sm mb-4 text-black dark:text-white">Shop</h4>
             <ul className="space-y-2.5 text-sm text-gray-500 dark:text-zinc-400">
-              <li><Link href="/shop?category=sneakers" className="hover:text-black dark:hover:text-white transition">Sneakers</Link></li>
-              <li><Link href="/shop?category=formal" className="hover:text-black dark:hover:text-white transition">Formal</Link></li>
-              <li><Link href="/shop?category=boots" className="hover:text-black dark:hover:text-white transition">Boots</Link></li>
-              <li><Link href="/shop?category=sports" className="hover:text-black dark:hover:text-white transition">Sports</Link></li>
-              <li><Link href="/shop" className="hover:text-black dark:hover:text-white transition">New Arrivals</Link></li>
+              <li><Link href="/shop?category=sneakers" className="hover:text-black dark:text-white dark:hover:text-white transition">Sneakers</Link></li>
+              <li><Link href="/shop?category=formal" className="hover:text-black dark:text-white dark:hover:text-white transition">Formal</Link></li>
+              <li><Link href="/shop?category=boots" className="hover:text-black dark:text-white dark:hover:text-white transition">Boots</Link></li>
+              <li><Link href="/shop?category=sports" className="hover:text-black dark:text-white dark:hover:text-white transition">Sports</Link></li>
+              <li><Link href="/shop" className="hover:text-black dark:text-white dark:hover:text-white transition">New Arrivals</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-medium text-sm mb-4 text-black dark:text-white">Help</h4>
             <ul className="space-y-2.5 text-sm text-gray-500 dark:text-zinc-400">
-              <li><Link href="/track-order" className="hover:text-black dark:hover:text-white transition">Track Order</Link></li>
-              <li><a href="#" className="hover:text-black dark:hover:text-white transition">Returns</a></li>
-              <li><a href="#" className="hover:text-black dark:hover:text-white transition">Shipping</a></li>
-              <li><a href="#" className="hover:text-black dark:hover:text-white transition">Size Guide</a></li>
-              <li><a href="#" className="hover:text-black dark:hover:text-white transition">FAQs</a></li>
+              <li><Link href="/track-order" className="hover:text-black dark:text-white dark:hover:text-white transition">Track Order</Link></li>
+              <li><a href="#" className="hover:text-black dark:text-white dark:hover:text-white transition">Returns</a></li>
+              <li><a href="#" className="hover:text-black dark:text-white dark:hover:text-white transition">Shipping</a></li>
+              <li><a href="#" className="hover:text-black dark:text-white dark:hover:text-white transition">Size Guide</a></li>
+              <li><a href="#" className="hover:text-black dark:text-white dark:hover:text-white transition">FAQs</a></li>
             </ul>
           </div>
 
@@ -79,8 +79,8 @@ export default function Footer() {
             <h4 className="font-medium text-sm mb-4 text-black dark:text-white">Contact</h4>
             <ul className="space-y-2.5 text-sm text-gray-500 dark:text-zinc-400">
               <li className="leading-relaxed">{contact.address}</li>
-              <li><a href={`tel:${contact.phone.replace(/\s/g,'')}`} className="hover:text-black dark:hover:text-white transition">{contact.phone}</a></li>
-              <li><a href={`mailto:${contact.email}`} className="hover:text-black dark:hover:text-white transition">{contact.email}</a></li>
+              <li><a href={`tel:${contact.phone.replace(/\s/g,'')}`} className="hover:text-black dark:text-white dark:hover:text-white transition">{contact.phone}</a></li>
+              <li><a href={`mailto:${contact.email}`} className="hover:text-black dark:text-white dark:hover:text-white transition">{contact.email}</a></li>
               <li className="text-xs">{contact.hours}</li>
             </ul>
           </div>
@@ -89,9 +89,9 @@ export default function Footer() {
         <div className="py-6 border-t border-gray-100 dark:border-zinc-900 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-400">
           <p>{footer.copyright}</p>
           <div className="flex items-center gap-4">
-            <a href="#" className="hover:text-black dark:hover:text-white transition">Privacy</a>
+            <a href="#" className="hover:text-black dark:text-white dark:hover:text-white transition">Privacy</a>
             <span className="w-px h-3 bg-gray-200 dark:bg-zinc-800"></span>
-            <a href="#" className="hover:text-black dark:hover:text-white transition">Terms</a>
+            <a href="#" className="hover:text-black dark:text-white dark:hover:text-white transition">Terms</a>
             <div className="hidden sm:flex items-center gap-1.5 ml-2">
               <span className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 px-2 py-1 rounded text-[10px] font-medium text-black dark:text-white">bKash</span>
               <span className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 px-2 py-1 rounded text-[10px] font-medium text-black dark:text-white">Nagad</span>

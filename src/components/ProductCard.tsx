@@ -36,7 +36,7 @@ export default function ProductCard({ product }: { product: any }) {
         />
         <div className="absolute top-3 left-3 flex flex-col gap-1.5">
           {product.isNew && <span className="bg-black dark:bg-white text-white dark:text-black text-[10px] font-bold px-2.5 py-1 rounded-full tracking-widest">NEW</span>}
-          {product.isBestSeller && <span className="bg-amber-500 text-black text-[10px] font-bold px-2.5 py-1 rounded-full tracking-widest">BESTSELLER</span>}
+          {product.isBestSeller && <span className="bg-amber-500 text-black dark:text-white text-[10px] font-bold px-2.5 py-1 rounded-full tracking-widest">BESTSELLER</span>}
           {comparePrice && (
             <span className="bg-red-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">
               {Math.round(((comparePrice - price) / comparePrice) * 100)}% OFF

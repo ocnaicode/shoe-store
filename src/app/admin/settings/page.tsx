@@ -77,12 +77,12 @@ export default function AdminSettings() {
     <div className="max-w-5xl space-y-6">
       <div>
         <h2 className="text-2xl font-black">Settings - Full Control Panel</h2>
-        <p className="text-sm text-gray-500"> sob kichu ekhan theke control koren - Cloudinary, Social Login, WhatsApp, Abandoned Cart, Steadfast, Flash Sale sob</p>
+        <p className="text-sm text-gray-500 dark:text-zinc-400"> sob kichu ekhan theke control koren - Cloudinary, Social Login, WhatsApp, Abandoned Cart, Steadfast, Flash Sale sob</p>
       </div>
 
       <div className="flex gap-2 overflow-auto pb-2">
         {tabs.map(t=> (
-          <button key={t.id} onClick={()=> setActiveTab(t.id)} className={`px-5 py-2.5 rounded-full text-sm font-bold whitespace-nowrap flex items-center gap-2 ${activeTab===t.id ? "bg-black text-white" : "bg-white border hover:bg-gray-50"}`}>
+          <button key={t.id} onClick={()=> setActiveTab(t.id)} className={`px-5 py-2.5 rounded-full text-sm font-bold whitespace-nowrap flex items-center gap-2 ${activeTab===t.id ? "bg-black text-white" : "bg-white dark:bg-zinc-900 border hover:bg-gray-50"}`}>
             <span>{t.icon}</span> {t.label}
           </button>
         ))}
@@ -91,7 +91,7 @@ export default function AdminSettings() {
       {message && <div className={`p-3 rounded-xl text-sm font-bold ${message.startsWith("✅") ? "bg-green-50 text-green-700 border border-green-200" : "bg-red-50 text-red-700 border border-red-200"}`}>{message}</div>}
 
       {activeTab==="cloudinary" && (
-        <div className="bg-white rounded-2xl border overflow-hidden">
+        <div className="bg-white dark:bg-zinc-900 rounded-2xl border overflow-hidden">
           <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6">
             <h3 className="text-xl font-black">☁️ Cloudinary Configuration</h3>
             <p className="text-sm opacity-90">Sob image ekhane upload hobe - CDN e fast deliver</p>
@@ -120,7 +120,7 @@ export default function AdminSettings() {
                 {testUploading ? "Uploading..." : "Choose Image"}
                 <input type="file" accept="image/*" className="hidden" onChange={handleTestUpload} disabled={testUploading} />
               </label>
-              {testResult && <div className="mt-2 p-3 bg-gray-50 rounded-xl text-xs border break-all">{testResult}</div>}
+              {testResult && <div className="mt-2 p-3 bg-gray-50 dark:bg-zinc-800 rounded-xl text-xs border break-all">{testResult}</div>}
             </div>
           </div>
         </div>
@@ -128,7 +128,7 @@ export default function AdminSettings() {
 
       {activeTab==="social" && (
         <div className="space-y-6">
-          <div className="bg-white rounded-2xl border p-6">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl border p-6">
             <div className="flex items-center justify-between">
               <h3 className="font-black text-lg">🔑 Social Login Control</h3>
               <label className="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full font-bold text-sm">
@@ -136,7 +136,7 @@ export default function AdminSettings() {
                 {settings.socialLogin.enabled ? "Enabled ✅" : "Disabled"}
               </label>
             </div>
-            <p className="text-sm text-gray-500 mt-2">Admin ekhan theke Google/Facebook login ON/OFF korte parbe. Disable korle shudhu Email/Password e login hobe. Checkout e auto account create always ON.</p>
+            <p className="text-sm text-gray-500 dark:text-zinc-400 mt-2">Admin ekhan theke Google/Facebook login ON/OFF korte parbe. Disable korle shudhu Email/Password e login hobe. Checkout e auto account create always ON.</p>
             
             <div className="grid md:grid-cols-2 gap-6 mt-6">
               <div className="border-2 rounded-2xl p-5">
@@ -191,9 +191,9 @@ export default function AdminSettings() {
 
       {activeTab==="whatsapp" && (
         <div className="space-y-6">
-          <div className="bg-white rounded-2xl border p-6">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl border p-6">
             <h3 className="font-black text-lg">💬 WhatsApp Live Chat</h3>
-            <p className="text-sm text-gray-500">Floating WhatsApp button sob page e show hobe</p>
+            <p className="text-sm text-gray-500 dark:text-zinc-400">Floating WhatsApp button sob page e show hobe</p>
             <div className="grid md:grid-cols-2 gap-4 mt-4">
               <label className="flex items-center gap-3 md:col-span-2 bg-green-50 border border-green-200 rounded-xl p-3">
                 <input type="checkbox" checked={settings.whatsapp.enabled} onChange={e=> updateField("whatsapp","enabled",e.target.checked)} className="accent-green-600" />
@@ -206,9 +206,9 @@ export default function AdminSettings() {
             <button onClick={handleWhatsappSave} disabled={saving} className="mt-4 bg-green-600 text-white font-bold px-8 py-3 rounded-full">{saving ? "Saving..." : "💾 Save WhatsApp"}</button>
           </div>
 
-          <div className="bg-white rounded-2xl border p-6">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl border p-6">
             <h3 className="font-black text-lg">🛒 Abandoned Cart Recovery</h3>
-            <p className="text-sm text-gray-500">User cart e product rekhe chole gele popup + discount offer</p>
+            <p className="text-sm text-gray-500 dark:text-zinc-400">User cart e product rekhe chole gele popup + discount offer</p>
             <div className="grid md:grid-cols-2 gap-4 mt-4">
               <label className="flex items-center gap-3 md:col-span-2 bg-amber-50 border border-amber-200 rounded-xl p-3">
                 <input type="checkbox" checked={settings.abandonedCart.enabled} onChange={e=> updateField("abandonedCart","enabled",e.target.checked)} className="accent-black" />
@@ -237,17 +237,17 @@ export default function AdminSettings() {
       )}
 
       {activeTab==="steadfast" && (
-        <div className="bg-white rounded-2xl border overflow-hidden">
+        <div className="bg-white dark:bg-zinc-900 rounded-2xl border overflow-hidden">
           <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white p-6">
             <h3 className="text-xl font-black">🚚 Steadfast Courier API</h3>
             <p className="text-sm opacity-90">Order Shipped korle auto courier entry hobe - Tracking soho</p>
           </div>
           <div className="p-6 space-y-5">
-            <label className="flex items-center gap-3 bg-gray-50 border-2 rounded-xl p-4">
+            <label className="flex items-center gap-3 bg-gray-50 dark:bg-zinc-800 border-2 rounded-xl p-4">
               <input type="checkbox" checked={settings.steadfast.enabled} onChange={e=> updateField("steadfast","enabled",e.target.checked)} className="accent-green-600 w-5 h-5" />
               <div>
                 <div className="font-black">Enable Steadfast Integration {settings.steadfast.enabled ? "✅" : "❌ Disabled (mock mode)"}</div>
-                <div className="text-xs text-gray-500">Disable thakle mock tracking number generate hobe, enable korle real API call jabe</div>
+                <div className="text-xs text-gray-500 dark:text-zinc-400">Disable thakle mock tracking number generate hobe, enable korle real API call jabe</div>
               </div>
             </label>
 
@@ -257,7 +257,7 @@ export default function AdminSettings() {
                 <li><a href="https://portal.packzy.com" target="_blank" className="underline font-bold text-blue-600">portal.packzy.com</a> e Steadfast account korun</li>
                 <li>Login → <strong>API Key</strong> menu te jan</li>
                 <li>Api-Key & Secret-Key copy kore niche paste korun</li>
-                <li>Base URL default: <code className="bg-white px-1 rounded">https://portal.packzy.com/api/v1</code></li>
+                <li>Base URL default: <code className="bg-white dark:bg-zinc-900 px-1 rounded">https://portal.packzy.com/api/v1</code></li>
               </ol>
             </div>
 
@@ -273,12 +273,12 @@ export default function AdminSettings() {
                 const res = await fetch("/api/steadfast/create", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ recipient_name: "Test User", recipient_phone: "01700000000", recipient_address: "Dhaka", cod_amount: 1000 })});
                 const data = await res.json();
                 alert(JSON.stringify(data, null, 2));
-              }} className="border px-6 py-3 rounded-full font-bold hover:bg-gray-50">🧪 Test API</button>
+              }} className="border px-6 py-3 rounded-full font-bold hover:bg-gray-50 dark:bg-zinc-800">🧪 Test API</button>
             </div>
 
-            <div className="bg-gray-50 rounded-xl p-4 text-xs">
+            <div className="bg-gray-50 dark:bg-zinc-800 rounded-xl p-4 text-xs">
               <div className="font-bold">📦 Order Flow:</div>
-              <div className="mt-2 space-y-1 text-gray-600">
+              <div className="mt-2 space-y-1 text-gray-600 dark:text-zinc-300">
                 <div>1. Customer order kore → Status: <strong>pending</strong></div>
                 <div>2. Admin Orders page e giye <strong>Shipped</strong> korle auto Steadfast e consignment create hobe</div>
                 <div>3. Tracking code order e save hobe, customer Track Order page e dekhte parbe</div>
@@ -291,7 +291,7 @@ export default function AdminSettings() {
 
       {activeTab==="general" && (
         <div className="space-y-6">
-          <div className="bg-white rounded-2xl p-6 border">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border">
             <h3 className="font-black">Site & SEO</h3>
             <div className="space-y-3 mt-4 text-sm">
               <div className="flex justify-between border rounded-xl p-3"><span>Sitemap.xml</span><span className="text-green-600 font-bold">✅ Auto</span></div>
@@ -300,9 +300,9 @@ export default function AdminSettings() {
               <div className="flex justify-between border rounded-xl p-3"><span>Photo Reviews Schema</span><span className="text-green-600 font-bold">✅ Added</span></div>
             </div>
           </div>
-          <div className="bg-white rounded-2xl p-6 border">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border">
             <h3 className="font-black">MongoDB</h3>
-            <p className="text-sm text-gray-500">Fallback file storage active - MONGODB_URI set korle auto switch</p>
+            <p className="text-sm text-gray-500 dark:text-zinc-400">Fallback file storage active - MONGODB_URI set korle auto switch</p>
             <div className="bg-gray-900 text-green-400 rounded-xl p-4 font-mono text-xs mt-4">MONGODB_URI=mongodb+srv://...</div>
           </div>
         </div>

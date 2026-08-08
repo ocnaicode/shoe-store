@@ -38,13 +38,13 @@ export default function SiteSettingsPage() {
     <div className="max-w-5xl space-y-6">
       <div>
         <h2 className="text-2xl font-black">Site Customization 🎨</h2>
-        <p className="text-sm text-gray-500">Website er sob contact, social, footer, logo, announcement ekhan theke change korun - Live update hobe</p>
+        <p className="text-sm text-gray-500 dark:text-zinc-400">Website er sob contact, social, footer, logo, announcement ekhan theke change korun - Live update hobe</p>
       </div>
 
       {message && <div className={`p-3 rounded-xl text-sm font-bold ${message.startsWith("✅") ? "bg-green-50 text-green-700 border border-green-200" : "bg-red-50 text-red-700"}`}>{message}</div>}
 
       {/* General */}
-      <div className="bg-white rounded-2xl p-6 border">
+      <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border">
         <h3 className="font-black text-lg">🏷️ General Info</h3>
         <div className="grid md:grid-cols-2 gap-4 mt-4">
           <label><span className="text-xs font-bold">Site Name</span><input value={settings.siteName} onChange={e=> updateRoot("siteName", e.target.value)} className="w-full mt-1 border rounded-xl px-4 py-3 text-sm" /></label>
@@ -55,7 +55,7 @@ export default function SiteSettingsPage() {
       </div>
 
       {/* Announcement */}
-      <div className="bg-white rounded-2xl p-6 border">
+      <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border">
         <h3 className="font-black">📢 Announcement Bar (Top)</h3>
         <div className="flex items-center gap-3 mt-4">
           <label className="flex items-center gap-2 font-bold text-sm">
@@ -67,9 +67,9 @@ export default function SiteSettingsPage() {
       </div>
 
       {/* Contact */}
-      <div className="bg-white rounded-2xl p-6 border">
+      <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border">
         <h3 className="font-black">📞 Contact Information</h3>
-        <p className="text-xs text-gray-500">Footer & Navbar e show hobe</p>
+        <p className="text-xs text-gray-500 dark:text-zinc-400">Footer & Navbar e show hobe</p>
         <div className="grid md:grid-cols-2 gap-4 mt-4">
           <label><span className="text-xs font-bold">Phone 1</span><input value={settings.contact.phone} onChange={e=> updateField("contact","phone", e.target.value)} className="w-full mt-1 border rounded-xl px-4 py-3 text-sm" /></label>
           <label><span className="text-xs font-bold">Phone 2</span><input value={settings.contact.phone2} onChange={e=> updateField("contact","phone2", e.target.value)} className="w-full mt-1 border rounded-xl px-4 py-3 text-sm" /></label>
@@ -82,7 +82,7 @@ export default function SiteSettingsPage() {
       </div>
 
       {/* Social */}
-      <div className="bg-white rounded-2xl p-6 border">
+      <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border">
         <h3 className="font-black">🌐 Social Links</h3>
         <div className="grid md:grid-cols-2 gap-4 mt-4">
           <label><span className="text-xs font-bold">Facebook</span><input value={settings.social.facebook} onChange={e=> updateField("social","facebook", e.target.value)} className="w-full mt-1 border rounded-xl px-4 py-3 text-sm" /></label>
@@ -93,7 +93,7 @@ export default function SiteSettingsPage() {
       </div>
 
       {/* Footer */}
-      <div className="bg-white rounded-2xl p-6 border">
+      <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border">
         <h3 className="font-black">📝 Footer</h3>
         <div className="space-y-4 mt-4">
           <label><span className="text-xs font-bold">Footer Description</span><textarea value={settings.footer.description} onChange={e=> updateField("footer","description", e.target.value)} rows={3} className="w-full mt-1 border rounded-xl px-4 py-3 text-sm" /></label>

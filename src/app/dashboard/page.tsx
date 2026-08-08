@@ -97,7 +97,7 @@ export default function DashboardPage() {
                   {item.count !== undefined && <span className={`ml-auto text-xs px-2 py-0.5 rounded-full ${tab === item.id ? "bg-white dark:bg-black text-black dark:text-white" : "bg-gray-100 dark:bg-zinc-800"}`}>{item.count}</span>}
                 </button>
               ))}
-              <Link href="/auth/change-password" className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium hover:bg-gray-50 dark:hover:bg-zinc-800 border border-gray-200 dark:border-zinc-700 mt-3 text-black dark:text-white">
+              <Link href="/auth/change-password" className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium hover:bg-gray-50 dark:bg-zinc-800 dark:hover:bg-zinc-800 border border-gray-200 dark:border-zinc-700 mt-3 text-black dark:text-white">
                 Change Password
               </Link>
               {user.role === "admin" && (

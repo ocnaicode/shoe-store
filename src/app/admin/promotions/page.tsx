@@ -84,7 +84,7 @@ export default function AdminPromotions() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-black">Promotion Popups 🎉</h2>
-          <p className="text-sm text-gray-500">Website e popup image create korun - Edit, Delete, Update sob ekhan theke. Image auto Cloudinary te upload hobe.</p>
+          <p className="text-sm text-gray-500 dark:text-zinc-400">Website e popup image create korun - Edit, Delete, Update sob ekhan theke. Image auto Cloudinary te upload hobe.</p>
         </div>
         <button onClick={()=> { setShowForm(!showForm); setEditing(null); setForm({ title: "", subtitle: "", image: "", link: "/shop", buttonText: "Shop Now", isActive: true, displayDelay: 3 });}} className="bg-black text-white font-bold px-6 py-3 rounded-full hover:bg-zinc-800">
           {showForm ? "Cancel" : "+ Create Popup"}
@@ -92,7 +92,7 @@ export default function AdminPromotions() {
       </div>
 
       {showForm && (
-        <form onSubmit={handleSave} className="bg-white rounded-2xl p-6 border">
+        <form onSubmit={handleSave} className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border">
           <h3 className="font-black text-lg">{editing ? "Edit Promotion" : "Create New Promotion Popup"}</h3>
           <div className="grid md:grid-cols-2 gap-4 mt-4">
             <label>
@@ -121,18 +121,18 @@ export default function AdminPromotions() {
             </label>
             <div className="md:col-span-2">
               <span className="text-xs font-bold">Popup Image * (Cloudinary Upload)</span>
-              <div className="mt-2 border-2 border-dashed rounded-2xl p-6 text-center bg-gray-50">
+              <div className="mt-2 border-2 border-dashed rounded-2xl p-6 text-center bg-gray-50 dark:bg-zinc-800">
                 <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" id="promo-upload" />
                 <label htmlFor="promo-upload" className="cursor-pointer">
                   <div className="w-12 h-12 bg-black text-white rounded-xl flex items-center justify-center mx-auto">↑</div>
                   <div className="font-bold text-sm mt-2">{uploading ? "Uploading to Cloudinary..." : "Click to Upload Image"}</div>
-                  <div className="text-xs text-gray-500">Recommended: 600x600px • PNG/JPG • Auto Cloudinary CDN</div>
+                  <div className="text-xs text-gray-500 dark:text-zinc-400">Recommended: 600x600px • PNG/JPG • Auto Cloudinary CDN</div>
                 </label>
                 {form.image && (
                   <div className="mt-4">
                     <img src={form.image} alt="Preview" className="w-full max-w-sm h-48 object-cover rounded-xl mx-auto border" />
                     <div className="text-xs text-green-600 font-bold mt-2">✅ Uploaded to Cloudinary</div>
-                    <div className="text-xs break-all bg-white p-2 rounded border mt-1">{form.image.slice(0,80)}...</div>
+                    <div className="text-xs break-all bg-white dark:bg-zinc-900 p-2 rounded border mt-1">{form.image.slice(0,80)}...</div>
                   </div>
                 )}
               </div>
@@ -142,20 +142,20 @@ export default function AdminPromotions() {
             <button disabled={saving || uploading} type="submit" className="flex-1 bg-black text-white font-black py-3 rounded-full hover:bg-zinc-800 disabled:opacity-50">
               {saving ? "Saving..." : editing ? "Update Promotion" : "Create Promotion"}
             </button>
-            <button type="button" onClick={()=> { setShowForm(false); setEditing(null);}} className="px-8 border rounded-full font-bold hover:bg-gray-50">Cancel</button>
+            <button type="button" onClick={()=> { setShowForm(false); setEditing(null);}} className="px-8 border rounded-full font-bold hover:bg-gray-50 dark:bg-zinc-800">Cancel</button>
           </div>
         </form>
       )}
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {promotions.length===0 ? (
-          <div className="md:col-span-3 bg-white rounded-2xl p-12 text-center border">
+          <div className="md:col-span-3 bg-white dark:bg-zinc-900 rounded-2xl p-12 text-center border">
             <div className="text-4xl">🎉</div>
             <h3 className="font-bold mt-3">No promotions yet</h3>
-            <p className="text-sm text-gray-500">Create korle website er home page e popup hisabe show hobe (3 sec por).</p>
+            <p className="text-sm text-gray-500 dark:text-zinc-400">Create korle website er home page e popup hisabe show hobe (3 sec por).</p>
           </div>
         ) : promotions.map(p=> (
-          <div key={p._id} className="bg-white rounded-2xl border overflow-hidden">
+          <div key={p._id} className="bg-white dark:bg-zinc-900 rounded-2xl border overflow-hidden">
             <div className="relative">
               <img src={p.image} alt={p.title} className="w-full h-48 object-cover" />
               <span className={`absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-bold ${p.isActive ? "bg-green-500 text-white" : "bg-red-500 text-white"}`}>{p.isActive ? "Active" : "Inactive"}</span>
@@ -163,7 +163,7 @@ export default function AdminPromotions() {
             </div>
             <div className="p-4">
               <h3 className="font-black line-clamp-1">{p.title}</h3>
-              <p className="text-xs text-gray-500 line-clamp-1">{p.subtitle}</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400 line-clamp-1">{p.subtitle}</p>
               <div className="text-xs text-gray-400 mt-1">Link: {p.link}</div>
               <div className="flex gap-2 mt-4">
                 <button onClick={()=> toggleActive(p)} className={`flex-1 py-2 rounded-full text-xs font-bold ${p.isActive ? "bg-amber-100 text-amber-700" : "bg-green-100 text-green-700"}`}>{p.isActive ? "Deactivate" : "Activate"}</button>

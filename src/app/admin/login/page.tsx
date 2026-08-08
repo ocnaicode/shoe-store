@@ -105,12 +105,12 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center bg-[#f5f5f5] px-4">
-      <div className="w-full max-w-md bg-white rounded-3xl p-8 border shadow-xl">
+    <div className="min-h-[80vh] flex items-center justify-center bg-[#f5f5f5] dark:bg-zinc-950 px-4">
+      <div className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-3xl p-8 border shadow-xl">
         <div className="text-center">
           <div className="w-16 h-16 bg-black text-white rounded-2xl flex items-center justify-center mx-auto font-black text-2xl">H</div>
           <h1 className="text-2xl font-black mt-4">Admin Login</h1>
-          <p className="text-sm text-gray-500 mt-1">HOKO Lifestyle BD - Admin Panel Only</p>
+          <p className="text-sm text-gray-500 dark:text-zinc-400 mt-1">HOKO Lifestyle BD - Admin Panel Only</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-4 mt-8">
@@ -133,7 +133,7 @@ export default function AdminLogin() {
         <div className="mt-6 bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs">
           <div className="font-bold">🔑 Default Admin Credentials:</div>
           <div className="font-mono mt-1">admin@hokolifestylebd.com / admin123</div>
-          <div className="text-gray-600 mt-2">First time login e auto-create hobe & admin role paabe. MongoDB connect ache, tai data persist hobe.</div>
+          <div className="text-gray-600 dark:text-zinc-300 mt-2">First time login e auto-create hobe & admin role paabe. MongoDB connect ache, tai data persist hobe.</div>
         </div>
 
         <div className="mt-4 text-center">

@@ -71,14 +71,14 @@ export default function AdminCoupons() {
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-black">Coupons & Flash Sale 🎟️⚡</h2>
-        <p className="text-sm text-gray-500">Admin theke sob control - Coupon create + Flash Sale timer</p>
+        <p className="text-sm text-gray-500 dark:text-zinc-400">Admin theke sob control - Coupon create + Flash Sale timer</p>
       </div>
 
       {/* Flash Sale */}
       <div className="bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-2xl p-6">
         <div className="flex items-center justify-between">
           <h3 className="font-black text-lg">⚡ Flash Sale Timer</h3>
-          <label className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-full font-bold text-sm cursor-pointer">
+          <label className="flex items-center gap-2 bg-white dark:bg-zinc-900 text-black dark:text-white px-4 py-2 rounded-full font-bold text-sm cursor-pointer">
             <input type="checkbox" checked={flashSale.enabled} onChange={(e)=> setFlashSale({...flashSale, enabled: e.target.checked})} className="accent-black" />
             {flashSale.enabled ? "Enabled ✅" : "Disabled"}
           </label>
@@ -86,19 +86,19 @@ export default function AdminCoupons() {
         <div className="grid md:grid-cols-3 gap-4 mt-4">
           <label>
             <span className="text-xs font-bold opacity-90">Title</span>
-            <input value={flashSale.title} onChange={(e)=> setFlashSale({...flashSale, title:e.target.value})} className="w-full mt-1 rounded-xl px-4 py-2 text-sm text-black" />
+            <input value={flashSale.title} onChange={(e)=> setFlashSale({...flashSale, title:e.target.value})} className="w-full mt-1 rounded-xl px-4 py-2 text-sm text-black dark:text-white" />
           </label>
           <label>
             <span className="text-xs font-bold opacity-90">Discount %</span>
-            <input type="number" value={flashSale.discountPercent} onChange={(e)=> setFlashSale({...flashSale, discountPercent:e.target.value})} className="w-full mt-1 rounded-xl px-4 py-2 text-sm text-black" />
+            <input type="number" value={flashSale.discountPercent} onChange={(e)=> setFlashSale({...flashSale, discountPercent:e.target.value})} className="w-full mt-1 rounded-xl px-4 py-2 text-sm text-black dark:text-white" />
           </label>
           <label>
             <span className="text-xs font-bold opacity-90">End Time</span>
-            <input type="datetime-local" value={flashSale.endTime} onChange={(e)=> setFlashSale({...flashSale, endTime:e.target.value})} className="w-full mt-1 rounded-xl px-4 py-2 text-sm text-black" />
+            <input type="datetime-local" value={flashSale.endTime} onChange={(e)=> setFlashSale({...flashSale, endTime:e.target.value})} className="w-full mt-1 rounded-xl px-4 py-2 text-sm text-black dark:text-white" />
           </label>
           <label className="md:col-span-3">
             <span className="text-xs font-bold opacity-90">Product IDs (comma separated, blank = all products)</span>
-            <input value={flashSale.productIds} onChange={(e)=> setFlashSale({...flashSale, productIds:e.target.value})} placeholder="1,2,3 or leave blank" className="w-full mt-1 rounded-xl px-4 py-2 text-sm text-black" />
+            <input value={flashSale.productIds} onChange={(e)=> setFlashSale({...flashSale, productIds:e.target.value})} placeholder="1,2,3 or leave blank" className="w-full mt-1 rounded-xl px-4 py-2 text-sm text-black dark:text-white" />
           </label>
         </div>
         <button onClick={saveFlashSale} className="mt-4 bg-black text-white font-bold px-6 py-2.5 rounded-full hover:bg-zinc-800">💾 Save Flash Sale</button>
@@ -106,7 +106,7 @@ export default function AdminCoupons() {
       </div>
 
       {/* Create Coupon */}
-      <div className="bg-white rounded-2xl p-6 border">
+      <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border">
         <h3 className="font-black">Create New Coupon</h3>
         <form onSubmit={handleCreate} className="grid md:grid-cols-3 gap-4 mt-4">
           <label>
@@ -115,7 +115,7 @@ export default function AdminCoupons() {
           </label>
           <label>
             <span className="text-xs font-bold">Discount Type</span>
-            <select value={form.discountType} onChange={(e)=> setForm({...form, discountType:e.target.value})} className="w-full mt-1 border rounded-xl px-4 py-3 text-sm bg-white">
+            <select value={form.discountType} onChange={(e)=> setForm({...form, discountType:e.target.value})} className="w-full mt-1 border rounded-xl px-4 py-3 text-sm bg-white dark:bg-zinc-900">
               <option value="percent">Percent (%)</option>
               <option value="fixed">Fixed (৳)</option>
             </select>
@@ -147,13 +147,13 @@ export default function AdminCoupons() {
       </div>
 
       {/* List */}
-      <div className="bg-white rounded-2xl border overflow-hidden">
+      <div className="bg-white dark:bg-zinc-900 rounded-2xl border overflow-hidden">
         <div className="p-6 border-b">
           <h3 className="font-black">All Coupons ({coupons.length})</h3>
         </div>
         <div className="overflow-auto">
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 text-xs text-gray-500">
+            <thead className="bg-gray-50 dark:bg-zinc-800 text-xs text-gray-500 dark:text-zinc-400">
               <tr>
                 <th className="text-left p-4">Code</th>
                 <th className="text-left p-4">Discount</th>
@@ -168,7 +168,7 @@ export default function AdminCoupons() {
               {coupons.map((c)=> (
                 <tr key={c.code} className="border-t">
                   <td className="p-4 font-mono font-black">{c.code}</td>
-                  <td className="p-4 font-bold">{c.discountType==="percent" ? `${c.discountValue}%` : formatPrice(c.discountValue)} <span className="text-xs text-gray-500">{c.description}</span></td>
+                  <td className="p-4 font-bold">{c.discountType==="percent" ? `${c.discountValue}%` : formatPrice(c.discountValue)} <span className="text-xs text-gray-500 dark:text-zinc-400">{c.description}</span></td>
                   <td className="p-4">{formatPrice(c.minOrder)}</td>
                   <td className="p-4 text-xs">{new Date(c.expiry).toLocaleDateString()}</td>
                   <td className="p-4">{c.usedCount || 0} / {c.usageLimit}</td>

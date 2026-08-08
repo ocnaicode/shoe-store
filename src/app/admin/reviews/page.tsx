@@ -45,12 +45,12 @@ export default function AdminReviews() {
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-black">Photo Reviews ⭐</h2>
-        <p className="text-sm text-gray-500">Customer photo reviews - Approve korle product page e show hobe</p>
+        <p className="text-sm text-gray-500 dark:text-zinc-400">Customer photo reviews - Approve korle product page e show hobe</p>
       </div>
 
       <div className="flex gap-2">
         {["pending", "approved", "rejected", "all"].map((f) => (
-          <button key={f} onClick={() => setFilter(f)} className={`px-5 py-2 rounded-full text-sm font-bold capitalize ${filter === f ? "bg-black text-white" : "bg-white border"}`}>
+          <button key={f} onClick={() => setFilter(f)} className={`px-5 py-2 rounded-full text-sm font-bold capitalize ${filter === f ? "bg-black text-white" : "bg-white dark:bg-zinc-900 border"}`}>
             {f} {f === "pending" ? `(${reviews.filter((r) => r.status === "pending").length})` : ""}
           </button>
         ))}
@@ -58,21 +58,21 @@ export default function AdminReviews() {
 
       <div className="grid gap-4">
         {reviews.length === 0 ? (
-          <div className="bg-white rounded-2xl p-12 text-center border">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl p-12 text-center border">
             <div className="text-4xl">📸</div>
             <h3 className="font-bold mt-3">No {filter} reviews</h3>
-            <p className="text-sm text-gray-500">Customer ra review dile ekhane show hobe. Photo soho review product page theke submit korte parbe.</p>
+            <p className="text-sm text-gray-500 dark:text-zinc-400">Customer ra review dile ekhane show hobe. Photo soho review product page theke submit korte parbe.</p>
           </div>
         ) : (
           reviews.map((r) => (
-            <div key={r._id} className="bg-white rounded-2xl p-5 border">
+            <div key={r._id} className="bg-white dark:bg-zinc-900 rounded-2xl p-5 border">
               <div className="flex gap-4">
                 <img src={`https://i.pravatar.cc/100?u=${r.userName}`} alt="" className="w-12 h-12 rounded-full" />
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <span className="font-bold">{r.userName}</span>
                     <span className="text-amber-500 text-sm">{"★".repeat(r.rating)}</span>
-                    <span className="text-xs text-gray-500">• {r.productSlug}</span>
+                    <span className="text-xs text-gray-500 dark:text-zinc-400">• {r.productSlug}</span>
                     <span className={`ml-auto px-2 py-1 rounded-full text-xs font-bold uppercase ${r.status === "approved" ? "bg-green-100 text-green-700" : r.status === "pending" ? "bg-amber-100 text-amber-700" : "bg-red-100 text-red-700"}`}>{r.status}</span>
                   </div>
                   <p className="text-sm mt-2">{r.comment}</p>
@@ -83,13 +83,13 @@ export default function AdminReviews() {
                       ))}
                     </div>
                   )}
-                  <div className="text-xs text-gray-500 mt-2">{new Date(r.createdAt).toLocaleString()} • {r.userEmail}</div>
+                  <div className="text-xs text-gray-500 dark:text-zinc-400 mt-2">{new Date(r.createdAt).toLocaleString()} • {r.userEmail}</div>
                 </div>
               </div>
               <div className="flex gap-2 mt-4 border-t pt-4">
                 <button onClick={() => updateStatus(r._id, "approved")} className="bg-green-600 text-white px-4 py-1.5 rounded-full text-xs font-bold hover:bg-green-700">✅ Approve</button>
                 <button onClick={() => updateStatus(r._id, "rejected")} className="bg-red-500 text-white px-4 py-1.5 rounded-full text-xs font-bold hover:bg-red-600">❌ Reject</button>
-                <button onClick={() => updateStatus(r._id, "pending")} className="border px-4 py-1.5 rounded-full text-xs font-bold hover:bg-gray-50">Pending</button>
+                <button onClick={() => updateStatus(r._id, "pending")} className="border px-4 py-1.5 rounded-full text-xs font-bold hover:bg-gray-50 dark:bg-zinc-800">Pending</button>
               </div>
             </div>
           ))

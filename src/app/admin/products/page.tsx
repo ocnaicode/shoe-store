@@ -155,7 +155,7 @@ export default function AdminProducts() {
           </div>
           <div className="flex flex-wrap gap-2">
             <button onClick={handleImportDemo} disabled={importing} className="inline-flex items-center gap-1.5 bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-full hover:bg-blue-700 disabled:opacity-50">📥 Import Demo</button>
-            <button onClick={handleClearDemo} className="border border-gray-200 dark:border-zinc-700 text-sm font-medium px-4 py-2 rounded-full hover:bg-gray-50 dark:hover:bg-zinc-800">Clear Demo</button>
+            <button onClick={handleClearDemo} className="border border-gray-200 dark:border-zinc-700 text-sm font-medium px-4 py-2 rounded-full hover:bg-gray-50 dark:bg-zinc-800 dark:hover:bg-zinc-800">Clear Demo</button>
             <button onClick={()=>{setShowAdd(!showAdd); if(!showAdd){setEditing(null); setForm({ name:"",price:"",comparePrice:"",category: categories[0]?.slug||"sneakers",brand:"HOKO",description:"",sku:"",material:"",stock:"",images:[],isVariable:true});}}} className="bg-black dark:bg-white text-white dark:text-black text-sm font-medium px-5 py-2 rounded-full">{showAdd?"Cancel":"Add Product"}</button>
           </div>
         </div>
@@ -165,7 +165,7 @@ export default function AdminProducts() {
         <div className="bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 dark:border-zinc-800 overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-100 dark:border-zinc-800">
             <h3 className="font-medium text-black dark:text-white">{editing?"Edit Product":"New Product"}</h3>
-            <p className="text-xs text-gray-500 mt-1">Fill details • Images go to Cloudinary • Colors & variants for shoes</p>
+            <p className="text-xs text-gray-500 dark:text-zinc-400 mt-1">Fill details • Images go to Cloudinary • Colors & variants for shoes</p>
           </div>
           
           <div className="p-6 space-y-6">
@@ -217,9 +217,9 @@ export default function AdminProducts() {
             <div className="border border-gray-100 dark:border-zinc-800 rounded-xl p-4 bg-gray-50/50 dark:bg-zinc-900/50">
               <div className="flex items-center justify-between">
                 <h4 className="font-medium text-sm">🎨 Colors</h4>
-                <button type="button" onClick={addColor} className="text-xs font-medium border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-1.5 rounded-full hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition">+ Add Color</button>
+                <button type="button" onClick={addColor} className="text-xs font-medium border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-1.5 rounded-full hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black dark:text-white transition">+ Add Color</button>
               </div>
-              <p className="text-xs text-gray-500 mt-1">Add product colors with name & hex. Customer will see color dots.</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400 mt-1">Add product colors with name & hex. Customer will see color dots.</p>
               <div className="mt-3 space-y-2">
                 {colors.map((c, idx)=> (
                   <div key={idx} className="flex gap-2 items-center bg-white dark:bg-zinc-900 p-2.5 rounded-lg border border-gray-100 dark:border-zinc-800">
@@ -240,24 +240,24 @@ export default function AdminProducts() {
                   <h4 className="font-medium text-sm">📏 Sizes & Stock</h4>
                   <button type="button" onClick={addVariant} className="text-xs font-medium border bg-white dark:bg-zinc-800 px-3 py-1.5 rounded-full">+ Add Size</button>
                 </div>
-                <p className="text-xs text-gray-500 mt-1">Each size can have different stock & price. Total: {variants.reduce((a,b)=>a+Number(b.stock||0),0)} units</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400 mt-1">Each size can have different stock & price. Total: {variants.reduce((a,b)=>a+Number(b.stock||0),0)} units</p>
                 <div className="mt-3 space-y-2">
                   {variants.map((v, idx)=> (
                     <div key={idx} className="grid grid-cols-12 gap-2 items-end bg-white dark:bg-zinc-900 p-3 rounded-lg border border-gray-100 dark:border-zinc-800">
                       <div className="col-span-3">
-                        <label className="text-xs text-gray-500">Size</label>
+                        <label className="text-xs text-gray-500 dark:text-zinc-400">Size</label>
                         <input type="number" value={v.size} onChange={e=>handleVariantChange(idx,"size",e.target.value)} className="w-full mt-1 border border-gray-200 dark:border-zinc-700 rounded-lg px-2 py-2 text-sm" />
                       </div>
                       <div className="col-span-3">
-                        <label className="text-xs text-gray-500">Stock</label>
+                        <label className="text-xs text-gray-500 dark:text-zinc-400">Stock</label>
                         <input type="number" value={v.stock} onChange={e=>handleVariantChange(idx,"stock",e.target.value)} className="w-full mt-1 border border-gray-200 dark:border-zinc-700 rounded-lg px-2 py-2 text-sm" />
                       </div>
                       <div className="col-span-3">
-                        <label className="text-xs text-gray-500">Price (৳)</label>
+                        <label className="text-xs text-gray-500 dark:text-zinc-400">Price (৳)</label>
                         <input type="number" value={v.price||""} onChange={e=>handleVariantChange(idx,"price",e.target.value)} placeholder={form.price||"Base"} className="w-full mt-1 border border-gray-200 dark:border-zinc-700 rounded-lg px-2 py-2 text-sm" />
                       </div>
                       <div className="col-span-2">
-                        <label className="text-xs text-gray-500">SKU</label>
+                        <label className="text-xs text-gray-500 dark:text-zinc-400">SKU</label>
                         <input value={v.sku||""} onChange={e=>handleVariantChange(idx,"sku",e.target.value)} placeholder="Auto" className="w-full mt-1 border border-gray-200 dark:border-zinc-700 rounded-lg px-2 py-2 text-sm" />
                       </div>
                       <div className="col-span-1">
@@ -282,7 +282,7 @@ export default function AdminProducts() {
                 <label htmlFor="file-upload" className="cursor-pointer inline-flex flex-col items-center">
                   <div className="w-10 h-10 rounded-full bg-black dark:bg-white text-white dark:text-black flex items-center justify-center">↑</div>
                   <span className="text-sm font-medium mt-2 text-black dark:text-white">{uploading?"Uploading...":"Click to upload images"}</span>
-                  <span className="text-xs text-gray-500">PNG, JPG • Multiple • Cloudinary CDN</span>
+                  <span className="text-xs text-gray-500 dark:text-zinc-400">PNG, JPG • Multiple • Cloudinary CDN</span>
                 </label>
                 {form.images.length>0 && (
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4 text-left">
@@ -302,7 +302,7 @@ export default function AdminProducts() {
 
           <div className="px-6 py-4 bg-gray-50 dark:bg-zinc-800/50 border-t border-gray-100 dark:border-zinc-800 flex gap-3">
             <button onClick={handleSave} disabled={saving||uploading} className="flex-1 bg-black dark:bg-white text-white dark:text-black font-medium py-2.5 rounded-full hover:bg-zinc-800 disabled:opacity-50">{saving?"Saving...": editing?"Update Product":"Create Product"}</button>
-            <button onClick={()=>{setShowAdd(false);setEditing(null);}} className="px-6 border border-gray-200 dark:border-zinc-700 rounded-full font-medium hover:bg-white dark:hover:bg-zinc-800 text-sm">Cancel</button>
+            <button onClick={()=>{setShowAdd(false);setEditing(null);}} className="px-6 border border-gray-200 dark:border-zinc-700 rounded-full font-medium hover:bg-white dark:bg-zinc-900 dark:hover:bg-zinc-800 text-sm">Cancel</button>
           </div>
         </div>
       )}
@@ -314,7 +314,7 @@ export default function AdminProducts() {
         </div>
         <div className="overflow-auto">
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 dark:bg-zinc-800/50 text-xs text-gray-500">
+            <thead className="bg-gray-50 dark:bg-zinc-800/50 text-xs text-gray-500 dark:text-zinc-400">
               <tr>
                 <th className="text-left p-3 font-medium">Product</th>
                 <th className="text-left p-3 font-medium">Category</th>
@@ -326,13 +326,13 @@ export default function AdminProducts() {
             </thead>
             <tbody>
               {products.map((p)=>(
-                <tr key={p._id||p.id} className="border-t border-gray-100 dark:border-zinc-800 hover:bg-gray-50/50 dark:hover:bg-zinc-800/50">
+                <tr key={p._id||p.id} className="border-t border-gray-100 dark:border-zinc-800 hover:bg-gray-50 dark:bg-zinc-800/50 dark:hover:bg-zinc-800/50">
                   <td className="p-3">
                     <div className="flex gap-3">
                       <img src={p.images?.[0]} alt="" className="w-10 h-10 rounded-lg object-cover bg-gray-100 dark:bg-zinc-800 flex-shrink-0" />
                       <div className="min-w-0">
                         <div className="font-medium line-clamp-1 text-black dark:text-white text-sm max-w-[180px]">{p.name}</div>
-                        <div className="text-xs text-gray-500">{p.brand} • {p.sku||"No SKU"} • {p.images?.length||0} imgs</div>
+                        <div className="text-xs text-gray-500 dark:text-zinc-400">{p.brand} • {p.sku||"No SKU"} • {p.images?.length||0} imgs</div>
                       </div>
                     </div>
                   </td>
@@ -350,7 +350,7 @@ export default function AdminProducts() {
                   </td>
                   <td className="p-3">
                     <div className="flex gap-1">
-                      <button onClick={()=>handleEdit(p)} className="w-7 h-7 rounded-full border border-gray-200 dark:border-zinc-700 flex items-center justify-center hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition text-xs">✎</button>
+                      <button onClick={()=>handleEdit(p)} className="w-7 h-7 rounded-full border border-gray-200 dark:border-zinc-700 flex items-center justify-center hover:bg-black hover:text-white dark:hover:bg-white dark:bg-zinc-900 dark:hover:text-black dark:text-white transition text-xs">✎</button>
                       <button onClick={()=>handleDelete(p._id||p.id)} className="w-7 h-7 rounded-full border border-gray-200 dark:border-zinc-700 flex items-center justify-center hover:bg-red-500 hover:text-white transition text-xs">🗑</button>
                       <a href={`/product/${p.slug}`} target="_blank" className="w-7 h-7 rounded-full border border-gray-200 dark:border-zinc-700 flex items-center justify-center hover:bg-blue-500 hover:text-white transition text-xs">↗</a>
                     </div>

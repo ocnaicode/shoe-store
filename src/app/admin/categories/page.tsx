@@ -91,7 +91,7 @@ export default function AdminCategories() {
       {showForm && (
         <div className="bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 dark:border-zinc-800 p-6">
           <h3 className="font-medium text-black dark:text-white">{editing ? "Edit Category" : "Add New Category"}</h3>
-          <p className="text-xs text-gray-500 mt-1">Category image will be uploaded to Cloudinary CDN for fast delivery</p>
+          <p className="text-xs text-gray-500 dark:text-zinc-400 mt-1">Category image will be uploaded to Cloudinary CDN for fast delivery</p>
           
           <form onSubmit={handleSave} className="grid md:grid-cols-2 gap-4 mt-6">
             <label className="space-y-1.5">
@@ -114,7 +114,7 @@ export default function AdminCategories() {
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                   </div>
                   <span className="text-sm font-medium mt-2 text-black dark:text-white">{uploading ? "Uploading to Cloudinary..." : "Click to upload image"}</span>
-                  <span className="text-xs text-gray-500">600x400 recommended • Auto Cloudinary</span>
+                  <span className="text-xs text-gray-500 dark:text-zinc-400">600x400 recommended • Auto Cloudinary</span>
                 </label>
                 {form.image && (
                   <div className="mt-4 flex justify-center">
@@ -132,7 +132,7 @@ export default function AdminCategories() {
               <button disabled={saving || uploading} type="submit" className="flex-1 bg-black dark:bg-white text-white dark:text-black font-medium py-2.5 rounded-full hover:bg-zinc-800 dark:hover:bg-zinc-200 transition disabled:opacity-50">
                 {saving ? "Saving..." : editing ? "Update Category" : "Create Category"}
               </button>
-              <button type="button" onClick={()=> { setShowForm(false); setEditing(null);}} className="px-6 border border-gray-200 dark:border-zinc-700 rounded-full font-medium hover:bg-gray-50 dark:hover:bg-zinc-800 text-sm">Cancel</button>
+              <button type="button" onClick={()=> { setShowForm(false); setEditing(null);}} className="px-6 border border-gray-200 dark:border-zinc-700 rounded-full font-medium hover:bg-gray-50 dark:bg-zinc-800 dark:hover:bg-zinc-800 text-sm">Cancel</button>
             </div>
           </form>
         </div>
@@ -148,7 +148,7 @@ export default function AdminCategories() {
           <div className="p-12 text-center">
             <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-zinc-800 flex items-center justify-center mx-auto text-gray-400">📁</div>
             <h3 className="font-medium mt-3 text-black dark:text-white">No categories</h3>
-            <p className="text-sm text-gray-500 mt-1">Create your first category to organize products</p>
+            <p className="text-sm text-gray-500 dark:text-zinc-400 mt-1">Create your first category to organize products</p>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
@@ -157,7 +157,7 @@ export default function AdminCategories() {
                 <div className="relative h-36 bg-gray-50 dark:bg-zinc-800 overflow-hidden">
                   <img src={cat.image} alt={cat.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition" />
-                  <span className={`absolute top-3 left-3 px-2.5 py-1 rounded-full text-xs font-medium ${cat.isActive ? "bg-green-500 text-white" : "bg-gray-500 text-white"}`}>{cat.isActive ? "Active" : "Inactive"}</span>
+                  <span className={`absolute top-3 left-3 px-2.5 py-1 rounded-full text-xs font-medium ${cat.isActive ? "bg-green-500 text-white" : "bg-gray-50 dark:bg-zinc-8000 text-white"}`}>{cat.isActive ? "Active" : "Inactive"}</span>
                   <span className="absolute bottom-3 left-3 bg-black/70 backdrop-blur text-white text-xs px-2.5 py-1 rounded-full">/{cat.slug}</span>
                 </div>
                 <div className="p-4">
@@ -169,7 +169,7 @@ export default function AdminCategories() {
                       <button onClick={()=> toggleActive(cat)} className={`w-7 h-7 rounded-full border flex items-center justify-center transition text-xs ${cat.isActive ? "border-amber-200 bg-amber-50 text-amber-600 hover:bg-amber-100" : "border-green-200 bg-green-50 text-green-600"}`} title={cat.isActive ? "Deactivate" : "Activate"}>
                         {cat.isActive ? "⏸" : "▶"}
                       </button>
-                      <button onClick={()=> handleEdit(cat)} className="w-7 h-7 rounded-full border border-gray-200 dark:border-zinc-700 flex items-center justify-center hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition text-xs">✏️</button>
+                      <button onClick={()=> handleEdit(cat)} className="w-7 h-7 rounded-full border border-gray-200 dark:border-zinc-700 flex items-center justify-center hover:bg-black hover:text-white dark:hover:bg-white dark:bg-zinc-900 dark:hover:text-black dark:text-white transition text-xs">✏️</button>
                       <button onClick={()=> handleDelete(cat._id)} className="w-7 h-7 rounded-full border border-gray-200 dark:border-zinc-700 flex items-center justify-center hover:bg-red-500 hover:text-white hover:border-red-500 transition text-xs">🗑️</button>
                     </div>
                   </div>

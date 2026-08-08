@@ -89,9 +89,9 @@ export default function CartPage() {
                   <div className="font-semibold mt-1 text-black dark:text-white text-sm">{formatPrice(item.price)}</div>
                   <div className="flex items-center gap-2 mt-3">
                     <div className="flex items-center border border-gray-200 dark:border-zinc-700 rounded-full">
-                      <button onClick={() => updateQuantity(item.id, item.size, item.quantity - 1)} className="w-8 h-8 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-zinc-800 rounded-full text-black dark:text-white">−</button>
+                      <button onClick={() => updateQuantity(item.id, item.size, item.quantity - 1)} className="w-8 h-8 flex items-center justify-center hover:bg-gray-50 dark:bg-zinc-800 dark:hover:bg-zinc-800 rounded-full text-black dark:text-white">−</button>
                       <span className="w-8 text-center text-sm font-medium text-black dark:text-white">{item.quantity}</span>
-                      <button onClick={() => updateQuantity(item.id, item.size, item.quantity + 1)} className="w-8 h-8 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-zinc-800 rounded-full text-black dark:text-white">+</button>
+                      <button onClick={() => updateQuantity(item.id, item.size, item.quantity + 1)} className="w-8 h-8 flex items-center justify-center hover:bg-gray-50 dark:bg-zinc-800 dark:hover:bg-zinc-800 rounded-full text-black dark:text-white">+</button>
                     </div>
                     <button onClick={() => removeFromCart(item.id, item.size)} className="text-xs font-medium text-red-600 hover:underline ml-2">Remove</button>
                   </div>
@@ -160,9 +160,9 @@ export default function CartPage() {
                 </div>
                 {couponMsg && <div className={`mt-2 text-xs p-2 rounded-lg ${couponMsg.startsWith("✅") ? "bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border border-green-100 dark:border-green-900/30" : "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border border-red-100 dark:border-red-900/30"}`}>{couponMsg}</div>}
                 <div className="mt-3 flex flex-wrap gap-1.5">
-                  <span className="text-xs text-gray-500">Try:</span>
+                  <span className="text-xs text-gray-500 dark:text-zinc-400">Try:</span>
                   {["WELCOME10", "EID2026", "FLAT500"].map((c) => (
-                    <button key={c} onClick={() => setCoupon(c)} className="text-xs border border-gray-200 dark:border-zinc-700 rounded-full px-2.5 py-1 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition text-gray-600 dark:text-zinc-400">{c}</button>
+                    <button key={c} onClick={() => setCoupon(c)} className="text-xs border border-gray-200 dark:border-zinc-700 rounded-full px-2.5 py-1 hover:bg-black hover:text-white dark:hover:bg-white dark:bg-zinc-900 dark:hover:text-black transition text-gray-600 dark:text-zinc-400">{c}</button>
                   ))}
                 </div>
               </div>
