@@ -48,6 +48,8 @@ export async function POST(req: Request) {
       };
     }
     if (body.flashSale) updated.flashSale = { ...current.flashSale, ...body.flashSale };
+    if (body.delivery) updated.delivery = { ...current.delivery, ...body.delivery };
+    if (body.payment) updated.payment = { ...current.payment, ...body.payment };
     if (body.cloudinary) {
       updated.cloudinary = {
         ...current.cloudinary,

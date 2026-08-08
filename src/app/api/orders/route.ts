@@ -21,7 +21,6 @@ export async function GET(req: Request) {
     console.error(e);
   }
 
-  // fallback
   const orders = getFallbackOrders();
   if (orderId) {
     const found = orders.find((o: any) => o.id === orderId || o.orderId === orderId);
@@ -38,10 +37,15 @@ export async function POST(req: Request) {
       orderId: body.id || body.orderId || "HOKO" + Date.now().toString().slice(-6),
       items: body.items,
       total: body.total,
+      subtotal: body.subtotal,
+      shipping: body.shipping,
+      discount: body.discount,
+      couponCode: body.couponCode,
       status: body.status || "pending",
       customer: body.customer,
       paymentMethod: body.paymentMethod,
-      paymentStatus: "pending",
+      paymentStatus: body.paymentStatus || (body.paymentMethod === "cod" ? "cod" : "pending"),
+      paymentDetails: body.paymentDetails,
     };
 
     const conn = await connectDB();
@@ -50,7 +54,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ order }, { status: 201 });
     }
 
-    // fallback file
     const orders = getFallbackOrders();
     const newOrder = { ...body, id: orderData.orderId, orderId: orderData.orderId, createdAt: new Date().toISOString() };
     orders.unshift(newOrder);
@@ -63,16 +66,21 @@ export async function POST(req: Request) {
 
 export async function PATCH(req: Request) {
   try {
-    const { orderId, status } = await req.json();
+    const { orderId, status, paymentStatus } = await req.json();
+    const updates: any = {};
+    if (status) updates.status = status;
+    if (paymentStatus) updates.paymentStatus = paymentStatus;
+
     const conn = await connectDB();
     if (conn) {
-      const order = await (Order as any).findOneAndUpdate({ orderId }, { status }, { new: true });
+      const order = await (Order as any).findOneAndUpdate({ orderId }, updates, { new: true });
       return NextResponse.json({ order });
     }
     const orders = getFallbackOrders();
     const idx = orders.findIndex((o: any) => o.id === orderId || o.orderId === orderId);
     if (idx !== -1) {
-      orders[idx].status = status;
+      if (status) orders[idx].status = status;
+      if (paymentStatus) orders[idx].paymentStatus = paymentStatus;
       saveFallbackOrders(orders);
       return NextResponse.json({ order: orders[idx] });
     }

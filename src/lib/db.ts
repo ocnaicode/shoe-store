@@ -143,6 +143,20 @@ export function getSettings() {
       endTime: new Date(Date.now() + 86400000).toISOString(),
       productIds: [] as string[],
     },
+    delivery: {
+      insideDhaka: 60,
+      outsideDhaka: 120,
+      freeThreshold: 3000,
+      enabled: true,
+    },
+    payment: {
+      bkashNumber: "01700000000",
+      bkashType: "Personal" as string,
+      nagadNumber: "01800000000",
+      nagadType: "Personal" as string,
+      instructions: "Send money to the number above and enter Sender Number & Transaction ID below. Admin will verify within 2 hours.",
+      codEnabled: true,
+    },
   };
 
   if (fs.existsSync(SETTINGS_FILE)) {
@@ -159,6 +173,8 @@ export function getSettings() {
         abandonedCart: { ...defaults.abandonedCart, ...(saved.abandonedCart || {}) },
         steadfast: { ...defaults.steadfast, ...(saved.steadfast || {}) },
         flashSale: { ...defaults.flashSale, ...(saved.flashSale || {}) },
+        delivery: { ...defaults.delivery, ...(saved.delivery || {}) },
+        payment: { ...defaults.payment, ...(saved.payment || {}) },
       };
     } catch {}
   }

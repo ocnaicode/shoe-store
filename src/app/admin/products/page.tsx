@@ -30,7 +30,9 @@ export default function AdminProducts() {
     { size: 38, stock: 10 }, { size: 39, stock: 15 }, { size: 40, stock: 20 }, { size: 41, stock: 15 }, { size: 42, stock: 10 },
   ]);
   const [colors, setColors] = useState<Color[]>([{ name: "Black", hex: "#111111" }]);
+  const [descriptionImages, setDescriptionImages] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
+  const [uploadingDesc, setUploadingDesc] = useState(false);
   const [saving, setSaving] = useState(false);
   const [importing, setImporting] = useState(false);
 
@@ -51,6 +53,19 @@ export default function AdminProducts() {
       }catch{}
     }
     setUploading(false); e.target.value="";
+  };
+  const handleDescImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files; if(!files) return;
+    setUploadingDesc(true);
+    for(let i=0;i<files.length;i++){
+      const fd=new FormData(); fd.append("file", files[i]);
+      try{
+        const res=await fetch("/api/upload",{method:"POST",body:fd});
+        const data=await res.json();
+        if(data.secure_url||data.url) setDescriptionImages(prev=>[...prev, data.secure_url||data.url]);
+      }catch{}
+    }
+    setUploadingDesc(false); e.target.value="";
   };
 
   const handleVariantChange = (idx:number, field:keyof Variant, value:any)=>{
@@ -84,6 +99,7 @@ export default function AdminProducts() {
       variants: form.isVariable? variants.map(v=>({size:v.size, stock:Number(v.stock), price: v.price?Number(v.price):Number(form.price), sku: v.sku||`${form.name.slice(0,3).toUpperCase()}-${v.size}`})):undefined,
       colors: colors.filter(c=>c.name && c.hex),
       images: form.images,
+      descriptionImages,
       sku: form.sku || `HOKO-${Date.now().toString().slice(-6)}`,
       material: form.material||"Synthetic",
       rating:4.5, reviews:0,
@@ -105,6 +121,7 @@ export default function AdminProducts() {
       setForm({ name:"",price:"",comparePrice:"",category: categories[0]?.slug||"sneakers",brand:"HOKO",description:"",sku:"",material:"",stock:"",images:[],isVariable:true});
       setVariants([{size:38,stock:10},{size:39,stock:15},{size:40,stock:20},{size:41,stock:15},{size:42,stock:10}]);
       setColors([{name:"Black",hex:"#111111"}]);
+      setDescriptionImages([]);
     }catch(e:any){ alert(e.message); }
     setSaving(false);
   };
@@ -115,6 +132,7 @@ export default function AdminProducts() {
     if(p.variants?.length) setVariants(p.variants);
     else if(p.sizes) setVariants(p.sizes.map((s:number)=>({size:s,stock:10})));
     if(p.colors?.length) setColors(p.colors);
+    if(p.descriptionImages?.length) setDescriptionImages(p.descriptionImages);
     setShowAdd(true);
   };
   const handleDelete=async(id:string)=>{
@@ -211,6 +229,27 @@ export default function AdminProducts() {
                 <span className="text-xs font-medium">Description (SEO)</span>
                 <textarea value={form.description} onChange={e=>setForm({...form,description:e.target.value})} rows={3} placeholder="Premium shoe description for Google..." className="w-full border border-gray-200 dark:border-zinc-700 rounded-lg px-3 py-2.5 text-sm" />
               </label>
+              <div className="md:col-span-2 space-y-1.5">
+                <span className="text-xs font-medium">Description Images (Cloudinary) - shown in product details</span>
+                <div className="border border-dashed border-gray-200 dark:border-zinc-700 rounded-xl p-4 text-center bg-gray-50/30 dark:bg-zinc-900/30">
+                  <input type="file" multiple accept="image/*" onChange={handleDescImageUpload} className="hidden" id="desc-upload" />
+                  <label htmlFor="desc-upload" className="cursor-pointer inline-flex flex-col items-center">
+                    <div className="w-8 h-8 rounded-full bg-black dark:bg-white text-white dark:text-black flex items-center justify-center text-sm">＋</div>
+                    <span className="text-xs font-medium mt-1 text-black dark:text-white">{uploadingDesc?"Uploading...":"Upload description images"}</span>
+                    <span className="text-xs text-gray-500">These show inside Description tab below text</span>
+                  </label>
+                  {descriptionImages.length>0 && (
+                    <div className="grid grid-cols-3 gap-2 mt-3">
+                      {descriptionImages.map((img,i)=>(
+                        <div key={i} className="relative">
+                          <img src={img} alt="" className="w-full h-20 object-cover rounded-lg border" />
+                          <button type="button" onClick={()=>setDescriptionImages(prev=>prev.filter((_,idx)=>idx!==i))} className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full text-xs">×</button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
 
             {/* Colors - NEW */}

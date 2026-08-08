@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 
-type Tab = "cloudinary" | "social" | "whatsapp" | "steadfast" | "general";
+type Tab = "cloudinary" | "social" | "whatsapp" | "steadfast" | "delivery" | "payment" | "general";
 
 export default function AdminSettings() {
   const [activeTab, setActiveTab] = useState<Tab>("cloudinary");
@@ -47,6 +47,8 @@ export default function AdminSettings() {
     secretKey: settings.steadfast.secretKey?.includes("•") ? undefined : settings.steadfast.secretKey,
     baseUrl: settings.steadfast.baseUrl,
   }});
+  const handleDeliverySave = () => saveSection({ delivery: settings.delivery });
+  const handlePaymentSave = () => saveSection({ payment: settings.payment });
 
   const handleTestUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]; if(!file) return;
@@ -70,6 +72,8 @@ export default function AdminSettings() {
     {id: "social", label: "Social Login", icon: "🔑"},
     {id: "whatsapp", label: "WhatsApp & Cart", icon: "💬"},
     {id: "steadfast", label: "Steadfast Courier", icon: "🚚"},
+    {id: "delivery", label: "Delivery Charge", icon: "🚚"},
+    {id: "payment", label: "bKash/Nagad", icon: "💳"},
     {id: "general", label: "General & SEO", icon: "⚙️"},
   ];
 
@@ -278,6 +282,76 @@ export default function AdminSettings() {
               </div>
             </div>
           </div>
+        </div>
+      )}
+
+      {activeTab==="delivery" && (
+        <div className="bg-white dark:bg-zinc-900 rounded-2xl border p-6">
+          <h3 className="font-black text-lg">🚚 Delivery Charge Settings</h3>
+          <p className="text-sm text-gray-500 dark:text-zinc-400 mt-1">Admin can set delivery charge for inside/outside Dhaka and free threshold</p>
+          <div className="grid md:grid-cols-3 gap-4 mt-6">
+            <label>
+              <span className="text-xs font-bold">Inside Dhaka (৳)</span>
+              <input type="number" value={settings.delivery?.insideDhaka ?? 60} onChange={e=> updateField("delivery","insideDhaka",Number(e.target.value))} placeholder="60" className="w-full mt-1 border rounded-xl px-4 py-3 text-sm" />
+            </label>
+            <label>
+              <span className="text-xs font-bold">Outside Dhaka (৳)</span>
+              <input type="number" value={settings.delivery?.outsideDhaka ?? 120} onChange={e=> updateField("delivery","outsideDhaka",Number(e.target.value))} placeholder="120" className="w-full mt-1 border rounded-xl px-4 py-3 text-sm" />
+            </label>
+            <label>
+              <span className="text-xs font-bold">Free Delivery Threshold (৳)</span>
+              <input type="number" value={settings.delivery?.freeThreshold ?? 3000} onChange={e=> updateField("delivery","freeThreshold",Number(e.target.value))} placeholder="3000" className="w-full mt-1 border rounded-xl px-4 py-3 text-sm" />
+            </label>
+          </div>
+          <div className="mt-4 flex items-center gap-2">
+            <input type="checkbox" checked={settings.delivery?.enabled ?? true} onChange={e=> updateField("delivery","enabled",e.target.checked)} className="accent-black" />
+            <span className="text-sm font-medium">Enable delivery charge (disable = free shipping always)</span>
+          </div>
+          <div className="mt-4 bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/30 rounded-xl p-3 text-xs">
+            <strong>💡 Example:</strong> Inside Dhaka 60, Outside 120, Free over 3000. Checkout e city select korle auto charge add hobe. COD amount e include hobe.
+          </div>
+          <button onClick={handleDeliverySave} disabled={saving} className="mt-6 bg-black dark:bg-white text-white dark:text-black font-bold px-8 py-3 rounded-full disabled:opacity-50">{saving?"Saving...":"💾 Save Delivery"}</button>
+        </div>
+      )}
+
+      {activeTab==="payment" && (
+        <div className="bg-white dark:bg-zinc-900 rounded-2xl border p-6">
+          <h3 className="font-black text-lg">💳 bKash / Nagad Manual Payment</h3>
+          <p className="text-sm text-gray-500 dark:text-zinc-400 mt-1">Configure personal numbers and instructions. Customer will send money and input Transaction ID.</p>
+          <div className="grid md:grid-cols-2 gap-4 mt-6">
+            <label>
+              <span className="text-xs font-bold">bKash Number (Personal) *</span>
+              <input value={settings.payment?.bkashNumber || ""} onChange={e=> updateField("payment","bkashNumber",e.target.value)} placeholder="017XXXXXXXX" className="w-full mt-1 border rounded-xl px-4 py-3 text-sm" />
+            </label>
+            <label>
+              <span className="text-xs font-bold">bKash Type</span>
+              <select value={settings.payment?.bkashType || "Personal"} onChange={e=> updateField("payment","bkashType",e.target.value)} className="w-full mt-1 border rounded-xl px-4 py-3 text-sm bg-white dark:bg-zinc-900">
+                <option>Personal</option><option>Agent</option><option>Merchant</option>
+              </select>
+            </label>
+            <label>
+              <span className="text-xs font-bold">Nagad Number (Personal)</span>
+              <input value={settings.payment?.nagadNumber || ""} onChange={e=> updateField("payment","nagadNumber",e.target.value)} placeholder="018XXXXXXXX" className="w-full mt-1 border rounded-xl px-4 py-3 text-sm" />
+            </label>
+            <label>
+              <span className="text-xs font-bold">Nagad Type</span>
+              <select value={settings.payment?.nagadType || "Personal"} onChange={e=> updateField("payment","nagadType",e.target.value)} className="w-full mt-1 border rounded-xl px-4 py-3 text-sm bg-white dark:bg-zinc-900">
+                <option>Personal</option><option>Agent</option>
+              </select>
+            </label>
+            <label className="md:col-span-2">
+              <span className="text-xs font-bold">Payment Instructions (shown at checkout)</span>
+              <textarea value={settings.payment?.instructions || ""} onChange={e=> updateField("payment","instructions",e.target.value)} rows={3} placeholder="Send money to the number above and enter Sender Number & Transaction ID below..." className="w-full mt-1 border rounded-xl px-4 py-3 text-sm" />
+            </label>
+            <label className="flex items-center gap-2 md:col-span-2">
+              <input type="checkbox" checked={settings.payment?.codEnabled ?? true} onChange={e=> updateField("payment","codEnabled",e.target.checked)} className="accent-black" />
+              <span className="text-sm font-medium">Enable Cash on Delivery (COD)</span>
+            </label>
+          </div>
+          <div className="mt-4 bg-blue-50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/30 rounded-xl p-3 text-xs">
+            <strong>📋 Customer flow:</strong> Checkout e bKash/Nagad select korle → Number + Instructions dekhabe → Customer personal number e taka pathiye → Sender Number + Transaction ID input dibe → Order e `pending` paymentStatus e save hobe → Admin Orders e dekhte parbe Paid/COD.
+          </div>
+          <button onClick={handlePaymentSave} disabled={saving} className="mt-6 bg-black dark:bg-white text-white dark:text-black font-bold px-8 py-3 rounded-full disabled:opacity-50">{saving?"Saving...":"💾 Save Payment Settings"}</button>
         </div>
       )}
 

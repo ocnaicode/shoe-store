@@ -28,6 +28,7 @@ export interface IProduct extends Omit<Document, "isNew"> {
   sku?: string;
   weight?: number;
   material?: string;
+  descriptionImages?: string[];
 }
 
 const ProductSchema = new Schema<IProduct>(
@@ -60,6 +61,7 @@ const ProductSchema = new Schema<IProduct>(
     sku: String,
     weight: Number,
     material: String,
+    descriptionImages: [String],
   },
   { timestamps: true, suppressReservedKeysWarning: true }
 );

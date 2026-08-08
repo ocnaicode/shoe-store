@@ -218,6 +218,16 @@ export default function ProductClient({ product, related }: { product: any; rela
                       <li>Durable rubber outsole with grip</li>
                       <li>Variable sizes: {hasVariants ? product.variants.map((v:any)=> v.size).join(", ") : product.sizes?.join(", ")}</li>
                     </ul>
+                    {product.descriptionImages && product.descriptionImages.length > 0 && (
+                      <div className="mt-6 space-y-4">
+                        <h4 className="font-semibold text-black dark:text-white">Product Details Images</h4>
+                        <div className="grid grid-cols-1 gap-4">
+                          {product.descriptionImages.map((img:string, i:number)=> (
+                            <img key={i} src={img} alt={`Details ${i+1}`} className="w-full rounded-xl object-cover border border-gray-100 dark:border-zinc-800" />
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
                 {tab === "shipping" && (
