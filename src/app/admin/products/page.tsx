@@ -35,7 +35,6 @@ export default function AdminProducts() {
   const [uploading, setUploading] = useState(false);
   const [uploadingDesc, setUploadingDesc] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [importing, setImporting] = useState(false);
 
   useEffect(() => {
     fetch("/api/products").then(r=>r.json()).then(d=> { if(d.products?.length) setProducts(d.products); });
@@ -142,28 +141,6 @@ export default function AdminProducts() {
     try{ await fetch(`/api/products?id=${id}`,{method:"DELETE"});}catch{}
     setProducts(prev=>prev.filter(p=>p._id!==id && p.id!==id));
   };
-  const handleImportDemo=async()=>{
-    if(!confirm("Import 8 demo?")) return;
-    setImporting(true);
-    try{
-      const res=await fetch("/api/seed",{method:"POST"}); const data=await res.json();
-      alert(`✅ ${data.inserted} imported`);
-      const refreshed=await fetch("/api/products").then(r=>r.json());
-      if(refreshed.products) setProducts(refreshed.products);
-    }catch(e:any){alert(e.message);}
-    setImporting(false);
-  };
-  const handleClearDemo=async()=>{
-    if(!confirm("Delete demo?")) return;
-    setImporting(true);
-    try{
-      const res=await fetch("/api/seed",{method:"DELETE"}); const data=await res.json();
-      alert(`🗑️ ${data.deleted} deleted`);
-      const refreshed=await fetch("/api/products").then(r=>r.json());
-      if(refreshed.products) setProducts(refreshed.products); else setProducts([]);
-    }catch(e:any){alert(e.message);}
-    setImporting(false);
-  };
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
@@ -174,9 +151,7 @@ export default function AdminProducts() {
             <p className="text-sm text-gray-500 dark:text-zinc-400 mt-1">Variable sizes • Multiple colors • Cloudinary images • SEO ready</p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <button onClick={handleImportDemo} disabled={importing} className="inline-flex items-center gap-1.5 bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-full hover:bg-blue-700 disabled:opacity-50">📥 Import Demo</button>
-            <button onClick={handleClearDemo} className="border border-gray-200 dark:border-zinc-700 text-sm font-medium px-4 py-2 rounded-full hover:bg-gray-50 dark:bg-zinc-800 dark:hover:bg-zinc-800">Clear Demo</button>
-            <button onClick={()=>{setShowAdd(!showAdd); if(!showAdd){setEditing(null); setForm({ name:"",price:"",comparePrice:"",category: categories[0]?.slug||"sneakers",brand:"HOKO",description:"",sku:"",material:"",stock:"",images:[],isVariable:true});}}} className="bg-black dark:bg-white text-white dark:text-black text-sm font-medium px-5 py-2 rounded-full">{showAdd?"Cancel":"Add Product"}</button>
+            <button onClick={()=>{setShowAdd(!showAdd); if(!showAdd){setEditing(null); setForm({ name:"",price:"",comparePrice:"",category: categories[0]?.slug||"sneakers",brand:"HOKO",description:"",sku:"",material:"",stock:"",images:[],isVariable:true}); setDescriptionImages([]);}}} className="bg-black dark:bg-white text-white dark:text-black text-sm font-medium px-5 py-2 rounded-full">{showAdd?"Cancel":"Add Product"}</button>
           </div>
         </div>
       </div>
