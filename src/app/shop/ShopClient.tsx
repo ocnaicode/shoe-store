@@ -1,6 +1,5 @@
 "use client";
-import { useState, useMemo, Suspense } from "react";
-import { products, categories, brands } from "@/lib/data";
+import { useState, useMemo, Suspense, useEffect } from "react";
 import ProductCard from "@/components/ProductCard";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -10,32 +9,58 @@ function ShopContent() {
   const initialCategory = searchParams.get("category") || "all";
   const searchQuery = searchParams.get("search") || "";
 
+  const [products, setProducts] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
+  const [brands, setBrands] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
   const [selectedSizes, setSelectedSizes] = useState<number[]>([]);
   const [sortBy, setSortBy] = useState("featured");
   const [showFilters, setShowFilters] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    Promise.all([
+      fetch("/api/products").then(r=>r.json()).then(d=> d.products||[]).catch(()=>[]),
+      fetch("/api/categories").then(r=>r.json()).then(d=> d.categories||[]).catch(()=>[]),
+      fetch("/api/brands").then(r=>r.json()).then(d=> d.brands?.map((b:any)=>b.name) || []).catch(()=>[])
+    ]).then(([prods, cats, brs])=>{
+      setProducts(prods);
+      setCategories(cats);
+      if(brs.length) setBrands(brs);
+      else {
+        // fallback brands from products
+        const uniqueBrands = Array.from(new Set(prods.map((p:any)=>p.brand))).filter(Boolean) as string[];
+        setBrands(uniqueBrands.length ? uniqueBrands : ["HOKO","Nike","Adidas","Puma","Bata","Apex"]);
+      }
+      setLoading(false);
+    });
+  }, []);
+
+  useEffect(()=>{ setSelectedCategory(initialCategory); }, [initialCategory]);
 
   const filtered = useMemo(() => {
     let res = [...products];
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
-      res = res.filter((p) => p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
+      res = res.filter((p) => p.name.toLowerCase().includes(q) || p.description?.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
     }
     if (selectedCategory !== "all") res = res.filter((p) => p.category === selectedCategory);
     if (selectedBrands.length) res = res.filter((p) => selectedBrands.includes(p.brand));
     res = res.filter((p) => p.price >= priceRange[0] && p.price <= priceRange[1]);
-    if (selectedSizes.length) res = res.filter((p) => p.sizes?.some((s) => selectedSizes.includes(s)) || (p as any).variants?.some((v:any)=> selectedSizes.includes(v.size)));
+    if (selectedSizes.length) res = res.filter((p) => p.sizes?.some((s: number) => selectedSizes.includes(s)) || (p as any).variants?.some((v:any)=> selectedSizes.includes(v.size)));
     if (sortBy === "price-low") res.sort((a, b) => a.price - b.price);
     if (sortBy === "price-high") res.sort((a, b) => b.price - a.price);
     if (sortBy === "rating") res.sort((a, b) => b.rating - a.rating);
     if (sortBy === "newest") res.sort((a, b) => (a.isNew ? -1 : 1));
     return res;
-  }, [selectedCategory, selectedBrands, priceRange, selectedSizes, sortBy, searchQuery]);
+  }, [products, selectedCategory, selectedBrands, priceRange, selectedSizes, sortBy, searchQuery]);
 
   const toggleBrand = (b: string) => setSelectedBrands((prev) => (prev.includes(b) ? prev.filter((x) => x !== b) : [...prev, b]));
   const toggleSize = (s: number) => setSelectedSizes((prev) => (prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]));
+
+  if(loading) return <div className="max-w-[1400px] mx-auto px-4 lg:px-6 py-12 text-center"><div className="animate-pulse">Loading products...</div></div>;
 
   return (
     <>
@@ -66,7 +91,6 @@ function ShopContent() {
 
       <div className="max-w-[1400px] mx-auto px-4 lg:px-6 py-6">
         <div className="flex gap-6">
-          {/* Desktop Sidebar */}
           <aside className="hidden lg:block w-[280px] shrink-0">
             <div className="bg-white dark:bg-zinc-900 rounded-xl border border-gray-100 dark:border-zinc-800 p-5 sticky top-[80px] space-y-6">
               <div>
@@ -75,7 +99,7 @@ function ShopContent() {
                   <button onClick={() => setSelectedCategory("all")} className={`w-full text-left px-3 py-2 rounded-lg text-sm flex justify-between transition ${selectedCategory === "all" ? "bg-black dark:bg-white text-white dark:text-black font-medium" : "hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-600 dark:text-zinc-400"}`}>
                     All Shoes <span className="opacity-60 text-xs">{products.length}</span>
                   </button>
-                  {categories.map((c) => (
+                  {categories.map((c:any) => (
                     <button key={c.slug} onClick={() => setSelectedCategory(c.slug)} className={`w-full text-left px-3 py-2 rounded-lg text-sm flex justify-between capitalize transition ${selectedCategory === c.slug ? "bg-black dark:bg-white text-white dark:text-black font-medium" : "hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-600 dark:text-zinc-400"}`}>
                       {c.name} <span className="opacity-60 text-xs">{products.filter((p) => p.category === c.slug).length}</span>
                     </button>
@@ -93,7 +117,7 @@ function ShopContent() {
                   </div>
                   <div className="grid grid-cols-2 gap-2 text-xs">
                     {[[0, 3000],[3000, 5000],[5000, 7000],[7000, 10000]].map((r) => (
-                      <button key={r.join("-")} onClick={() => setPriceRange(r as [number, number])} className="border border-gray-200 dark:border-zinc-700 rounded-full py-1.5 hover:bg-black hover:text-white dark:hover:bg-white dark:bg-zinc-900 dark:hover:text-black transition text-gray-600 dark:text-zinc-400">
+                      <button key={r.join("-")} onClick={() => setPriceRange(r as [number, number])} className="border border-gray-200 dark:border-zinc-700 rounded-full py-1.5 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition text-gray-600 dark:text-zinc-400">
                         ৳{r[0]} - ৳{r[1]}
                       </button>
                     ))}
@@ -131,14 +155,13 @@ function ShopContent() {
                   setPriceRange([0, 10000]);
                   setSelectedSizes([]);
                 }}
-                className="w-full border border-gray-200 dark:border-zinc-700 rounded-full py-2.5 text-sm font-medium hover:bg-gray-50 dark:bg-zinc-800 dark:hover:bg-zinc-800 transition text-black dark:text-white"
+                className="w-full border border-gray-200 dark:border-zinc-700 rounded-full py-2.5 text-sm font-medium hover:bg-gray-50 dark:hover:bg-zinc-800 transition text-black dark:text-white"
               >
                 Clear Filters
               </button>
             </div>
           </aside>
 
-          {/* Mobile Drawer */}
           <AnimatePresence>
             {showFilters && (
               <>
@@ -152,9 +175,9 @@ function ShopContent() {
                     <div>
                       <h4 className="font-medium text-sm mb-2 text-black dark:text-white">Category</h4>
                       <div className="space-y-1">
-                        <button onClick={() => { setSelectedCategory("all"); setShowFilters(false); }} className={`w-full text-left px-3 py-2 rounded-lg text-sm ${selectedCategory === "all" ? "bg-black text-white" : "hover:bg-gray-50 dark:bg-zinc-800 dark:hover:bg-zinc-800"}`}>All Shoes</button>
-                        {categories.map((c) => (
-                          <button key={c.slug} onClick={() => { setSelectedCategory(c.slug); setShowFilters(false); }} className={`w-full text-left px-3 py-2 rounded-lg text-sm capitalize ${selectedCategory === c.slug ? "bg-black text-white" : "hover:bg-gray-50 dark:bg-zinc-800 dark:hover:bg-zinc-800"}`}>{c.name}</button>
+                        <button onClick={() => { setSelectedCategory("all"); setShowFilters(false); }} className={`w-full text-left px-3 py-2 rounded-lg text-sm ${selectedCategory === "all" ? "bg-black text-white" : "hover:bg-gray-50 dark:hover:bg-zinc-800"}`}>All Shoes</button>
+                        {categories.map((c:any) => (
+                          <button key={c.slug} onClick={() => { setSelectedCategory(c.slug); setShowFilters(false); }} className={`w-full text-left px-3 py-2 rounded-lg text-sm capitalize ${selectedCategory === c.slug ? "bg-black text-white" : "hover:bg-gray-50 dark:hover:bg-zinc-800"}`}>{c.name}</button>
                         ))}
                       </div>
                     </div>
@@ -185,7 +208,7 @@ function ShopContent() {
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-5">
                 {filtered.map((p) => (
-                  <ProductCard key={p._id} product={p} />
+                  <ProductCard key={p._id || p.id} product={p} />
                 ))}
               </div>
             )}
@@ -198,7 +221,7 @@ function ShopContent() {
 
 export default function ShopClientWrapper() {
   return (
-    <Suspense fallback={<div className="p-12 text-center text-gray-500 dark:text-zinc-400">Loading shop...</div>}>
+    <Suspense fallback={<div className="p-12 text-center text-gray-500">Loading shop...</div>}>
       <ShopContent />
     </Suspense>
   );

@@ -32,7 +32,7 @@ export default function AdminSettings() {
     setTimeout(()=> setMessage(""), 3000);
   };
 
-  const handleCloudinarySave = () => saveSection({ cloudinary: {
+  const handleMediaSave = () => saveSection({ cloudinary: {
     cloudName: settings.cloudinary.cloudName,
     apiKey: settings.cloudinary.apiKey,
     apiSecret: settings.cloudinary.apiSecret?.includes("•") ? undefined : settings.cloudinary.apiSecret,
@@ -58,7 +58,7 @@ export default function AdminSettings() {
     try {
       const res = await fetch("/api/upload", { method: "POST", body: fd });
       const data = await res.json();
-      if(data.secure_url || data.url) setTestResult(data.fallback ? "⚠️ Fallback (not Cloudinary): Configure credentials first" : "✅ Upload success! URL: "+data.secure_url.slice(0,60));
+      if(data.secure_url || data.url) setTestResult(data.fallback ? "⚠️ Fallback (not Media): Configure credentials first" : "✅ Upload success! URL: "+data.secure_url.slice(0,60));
       else setTestResult("❌ "+data.error);
     } catch(err:any){ setTestResult("❌ "+err.message); }
     setTestUploading(false);
@@ -68,7 +68,7 @@ export default function AdminSettings() {
   if(!settings) return <div>Failed to load</div>;
 
   const tabs: {id: Tab, label: string, icon: string}[] = [
-    {id: "cloudinary", label: "Cloudinary", icon: "☁️"},
+    {id: "cloudinary", label: "Media", icon: "☁️"},
     {id: "social", label: "Social Login", icon: "🔑"},
     {id: "whatsapp", label: "WhatsApp & Cart", icon: "💬"},
     {id: "steadfast", label: "Steadfast Courier", icon: "🚚"},
@@ -81,7 +81,7 @@ export default function AdminSettings() {
     <div className="max-w-5xl space-y-6">
       <div>
         <h2 className="text-2xl font-black">Settings - Full Control Panel</h2>
-        <p className="text-sm text-gray-500 dark:text-zinc-400"> sob kichu ekhan theke control koren - Cloudinary, Social Login, WhatsApp, Abandoned Cart, Steadfast, Flash Sale sob</p>
+        <p className="text-sm text-gray-500 dark:text-zinc-400"> sob kichu ekhan theke control koren - Media, Social Login, WhatsApp, Abandoned Cart, Steadfast, Flash Sale sob</p>
       </div>
 
       <div className="flex gap-2 overflow-auto pb-2">
@@ -97,7 +97,7 @@ export default function AdminSettings() {
       {activeTab==="cloudinary" && (
         <div className="bg-white dark:bg-zinc-900 rounded-2xl border overflow-hidden">
           <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6">
-            <h3 className="text-xl font-black">☁️ Cloudinary Configuration</h3>
+            <h3 className="text-xl font-black">☁️ Image Upload Configuration</h3>
             <p className="text-sm opacity-90">Sob image ekhane upload hobe - CDN e fast deliver</p>
           </div>
           <div className="p-6 space-y-5">
@@ -108,7 +108,7 @@ export default function AdminSettings() {
               <label><span className="text-xs font-bold">Upload Preset</span><input value={settings.cloudinary.uploadPreset} onChange={e=> updateField("cloudinary","uploadPreset",e.target.value)} placeholder="hokolifestyle_preset" className="w-full mt-1 border rounded-xl px-4 py-3 text-sm" /></label>
             </div>
             <div className="flex gap-3">
-              <button onClick={handleCloudinarySave} disabled={saving} className="bg-blue-600 text-white font-bold px-8 py-3 rounded-full disabled:opacity-50">{saving ? "Saving..." : "💾 Save Cloudinary"}</button>
+              <button onClick={handleMediaSave} disabled={saving} className="bg-blue-600 text-white font-bold px-8 py-3 rounded-full disabled:opacity-50">{saving ? "Saving..." : "💾 Save Media"}</button>
             </div>
             <div className="border-t pt-4">
               <h4 className="font-black text-sm">🧪 Test Upload</h4>

@@ -154,7 +154,7 @@ export default function ReviewSection({ productId, productSlug }: { productId: s
             </div>
             <textarea value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })} placeholder="Jutar quality kemon? Size thik ache? Chobi soho review din..." rows={4} className="w-full mt-4 border border-gray-200 dark:border-zinc-700 rounded-xl p-4 text-sm focus:outline-none focus:border-black dark:focus:border-white bg-white dark:bg-zinc-800 text-black dark:text-white placeholder:text-gray-400" required />
             <div className="mt-4">
-              <label className="text-xs font-medium text-black dark:text-white">Upload Photos (Cloudinary - max 3)</label>
+              <label className="text-xs font-medium text-black dark:text-white">Upload Photos (max 3)</label>
               <div className="mt-2 flex gap-3 flex-wrap">
                 {form.images.map((img, i) => (
                   <div key={i} className="relative">

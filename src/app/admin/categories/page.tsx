@@ -39,7 +39,7 @@ export default function AdminCategories() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    if(!form.name || !form.image) return alert("Name and image required - image will be uploaded to Cloudinary");
+    if(!form.name || !form.image) return alert("Name and image required - image will be optimized");
     setSaving(true);
     try {
       if(editing) {
@@ -81,7 +81,7 @@ export default function AdminCategories() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Categories</h1>
-          <p className="text-sm text-gray-500 dark:text-zinc-400 mt-1">Create, edit and manage product categories • Images auto-upload to Cloudinary</p>
+          <p className="text-sm text-gray-500 dark:text-zinc-400 mt-1">Create, edit and manage product categories • Images auto-upload to CDN</p>
         </div>
         <button onClick={()=> { setShowForm(!showForm); setEditing(null); setForm({ name: "", image: "", description: "" });}} className="inline-flex items-center justify-center bg-black dark:bg-white text-white dark:text-black font-medium px-5 py-2.5 rounded-full text-sm hover:bg-zinc-800 dark:hover:bg-zinc-200 transition">
           {showForm ? "Cancel" : "New Category"}
@@ -91,7 +91,7 @@ export default function AdminCategories() {
       {showForm && (
         <div className="bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 dark:border-zinc-800 p-6">
           <h3 className="font-medium text-black dark:text-white">{editing ? "Edit Category" : "Add New Category"}</h3>
-          <p className="text-xs text-gray-500 dark:text-zinc-400 mt-1">Category image will be uploaded to Cloudinary CDN for fast delivery</p>
+          <p className="text-xs text-gray-500 dark:text-zinc-400 mt-1">Category image will be optimized for fast delivery</p>
           
           <form onSubmit={handleSave} className="grid md:grid-cols-2 gap-4 mt-6">
             <label className="space-y-1.5">
@@ -106,15 +106,15 @@ export default function AdminCategories() {
             </label>
 
             <div className="md:col-span-2 space-y-1.5">
-              <span className="text-xs font-medium text-gray-700 dark:text-zinc-300">Category Image * (Cloudinary)</span>
+              <span className="text-xs font-medium text-gray-700 dark:text-zinc-300">Category Image *</span>
               <div className="border border-dashed border-gray-200 dark:border-zinc-700 rounded-xl p-6 text-center bg-gray-50/50 dark:bg-zinc-900/50">
                 <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" id="cat-upload" />
                 <label htmlFor="cat-upload" className="cursor-pointer inline-flex flex-col items-center">
                   <div className="w-10 h-10 rounded-full bg-black dark:bg-white text-white dark:text-black flex items-center justify-center">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                   </div>
-                  <span className="text-sm font-medium mt-2 text-black dark:text-white">{uploading ? "Uploading to Cloudinary..." : "Click to upload image"}</span>
-                  <span className="text-xs text-gray-500 dark:text-zinc-400">600x400 recommended • Auto Cloudinary</span>
+                  <span className="text-sm font-medium mt-2 text-black dark:text-white">{uploading ? "Uploading to Media..." : "Click to upload"}</span>
+                  <span className="text-xs text-gray-500 dark:text-zinc-400">600x400 recommended • Auto CDN</span>
                 </label>
                 {form.image && (
                   <div className="mt-4 flex justify-center">
@@ -124,7 +124,7 @@ export default function AdminCategories() {
                     </div>
                   </div>
                 )}
-                {form.image && <p className="text-xs text-green-600 mt-2 font-medium">✓ Cloudinary uploaded</p>}
+                {form.image && <p className="text-xs text-green-600 mt-2 font-medium">✓ Media uploaded</p>}
               </div>
             </div>
 
@@ -184,7 +184,7 @@ export default function AdminCategories() {
         <h4 className="font-medium text-sm text-blue-900 dark:text-blue-100">💡 How categories work</h4>
         <ul className="text-xs text-blue-700 dark:text-blue-300 mt-2 space-y-1 list-disc ml-4">
           <li>Categories appear on Shop page filters and Home page</li>
-          <li>Images are uploaded to Cloudinary CDN automatically</li>
+          <li>Images are uploaded to Media CDN automatically</li>
           <li>Slug is auto-generated from name for SEO-friendly URLs (/shop?category=sneakers)</li>
           <li>Inactive categories are hidden from customers but kept for products</li>
         </ul>

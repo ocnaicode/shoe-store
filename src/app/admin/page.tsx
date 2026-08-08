@@ -75,14 +75,14 @@ export default function AdminDashboard() {
               <span className="w-9 h-9 bg-white/15 dark:bg-black/10 rounded-lg flex items-center justify-center text-sm">＋</span>
               <div>
                 <div className="font-medium text-sm">Add New Product</div>
-                <div className="text-xs opacity-60">Upload with Cloudinary</div>
+                <div className="text-xs opacity-60">Upload</div>
               </div>
             </Link>
             <Link href="/admin/settings" className="flex items-center gap-3 border border-gray-200 dark:border-zinc-700 rounded-xl p-4 hover:bg-gray-50 dark:bg-zinc-800 dark:hover:bg-zinc-800 transition">
               <span className="w-9 h-9 bg-amber-50 dark:bg-amber-900/20 rounded-lg flex items-center justify-center text-sm">⚙</span>
               <div>
-                <div className="font-medium text-sm text-black dark:text-white">Cloudinary Setup</div>
-                <div className="text-xs text-gray-500 dark:text-zinc-400">Configure image upload</div>
+                <div className="font-medium text-sm text-black dark:text-white">Media Setup</div>
+                <div className="text-xs text-gray-500 dark:text-zinc-400">Configure media upload</div>
               </div>
             </Link>
             <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-100 dark:border-amber-900/30 rounded-xl p-4 text-xs">

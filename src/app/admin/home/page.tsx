@@ -144,7 +144,7 @@ export default function AdminHomePage() {
       {/* Hero Slides */}
       <div className="bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 dark:border-zinc-800 p-6">
         <h3 className="font-medium text-black dark:text-white">🎬 Hero Slider (Top)</h3>
-        <p className="text-xs text-gray-500 mt-1">Full customizable slides - image, text, colors, CTA. All images Cloudinary.</p>
+        <p className="text-xs text-gray-500 mt-1">Full customizable slides - image, text, colors, CTA. All images optimized.</p>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
           {slides.map((s, idx)=> (
@@ -178,7 +178,7 @@ export default function AdminHomePage() {
             <label className="space-y-1"><span className="text-xs font-medium">Subtitle</span><input value={form.subtitle} onChange={e=>setForm({...form,subtitle:e.target.value})} placeholder="& STYLE" className="w-full border rounded-lg px-3 py-2 text-sm" /></label>
             <label className="space-y-1"><span className="text-xs font-medium">Desc</span><input value={form.desc} onChange={e=>setForm({...form,desc:e.target.value})} placeholder="Description" className="w-full border rounded-lg px-3 py-2 text-sm" /></label>
             <label className="space-y-1">
-              <span className="text-xs font-medium">Main Image (Cloudinary) *</span>
+              <span className="text-xs font-medium">Main Image (Media) *</span>
               <div className="flex gap-2">
                 <input value={form.image} onChange={e=>setForm({...form,image:e.target.value})} placeholder="https://..." className="flex-1 border rounded-lg px-3 py-2 text-sm" />
                 <label className="bg-black dark:bg-white text-white dark:text-black px-3 py-2 rounded-lg text-xs font-medium cursor-pointer">
@@ -192,7 +192,7 @@ export default function AdminHomePage() {
             <label className="space-y-1"><span className="text-xs font-medium">Product Name</span><input value={form.productName} onChange={e=>setForm({...form,productName:e.target.value})} placeholder="HOKO Air Max" className="w-full border rounded-lg px-3 py-2 text-sm" /></label>
             <label className="space-y-1"><span className="text-xs font-medium">Product Price</span><input value={form.productPrice} onChange={e=>setForm({...form,productPrice:e.target.value})} placeholder="৳4,590" className="w-full border rounded-lg px-3 py-2 text-sm" /></label>
             <label className="space-y-1 md:col-span-2">
-              <span className="text-xs font-medium">Product Image (Cloudinary)</span>
+              <span className="text-xs font-medium">Product Image (Media)</span>
               <div className="flex gap-2">
                 <input value={form.productImage} onChange={e=>setForm({...form,productImage:e.target.value})} placeholder="https://..." className="flex-1 border rounded-lg px-3 py-2 text-sm" />
                 <label className="bg-black dark:bg-white text-white dark:text-black px-3 py-2 rounded-lg text-xs font-medium cursor-pointer">
@@ -238,7 +238,7 @@ export default function AdminHomePage() {
       </button>
 
       <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/30 rounded-xl p-4 text-sm">
-        <strong>💡 Home page fully customizable:</strong> Hero slider (add/edit/delete, Cloudinary images, gradient colors), and every section (Categories, Featured, Promo, Best Sellers, New Arrivals, Brands, Why Choose Us, Instagram, Testimonials) can be toggled and titled. Changes reflect instantly on home page.
+        <strong>💡 Home page fully customizable:</strong> Hero slider (add/edit/delete, Media images, gradient colors), and every section (Categories, Featured, Promo, Best Sellers, New Arrivals, Brands, Why Choose Us, Instagram, Testimonials) can be toggled and titled. Changes reflect instantly on home page.
       </div>
     </div>
   );

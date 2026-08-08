@@ -127,7 +127,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="p-4">
           <div className="bg-amber-500 text-black dark:text-white rounded-xl p-4">
             <div className="font-black text-sm">Protected Admin</div>
-            <div className="text-xs mt-1">JWT + Role Guard • Cloudinary • Steadfast • MongoDB Atlas</div>
+            <div className="text-xs mt-1">JWT + Role Guard • Media • Steadfast • MongoDB Atlas</div>
           </div>
         </div>
       </aside>

@@ -41,7 +41,7 @@ export default function AdminPromotions() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    if(!form.title || !form.image) return alert("Title and image required - image will be uploaded to Cloudinary");
+    if(!form.title || !form.image) return alert("Title and image required");
     setSaving(true);
     try {
       if(editing) {
@@ -84,7 +84,7 @@ export default function AdminPromotions() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-black">Promotion Popups 🎉</h2>
-          <p className="text-sm text-gray-500 dark:text-zinc-400">Website e popup image create korun - Edit, Delete, Update sob ekhan theke. Image auto Cloudinary te upload hobe.</p>
+          <p className="text-sm text-gray-500 dark:text-zinc-400">Website e popup image create korun - Edit, Delete, Update sob ekhan theke.</p>
         </div>
         <button onClick={()=> { setShowForm(!showForm); setEditing(null); setForm({ title: "", subtitle: "", image: "", link: "/shop", buttonText: "Shop Now", isActive: true, displayDelay: 3 });}} className="bg-black text-white font-bold px-6 py-3 rounded-full hover:bg-zinc-800">
           {showForm ? "Cancel" : "+ Create Popup"}
@@ -120,18 +120,18 @@ export default function AdminPromotions() {
               <span className="font-bold text-sm">Active (website e show hobe)</span>
             </label>
             <div className="md:col-span-2">
-              <span className="text-xs font-bold">Popup Image * (Cloudinary Upload)</span>
+              <span className="text-xs font-bold">Popup Image *</span>
               <div className="mt-2 border-2 border-dashed rounded-2xl p-6 text-center bg-gray-50 dark:bg-zinc-800">
                 <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" id="promo-upload" />
                 <label htmlFor="promo-upload" className="cursor-pointer">
                   <div className="w-12 h-12 bg-black text-white rounded-xl flex items-center justify-center mx-auto">↑</div>
-                  <div className="font-bold text-sm mt-2">{uploading ? "Uploading to Cloudinary..." : "Click to Upload Image"}</div>
-                  <div className="text-xs text-gray-500 dark:text-zinc-400">Recommended: 600x600px • PNG/JPG • Auto Cloudinary CDN</div>
+                  <div className="font-bold text-sm mt-2">{uploading ? "Uploading to Media..." : "Click to Upload"}</div>
+                  <div className="text-xs text-gray-500 dark:text-zinc-400">Recommended: 600x600px • PNG/JPG</div>
                 </label>
                 {form.image && (
                   <div className="mt-4">
                     <img src={form.image} alt="Preview" className="w-full max-w-sm h-48 object-cover rounded-xl mx-auto border" />
-                    <div className="text-xs text-green-600 font-bold mt-2">✅ Uploaded to Cloudinary</div>
+                    <div className="text-xs text-green-600 font-bold mt-2">✅ Uploaded to Media</div>
                     <div className="text-xs break-all bg-white dark:bg-zinc-900 p-2 rounded border mt-1">{form.image.slice(0,80)}...</div>
                   </div>
                 )}
@@ -176,7 +176,7 @@ export default function AdminPromotions() {
       </div>
 
       <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4 text-sm">
-        <strong>💡 Kivabe kaj kore?</strong> Active promotion thakle home page load er {promotions[0]?.displayDelay || 3} sec por popup show hobe. User close korle session e ar show hobe na. Sob image Cloudinary CDN e save hoy, tai fast load hobe.
+        <strong>💡 Kivabe kaj kore?</strong> Active promotion thakle home page load er {promotions[0]?.displayDelay || 3} sec por popup show hobe. User close korle session e ar show hobe na. Sob image CDN e save hoy, tai fast load hobe.
       </div>
     </div>
   );

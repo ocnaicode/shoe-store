@@ -142,7 +142,7 @@ export default function AdminLogin() {
 
         <div className="mt-6 text-xs text-center text-gray-400">
           Protected by JWT + Role-based Access • MongoDB Atlas Connected<br />
-          Steadfast & Cloudinary configured from Settings
+          Steadfast & Media configured from Settings
         </div>
       </div>
     </div>

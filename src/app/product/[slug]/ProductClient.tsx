@@ -91,7 +91,7 @@ export default function ProductClient({ product, related }: { product: any; rela
                 </svg>
               </button>
               <div className="absolute bottom-4 left-4 bg-black/70 text-white text-xs px-3 py-1.5 rounded-full backdrop-blur">
-                {product.images.length} images • Cloudinary
+                {product.images.length} images
               </div>
             </div>
             <div className="flex gap-3 mt-4 overflow-auto pb-2">

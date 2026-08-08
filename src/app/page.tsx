@@ -2,19 +2,25 @@
 import Hero from "@/components/Hero";
 import ProductCard from "@/components/ProductCard";
 import ProductSlider from "@/components/ProductSlider";
-import { products, categories } from "@/lib/data";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const [homeSettings, setHomeSettings] = useState<any>(null);
-  const featured = products.filter((p) => p.isFeatured);
-  const bestSellers = products.filter((p) => p.isBestSeller);
-  const newArrivals = products.filter((p) => p.isNew);
+  const [products, setProducts] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
+  const [brands, setBrands] = useState<any[]>([]);
 
   useEffect(() => {
     fetch("/api/home-settings").then(r=>r.json()).then(d=> setHomeSettings(d)).catch(()=>{});
+    fetch("/api/products").then(r=>r.json()).then(d=> setProducts(d.products||[])).catch(()=>{});
+    fetch("/api/categories").then(r=>r.json()).then(d=> setCategories(d.categories||[])).catch(()=>{});
+    fetch("/api/brands").then(r=>r.json()).then(d=> setBrands(d.brands||[])).catch(()=>{});
   }, []);
+
+  const featured = products.filter((p:any) => p.isFeatured);
+  const bestSellers = products.filter((p:any) => p.isBestSeller);
+  const newArrivals = products.filter((p:any) => p.isNew);
 
   const sections = homeSettings?.sections || {
     categories: { enabled: true, title: "FIND YOUR PERFECT PAIR", subtitle: "SHOP BY CATEGORY" },
@@ -27,6 +33,15 @@ export default function Home() {
     instagram: { enabled: true, title: "FOLLOW US ON INSTAGRAM @hokolifestylebd" },
     testimonials: { enabled: true, title: "WHAT OUR CUSTOMERS SAY", subtitle: "TESTIMONIALS" },
   };
+
+  const displayCategories = categories.length ? categories.filter((c:any)=>c.isActive!==false) : [
+    { name: "Sneakers", slug: "sneakers", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80", count: 124 },
+    { name: "Formal", slug: "formal", image: "https://images.unsplash.com/photo-1614252369475-531eba835eb1?w=600&q=80", count: 86 },
+  ];
+  const displayBrands = brands.length ? brands.filter((b:any)=>b.isActive!==false).map((b:any)=>b.name) : ["NIKE", "ADIDAS", "PUMA", "BATA", "APEX", "WOODLAND", "LOTTO", "HOKO"];
+  const displayFeatured = featured.length ? featured : products.slice(0,4);
+  const displayBestSellers = bestSellers.length ? bestSellers : products.slice(0,4);
+  const displayNewArrivals = newArrivals.length ? newArrivals : products.slice(0,4);
 
   return (
     <div className="bg-white dark:bg-black">
@@ -44,14 +59,14 @@ export default function Home() {
             </Link>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {categories.map((cat) => (
+            {displayCategories.map((cat:any) => (
               <Link key={cat.slug} href={`/shop?category=${cat.slug}`} className="group">
                 <div className="relative rounded-2xl overflow-hidden aspect-[4/5] bg-gray-100 dark:bg-zinc-800">
                   <img src={cat.image} alt={cat.name} className="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
                   <div className="absolute bottom-0 p-4 text-white">
                     <div className="font-black text-lg leading-none">{cat.name}</div>
-                    <div className="text-xs opacity-80">{cat.count} Products</div>
+                    <div className="text-xs opacity-80">{cat.count || 0} Products</div>
                   </div>
                 </div>
               </Link>
@@ -73,8 +88,8 @@ export default function Home() {
               </Link>
             </div>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-              {featured.map((p) => (
-                <ProductCard key={p._id} product={p} />
+              {displayFeatured.slice(0,4).map((p:any) => (
+                <ProductCard key={p._id || p.id} product={p} />
               ))}
             </div>
           </div>
@@ -122,7 +137,7 @@ export default function Home() {
             <h2 className="text-2xl lg:text-3xl font-black text-black dark:text-white">{sections.bestSellers.title}</h2>
             <Link href="/shop" className="text-sm font-bold underline dark:text-white">View All</Link>
           </div>
-          <ProductSlider products={bestSellers.concat(products.slice(0, 4))} />
+          <ProductSlider products={displayBestSellers.concat(products.slice(0, 2))} />
         </section>
       )}
 
@@ -134,12 +149,12 @@ export default function Home() {
               <h2 className="text-3xl font-black mt-2">{sections.newArrivals.title}</h2>
               <p className="text-white/60 mt-2">Be the first to cop the latest styles</p>
             </div>
-            <ProductSlider products={newArrivals.concat(products.slice(2, 4))} />
+            <ProductSlider products={displayNewArrivals.concat(products.slice(2, 4))} />
             {sections.brands?.enabled && (
               <div className="mt-14 border-t border-white/10 pt-10">
                 <div className="text-center text-xs tracking-[0.2em] font-bold text-white/40 mb-6">{sections.brands.title}</div>
                 <div className="flex flex-wrap justify-center items-center gap-6 lg:gap-12 opacity-60">
-                  {["NIKE", "ADIDAS", "PUMA", "BATA", "APEX", "WOODLAND", "LOTTO", "HOKO"].map((b) => (
+                  {displayBrands.map((b:string) => (
                     <span key={b} className="text-xl lg:text-2xl font-black tracking-widest hover:text-amber-500 transition cursor-pointer">
                       {b}
                     </span>

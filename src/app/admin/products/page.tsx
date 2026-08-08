@@ -83,7 +83,7 @@ export default function AdminProducts() {
 
   const handleSave = async ()=>{
     if(!form.name||!form.price) return alert("Name and price required");
-    if(form.images.length===0) return alert("At least one image - Cloudinary");
+    if(form.images.length===0) return alert("At least one image required");
     if(colors.length===0) return alert("At least one color");
     setSaving(true);
     const totalStock = form.isVariable ? variants.reduce((a,b)=>a+Number(b.stock||0),0) : Number(form.stock)||0;
@@ -116,7 +116,7 @@ export default function AdminProducts() {
         const data=await res.json();
         if(data.product) setProducts(prev=>[data.product,...prev]);
         else setProducts(prev=>[{...payload,_id:Date.now().toString(),createdAt:new Date().toISOString()},...prev]);
-        alert("✅ Product added with colors, variants & Cloudinary!");
+        alert("✅ Product added successfully!");
       }
       setShowAdd(false); setEditing(null);
       setForm({ name:"",price:"",comparePrice:"",category: categories[0]?.slug||"sneakers",brand:"HOKO",description:"",sku:"",material:"",stock:"",images:[],isVariable:true});
@@ -148,7 +148,7 @@ export default function AdminProducts() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h1 className="text-xl font-semibold tracking-tight">Products</h1>
-            <p className="text-sm text-gray-500 dark:text-zinc-400 mt-1">Variable sizes • Multiple colors • Cloudinary images • SEO ready</p>
+            <p className="text-sm text-gray-500 dark:text-zinc-400 mt-1">Variable sizes • Multiple colors • SEO ready</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <button onClick={()=>{setShowAdd(!showAdd); if(!showAdd){setEditing(null); setForm({ name:"",price:"",comparePrice:"",category: categories[0]?.slug||"sneakers",brand:"HOKO",description:"",sku:"",material:"",stock:"",images:[],isVariable:true}); setDescriptionImages([]);}}} className="bg-black dark:bg-white text-white dark:text-black text-sm font-medium px-5 py-2 rounded-full">{showAdd?"Cancel":"Add Product"}</button>
@@ -160,7 +160,7 @@ export default function AdminProducts() {
         <div className="bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 dark:border-zinc-800 overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-100 dark:border-zinc-800">
             <h3 className="font-medium text-black dark:text-white">{editing?"Edit Product":"New Product"}</h3>
-            <p className="text-xs text-gray-500 dark:text-zinc-400 mt-1">Fill details • Images go to Cloudinary • Colors & variants for shoes</p>
+            <p className="text-xs text-gray-500 dark:text-zinc-400 mt-1">Fill details • Colors & variants for shoes</p>
           </div>
           
           <div className="p-6 space-y-6">
@@ -207,7 +207,7 @@ export default function AdminProducts() {
                 <textarea value={form.description} onChange={e=>setForm({...form,description:e.target.value})} rows={3} placeholder="Premium shoe description for Google..." className="w-full border border-gray-200 dark:border-zinc-700 rounded-lg px-3 py-2.5 text-sm" />
               </label>
               <div className="md:col-span-2 space-y-1.5">
-                <span className="text-xs font-medium">Description Images (Cloudinary) - shown in product details</span>
+                <span className="text-xs font-medium">Description Images - shown in product details</span>
                 <div className="border border-dashed border-gray-200 dark:border-zinc-700 rounded-xl p-4 text-center bg-gray-50/30 dark:bg-zinc-900/30">
                   <input type="file" multiple accept="image/*" onChange={handleDescImageUpload} className="hidden" id="desc-upload" />
                   <label htmlFor="desc-upload" className="cursor-pointer inline-flex flex-col items-center">
@@ -292,13 +292,13 @@ export default function AdminProducts() {
 
             {/* Images */}
             <div className="space-y-1.5">
-              <span className="text-xs font-medium">Images * (Multiple, Cloudinary)</span>
+              <span className="text-xs font-medium">Images * (Multiple)</span>
               <div className="border border-dashed border-gray-200 dark:border-zinc-700 rounded-xl p-6 text-center bg-gray-50/30 dark:bg-zinc-900/30">
                 <input type="file" multiple accept="image/*" onChange={handleImageUpload} className="hidden" id="file-upload" />
                 <label htmlFor="file-upload" className="cursor-pointer inline-flex flex-col items-center">
                   <div className="w-10 h-10 rounded-full bg-black dark:bg-white text-white dark:text-black flex items-center justify-center">↑</div>
-                  <span className="text-sm font-medium mt-2 text-black dark:text-white">{uploading?"Uploading...":"Click to upload images"}</span>
-                  <span className="text-xs text-gray-500 dark:text-zinc-400">PNG, JPG • Multiple • Cloudinary CDN</span>
+                  <span className="text-sm font-medium mt-2 text-black dark:text-white">{uploading?"Uploading...":"Click to uploads"}</span>
+                  <span className="text-xs text-gray-500 dark:text-zinc-400">PNG, JPG • Multiple</span>
                 </label>
                 {form.images.length>0 && (
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4 text-left">
@@ -312,7 +312,7 @@ export default function AdminProducts() {
                   </div>
                 )}
               </div>
-              <p className="text-xs text-gray-400">{form.images.length} image(s) • First is thumbnail • All uploaded to Cloudinary</p>
+              <p className="text-xs text-gray-400">{form.images.length} image(s) • First is thumbnail • All uploaded to Media</p>
             </div>
           </div>
 
