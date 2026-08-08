@@ -19,7 +19,6 @@ export default function AbandonedCartPopup() {
       })
       .catch(() => {});
 
-    // Check if cart has items and user hasn't interacted
     const hasSeen = sessionStorage.getItem("abandoned_seen");
     if (hasSeen) return;
 
@@ -31,7 +30,6 @@ export default function AbandonedCartPopup() {
       }
     }, delay);
 
-    // Also trigger on exit intent (mouse leave top)
     const handleMouseLeave = (e: MouseEvent) => {
       if (e.clientY < 10 && count > 0 && !hasSeen && !show) {
         setShow(true);
@@ -50,24 +48,24 @@ export default function AbandonedCartPopup() {
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-3xl max-w-md w-full p-6 relative animate-fadeIn">
-        <button onClick={() => setShow(false)} className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-black hover:text-white transition">
+      <div className="bg-white rounded-3xl max-w-md w-full p-6 relative border border-gray-100">
+        <button onClick={() => setShow(false)} className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-black hover:text-white transition text-black">
           ×
         </button>
         <div className="text-center">
           <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto text-2xl">🛒</div>
-          <h3 className="text-xl font-black mt-4">Wait! Don&apos;t miss out!</h3>
+          <h3 className="text-xl font-semibold tracking-tight mt-4 text-black">Wait! Don&apos;t miss out!</h3>
           <p className="text-sm text-gray-600 mt-2">{config.message || "Your cart is waiting! Complete your order now."}</p>
           {config.discountCode && (
-            <div className="mt-4 bg-amber-50 border-2 border-dashed border-amber-300 rounded-2xl p-3">
-              <div className="text-xs font-bold tracking-widest text-amber-700">USE CODE</div>
-              <div className="font-black text-xl tracking-widest">{config.discountCode}</div>
+            <div className="mt-4 bg-amber-50 border-2 border-dashed border-amber-200 rounded-2xl p-3">
+              <div className="text-xs font-medium tracking-widest text-amber-700">USE CODE</div>
+              <div className="font-semibold text-xl tracking-widest text-black">{config.discountCode}</div>
               <div className="text-xs text-gray-600">Get {config.discountPercent || 10}% OFF on your order</div>
             </div>
           )}
           <div className="flex gap-3 mt-6">
-            <button onClick={() => setShow(false)} className="flex-1 border rounded-full py-3 font-bold hover:bg-gray-50">Continue Shopping</button>
-            <Link href="/cart" onClick={() => setShow(false)} className="flex-1 bg-black text-white rounded-full py-3 font-bold text-center hover:bg-zinc-800">
+            <button onClick={() => setShow(false)} className="flex-1 border border-gray-200 rounded-full py-3 font-medium hover:bg-gray-50 text-black text-sm">Continue Shopping</button>
+            <Link href="/cart" onClick={() => setShow(false)} className="flex-1 bg-black text-white rounded-full py-3 font-medium text-center hover:bg-zinc-800 text-sm">
               Go to Cart →
             </Link>
           </div>

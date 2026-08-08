@@ -26,11 +26,11 @@ export default function WhatsAppButton() {
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
       {config.popupMessage && (
-        <div className="bg-white rounded-2xl shadow-xl p-4 max-w-[260px] border relative animate-bounce">
-          <button onClick={() => setVisible(false)} className="absolute -top-2 -right-2 w-6 h-6 bg-black text-white rounded-full text-xs">×</button>
-          <div className="text-sm font-medium">{config.popupMessage}</div>
+        <div className="bg-white rounded-2xl shadow-xl p-4 max-w-[260px] border border-gray-100 relative animate-bounce">
+          <button onClick={() => setVisible(false)} className="absolute -top-2 -right-2 w-6 h-6 bg-black text-white rounded-full text-xs flex items-center justify-center hover:bg-zinc-800">×</button>
+          <div className="text-sm font-medium text-black">{config.popupMessage}</div>
           <div className="text-xs text-gray-500 mt-1">Typically replies within minutes</div>
-          <div className="absolute -bottom-2 right-6 w-4 h-4 bg-white border-r border-b rotate-45"></div>
+          <div className="absolute -bottom-2 right-6 w-4 h-4 bg-white border-r border-b border-gray-100 rotate-45"></div>
         </div>
       )}
       <a
