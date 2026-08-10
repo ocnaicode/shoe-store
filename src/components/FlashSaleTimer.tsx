@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 export default function FlashSaleTimer() {
   const [flash, setFlash] = useState<any>(null);
-  const [timeLeft, setTimeLeft] = useState({ h: 0, m: 0, s: 0 });
+  const [timeLeft, setTimeLeft] = useState({ d: 0, h: 0, m: 0, s: 0 });
 
   useEffect(() => {
     fetch("/api/settings")
@@ -14,7 +14,6 @@ export default function FlashSaleTimer() {
         }
       })
       .catch(() => {});
-    // Also check coupons with flash sale
     fetch("/api/coupons")
       .then((r) => r.json())
       .then((data) => {
@@ -40,16 +39,18 @@ export default function FlashSaleTimer() {
         clearInterval(interval);
         return;
       }
-      setTimeLeft({
-        h: Math.floor(diff / 3600000),
-        m: Math.floor((diff % 3600000) / 60000),
-        s: Math.floor((diff % 60000) / 1000),
-      });
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((diff % (1000 * 60)) / 1000);
+      setTimeLeft({ d, h, m, s });
     }, 1000);
     return () => clearInterval(interval);
   }, [flash]);
 
   if (!flash?.enabled) return null;
+
+  const hasDays = timeLeft.d > 0;
 
   return (
     <div className="bg-gradient-to-r from-red-600 to-orange-500 text-white py-3 px-4 text-center relative overflow-hidden">
@@ -62,6 +63,12 @@ export default function FlashSaleTimer() {
         <div className="flex items-center gap-2">
           <span className="text-xs font-bold opacity-90">ENDS IN:</span>
           <div className="flex gap-1">
+            {hasDays && (
+              <div className="bg-black text-white rounded-lg px-2 py-1 min-w-[50px] text-center">
+                <div className="font-black text-sm leading-none">{String(timeLeft.d).padStart(2, "0")}</div>
+                <div className="text-[9px] leading-none opacity-60">D</div>
+              </div>
+            )}
             {[
               { label: "H", value: String(timeLeft.h).padStart(2, "0") },
               { label: "M", value: String(timeLeft.m).padStart(2, "0") },

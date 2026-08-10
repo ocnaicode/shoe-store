@@ -130,12 +130,6 @@ export default function AdminLogin() {
           </button>
         </form>
 
-        <div className="mt-6 bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs">
-          <div className="font-bold">🔑 Default Admin Credentials:</div>
-          <div className="font-mono mt-1">admin@hokolifestylebd.com / admin123</div>
-          <div className="text-gray-600 dark:text-zinc-300 mt-2">First time login e auto-create hobe & admin role paabe. MongoDB connect ache, tai data persist hobe.</div>
-        </div>
-
         <div className="mt-4 text-center">
           <Link href="/" className="text-sm font-bold underline">← Back to Store</Link>
         </div>
