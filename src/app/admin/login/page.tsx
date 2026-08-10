@@ -133,11 +133,6 @@ export default function AdminLogin() {
         <div className="mt-4 text-center">
           <Link href="/" className="text-sm font-bold underline">← Back to Store</Link>
         </div>
-
-        <div className="mt-6 text-xs text-center text-gray-400">
-          Protected by JWT + Role-based Access • MongoDB Atlas Connected<br />
-          Steadfast & Media configured from Settings
-        </div>
       </div>
     </div>
   );
