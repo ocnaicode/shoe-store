@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import StorefrontChrome from "@/components/StorefrontChrome";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const inter = { variable: "font-sans" };
 
 export const metadata: Metadata = {
   title: {
@@ -43,8 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="min-h-full flex flex-col bg-white dark:bg-[#0a0a0a] text-[#0a0a0a] dark:text-[#ededed] transition-colors duration-300">
         <ThemeProvider>
-          <StorefrontChrome />
-          <main className="flex-1 bg-white dark:bg-[#0a0a0a]">{children}</main>
+          <StorefrontChrome>{children}</StorefrontChrome>
         </ThemeProvider>
       </body>
     </html>
