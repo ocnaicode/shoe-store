@@ -1,13 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
-import AbandonedCartPopup from "@/components/AbandonedCartPopup";
-import FlashSaleTimer from "@/components/FlashSaleTimer";
-import PromotionPopup from "@/components/PromotionPopup";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import StorefrontChrome from "@/components/StorefrontChrome";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -48,13 +43,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="min-h-full flex flex-col bg-white dark:bg-[#0a0a0a] text-[#0a0a0a] dark:text-[#ededed] transition-colors duration-300">
         <ThemeProvider>
-          <FlashSaleTimer />
-          <Navbar />
+          <StorefrontChrome />
           <main className="flex-1 bg-white dark:bg-[#0a0a0a]">{children}</main>
-          <Footer />
-          <WhatsAppButton />
-          <AbandonedCartPopup />
-          <PromotionPopup />
         </ThemeProvider>
       </body>
     </html>
