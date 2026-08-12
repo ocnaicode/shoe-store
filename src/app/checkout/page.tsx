@@ -71,7 +71,6 @@ export default function CheckoutPage() {
     }
     setPlacing(true);
 
-    let authToken = localStorage.getItem("hoko_token");
     let currentUser = user;
     if (form.email && !currentUser) {
       try {
@@ -81,12 +80,7 @@ export default function CheckoutPage() {
           body: JSON.stringify({ name: form.name, email: form.email, phone: form.phone }),
         });
         const autoData = await autoRes.json();
-        if (autoData.token) {
-          authToken = autoData.token;
-          localStorage.setItem("hoko_token", autoData.token);
-          setAuth(autoData.user, autoData.token);
-          currentUser = autoData.user;
-        }
+        // A checkout profile is created without signing in an existing user.
       } catch (err) {
         console.error("Auto-create failed", err);
       }

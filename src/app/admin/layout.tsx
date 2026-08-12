@@ -9,44 +9,35 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
+  const setAuth = useAuthStore((s) => s.setAuth);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [checking, setChecking] = useState(true);
 
   const isLoginPage = pathname === "/admin/login";
 
   useEffect(() => {
-    if (isLoginPage) {
-      setChecking(false);
-      return;
-    }
-    const token = localStorage.getItem("hoko_token");
-    if (!user || !token) {
-      setChecking(false);
-      router.push("/admin/login");
-      return;
-    }
-    if (user.role !== "admin") {
-      setChecking(false);
-      router.push("/admin/login");
-      return;
-    }
-    fetch("/api/auth/me", { headers: { Authorization: `Bearer ${token}` } })
-      .then((r) => r.json())
-      .then((data) => {
-        if (!data.user || data.user.role !== "admin") {
-          router.push("/admin/login");
+    if (isLoginPage) { setChecking(false); return; }
+    let active = true;
+    // The HTTP-only session cookie survives a page reload; Zustand hydrates later.
+    fetch("/api/auth/me")
+      .then(async (response) => ({ ok: response.ok, data: await response.json() }))
+      .then(({ ok, data }) => {
+        if (!active) return;
+        if (ok && data.user?.role === "admin") {
+          setAuth(data.user, "");
+        } else {
+          logout();
+          router.replace("/admin/login");
         }
-        setChecking(false);
       })
-      .catch(() => {
-        setChecking(false);
-      });
-  }, [user, pathname]);
+      .catch(() => { if (active) { logout(); router.replace("/admin/login"); } })
+      .finally(() => { if (active) setChecking(false); });
+    return () => { active = false; };
+  }, [isLoginPage, logout, pathname, router, setAuth]);
 
   const handleLogout = () => {
     logout();
-    localStorage.removeItem("hoko_token");
-    router.push("/admin/login");
+    fetch("/api/auth/logout", { method: "POST" }).finally(() => router.push("/admin/login"));
   };
 
   if (isLoginPage) {

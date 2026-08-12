@@ -1,12 +1,9 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { useAuthStore } from "@/lib/authStore";
 
 export default function ChangePasswordPage() {
-  const user = useAuthStore((s) => s.user);
-  const token = useAuthStore((s) => s.token);
-  const [form, setForm] = useState({ email: user?.email || "", currentPassword: "", newPassword: "", confirm: "" });
+  const [form, setForm] = useState({ currentPassword: "", newPassword: "", confirm: "" });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -20,18 +17,16 @@ export default function ChangePasswordPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: form.email,
-          currentPassword: form.currentPassword || undefined,
+          currentPassword: form.currentPassword,
           newPassword: form.newPassword,
-          token: !form.currentPassword && token ? token : undefined,
         }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       setMessage("✅ " + data.message);
       setForm({ ...form, currentPassword: "", newPassword: "", confirm: "" });
-    } catch (err: any) {
-      setMessage("❌ " + err.message);
+    } catch (err: unknown) {
+      setMessage("❌ " + (err instanceof Error ? err.message : "Unable to update password"));
     }
     setLoading(false);
   };
@@ -40,27 +35,16 @@ export default function ChangePasswordPage() {
     <div className="min-h-[80vh] flex items-center justify-center bg-[#fbfbfb] dark:bg-zinc-950 px-4 py-12">
       <div className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-3xl p-8 border">
         <h1 className="text-2xl font-black text-center">Set / Change Password</h1>
-        <p className="text-sm text-gray-500 dark:text-zinc-400 text-center mt-1">Checkout e auto-create account er password ekhane set korun</p>
+        <p className="text-sm text-gray-500 dark:text-zinc-400 text-center mt-1">You must be signed in and confirm your current password.</p>
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-6">
           <label>
-            <span className="text-xs font-bold">Email</span>
-            <input type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="w-full mt-1 border rounded-xl px-4 py-3 text-sm" />
+            <span className="text-xs font-bold">Current Password</span>
+            <input type="password" required value={form.currentPassword} onChange={(e) => setForm({ ...form, currentPassword: e.target.value })} placeholder="Your current password" className="w-full mt-1 border rounded-xl px-4 py-3 text-sm" />
           </label>
-          {user && (
-            <label>
-              <span className="text-xs font-bold">Current Password (if you have one)</span>
-              <input type="password" value={form.currentPassword} onChange={(e) => setForm({ ...form, currentPassword: e.target.value })} placeholder="Leave blank if auto-created account" className="w-full mt-1 border rounded-xl px-4 py-3 text-sm" />
-            </label>
-          )}
-          {!user && (
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs">
-              🔒 Checkout e jei email diyechen seta diye account auto-create hoyeche. Current password charai new password set korte parben (logged in thakle token diye verify hobe).
-            </div>
-          )}
           <label>
             <span className="text-xs font-bold">New Password</span>
-            <input type="password" required value={form.newPassword} onChange={(e) => setForm({ ...form, newPassword: e.target.value })} placeholder="Min 6 characters" className="w-full mt-1 border rounded-xl px-4 py-3 text-sm" />
+            <input type="password" required value={form.newPassword} onChange={(e) => setForm({ ...form, newPassword: e.target.value })} placeholder="At least 8 characters" className="w-full mt-1 border rounded-xl px-4 py-3 text-sm" />
           </label>
           <label>
             <span className="text-xs font-bold">Confirm New Password</span>

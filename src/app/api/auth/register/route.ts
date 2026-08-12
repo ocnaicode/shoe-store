@@ -1,34 +1,36 @@
 import { NextResponse } from "next/server";
-import { createUser, findUserByEmail, generateToken } from "@/lib/auth";
+import { createUser, findUserByEmail, generateToken, sessionCookie, type AuthUser } from "@/lib/auth";
 import { connectDB } from "@/lib/db";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export async function POST(req: Request) {
   try {
-    const { name, email, password, phone } = await req.json();
-    if (!name || !email || !password) return NextResponse.json({ error: "Name, email, password required" }, { status: 400 });
-    if (password.length < 6) return NextResponse.json({ error: "Password must be at least 6 characters" }, { status: 400 });
+    const body = await req.json();
+    const name = typeof body.name === "string" ? body.name.trim() : "";
+    const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
+    const password = typeof body.password === "string" ? body.password : "";
+    const phone = typeof body.phone === "string" ? body.phone.trim() : "";
+    if (name.length < 2 || !emailPattern.test(email) || password.length < 8) return NextResponse.json({ error: "Enter a valid name, email, and a password of at least 8 characters" }, { status: 400 });
 
     const conn = await connectDB();
+    let user: AuthUser;
     if (conn) {
-      const existing = await (User as any).findOne({ email: email.toLowerCase() });
-      if (existing) return NextResponse.json({ error: "Email already exists" }, { status: 400 });
-      const hashed = bcrypt.hashSync(password, 10);
-      const user = await (User as any).create({ name, email: email.toLowerCase(), password: hashed, phone, provider: "credentials", role: "customer" });
-      const token = generateToken({ _id: user._id.toString(), name: user.name, email: user.email, provider: user.provider, role: user.role } as any);
-      return NextResponse.json({ user: { _id: user._id, name: user.name, email: user.email, phone: user.phone, role: user.role }, token });
+      if (await (User as any).exists({ email })) return NextResponse.json({ error: "An account with this email already exists" }, { status: 409 });
+      const record = await (User as any).create({ name, email, password: bcrypt.hashSync(password, 12), phone, provider: "credentials", role: "customer" });
+      user = { _id: record._id.toString(), name: record.name, email: record.email, phone: record.phone, role: record.role, provider: record.provider, avatar: record.avatar };
+    } else {
+      if (findUserByEmail(email)) return NextResponse.json({ error: "An account with this email already exists" }, { status: 409 });
+      const record = createUser({ name, email, password, phone });
+      user = { _id: record._id, name: record.name, email: record.email, phone: record.phone, role: record.role, provider: record.provider, avatar: record.avatar };
     }
-
-    // fallback
-    const existing = findUserByEmail(email);
-    if (existing) return NextResponse.json({ error: "Email already exists" }, { status: 400 });
-    const user = createUser({ name, email, password, phone });
-    const token = generateToken({ _id: user._id, name: user.name, email: user.email, provider: user.provider, role: user.role });
-    return NextResponse.json({ user: { _id: user._id, name: user.name, email: user.email, phone: user.phone, role: user.role }, token }, { status: 201 });
-  } catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: 500 });
+    const response = NextResponse.json({ user }, { status: 201 });
+    response.headers.set("Set-Cookie", sessionCookie(generateToken(user)));
+    return response;
+  } catch (error) {
+    console.error("Registration failed", error);
+    return NextResponse.json({ error: "Unable to create your account. Please try again later." }, { status: 500 });
   }
 }
-
-
