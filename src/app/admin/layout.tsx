@@ -19,8 +19,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       setChecking(false);
       return;
     }
-    const token = localStorage.getItem("hoko_token");
-    if (!user || !token) {
+    if (!user) {
       setChecking(false);
       router.push("/admin/login");
       return;
@@ -30,7 +29,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       router.push("/admin/login");
       return;
     }
-    fetch("/api/auth/me", { headers: { Authorization: `Bearer ${token}` } })
+    fetch("/api/auth/me")
       .then((r) => r.json())
       .then((data) => {
         if (!data.user || data.user.role !== "admin") {
@@ -45,8 +44,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const handleLogout = () => {
     logout();
-    localStorage.removeItem("hoko_token");
-    router.push("/admin/login");
+    fetch("/api/auth/logout", { method: "POST" }).finally(() => router.push("/admin/login"));
   };
 
   if (isLoginPage) {

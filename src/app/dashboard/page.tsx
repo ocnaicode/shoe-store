@@ -38,7 +38,7 @@ export default function DashboardPage() {
 
   const handleLogout = () => {
     logout();
-    localStorage.removeItem("hoko_token");
+    fetch("/api/auth/logout", { method: "POST" }).catch(() => {});
     router.push("/auth/login");
   };
 

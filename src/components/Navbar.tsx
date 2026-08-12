@@ -31,7 +31,7 @@ export default function Navbar() {
 
   const handleLogout = () => {
     logout();
-    localStorage.removeItem("hoko_token");
+    fetch("/api/auth/logout", { method: "POST" }).catch(() => {});
     setShowUserMenu(false);
     router.push("/");
   };
